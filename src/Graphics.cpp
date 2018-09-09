@@ -2,7 +2,9 @@
 
 using namespace std;
 
-Graphics::Graphics(){}
+Graphics::Graphics():_position_of_camera(300,300,300),_position_of_center_point(0,0,0){
+
+}
 void Graphics::init(int* argc,char **argv){
     //initialization of GLUT library
     glutInit(argc, argv);
@@ -27,16 +29,9 @@ void Graphics::init(int* argc,char **argv){
     gluPerspective(70,(double)640/480,1,1000);
 
     //Place the camera:
-    gluLookAt(100,100,100,0,0,0,0,1,0);
+    gluLookAt(_position_of_camera.getX(),_position_of_camera.getY(),_position_of_camera.getZ(),_position_of_center_point.getX(),_position_of_center_point.getY(),_position_of_center_point.getZ(),0,1,0);
 }
 void Graphics::clearScreen(){
-    //Remove all Quadric
-    for(unsigned i=0;i<_all_quadric.size();i++){
-        //gluDeleteQuadric(_all_quadric[i]);
-    }
-    for(unsigned i=0;i<_all_quadric.size();i++){
-        _all_quadric.pop_back();
-    }
     glClearColor(0.0f, 0.0f, 0.0f, 1.0f );
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
@@ -54,6 +49,23 @@ void Graphics::clearScreen(){
         glVertex3i(0,0,-1000);
         glVertex3i(0,0,1000);
     glEnd();
+}
+void Graphics::setPositionOfCamera(Vector3D const& v){
+    _position_of_camera=v;
+    gluLookAt(_position_of_camera.getX(),_position_of_camera.getY(),_position_of_camera.getZ(),_position_of_center_point.getX(),_position_of_center_point.getY(),_position_of_center_point.getZ(),0,1,0);
+
+}
+void Graphics::setPositionOfCenterPoint(Vector3D const& v){
+    _position_of_center_point=v;
+    gluLookAt(_position_of_camera.getX(),_position_of_camera.getY(),_position_of_camera.getZ(),_position_of_center_point.getX(),_position_of_center_point.getY(),_position_of_center_point.getZ(),0,1,0);
+}
+void Graphics::cameraZoomIn(){
+    _position_of_camera-=30;
+    setPositionOfCamera(_position_of_camera);
+}
+void Graphics::cameraZoomOut(){
+    _position_of_camera+=30;
+    setPositionOfCamera(_position_of_camera);
 }
 void Graphics::drawSphere(double posX,double posY,double posZ){
     GLUquadric* params;

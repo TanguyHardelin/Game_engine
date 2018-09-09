@@ -3,7 +3,7 @@
 Keyboard::Keyboard(){}
 void Keyboard::handleKeyboard(unsigned char key, int x, int y){
     INPUT_KEY new_key;
-    new_key.name=key;
+    new_key.name=KEYBOARD_OFFSET + key;
     new_key.x=x;
     new_key.y=y;
 

@@ -19,9 +19,9 @@ class Particule{
     inline double getMass() const{return 1/_reverseMass;};
 
     //Setters:
-    inline void setPosition(Vector3D p){_position=p;};
-    inline void setSpeed(Vector3D s){_speed=s;};
-    inline void setAcceleration(Vector3D a){_acceleration=a;};
+    inline void setPosition(Vector3D const & p){_position=p;};
+    inline void setSpeed(Vector3D const& s){_speed=s;};
+    inline void setAcceleration(Vector3D const& a){_acceleration=a;};
     inline void setMass(double m){_reverseMass=1/m;}
 
     //Methods:

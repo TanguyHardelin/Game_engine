@@ -3,7 +3,7 @@
 using namespace std;
 
 Game::Game(){
-    _all_particules.push_back(new Particule(Vector3D(0,100,0),Vector3D(10,0,0),Vector3D(0,-30,0),10,0.9));
+    _all_particules.push_back(new Particule(Vector3D(0,100,0),Vector3D(100,0,0),Vector3D(0,-30,0),10,0.9));
 
 }
 void Game::init(int* argc,char **argv){
@@ -19,51 +19,58 @@ void Game::updateGraphic(){
         _graphics.drawCube(_all_particules[i]->getPosition().getX(),_all_particules[i]->getPosition().getY(),_all_particules[i]->getPosition().getZ());
     }
 }
-void Game::createNewParticule(){
-    _all_particules.push_back(new Particule(Vector3D(rand()%100,10+rand()%50,rand()%100),Vector3D(rand()%5,rand()%5,rand()%5),Vector3D(0,-30,0),10,0.9));
+void Game::createNewParticule(Vector3D position,Vector3D speed,Vector3D acceleration,double mass,double damping){
+    _all_particules.push_back(new Particule(position,speed,acceleration,mass,damping));
 }
-void Game::gameloop(){
-    //Start the clock for the gameloop:
-    static auto start = std::chrono::high_resolution_clock::now();
+void Game::updateLogic(){
     static auto last_logic_update = std::chrono::high_resolution_clock::now();
-
-    //Update Input:
-    vector <INPUT_KEY> all_key_pressed;
-    for(unsigned i=0;i<_all_inputs.size();i++){
-        vector <INPUT_KEY> tmp=_all_inputs[i]->getBuffer();
-        for(unsigned j=0;j<tmp.size();j++)
-            all_key_pressed.push_back(tmp[j]);
-    }
-    for(unsigned i=0;i<all_key_pressed.size();i++){
-        cout<<all_key_pressed[i].name<<" was pressed "<<endl;
-    }
-
     //Get time since the last logic update:
     auto finish = std::chrono::high_resolution_clock::now();
-    std::chrono::duration<double> elapsed = finish - start;
+    std::chrono::duration<double> elapsed = finish - last_logic_update;
+    last_logic_update=finish;
 
-    //Update Logic:
     for(unsigned i=0;i<_all_particules.size();i++){
         _all_particules[i]->getPosition().display();
         if(_all_particules[i]->update(elapsed.count())==-1){
             _all_particules.erase(_all_particules.begin()+i);
             updateGraphic();
-            createNewParticule();
-        }
-        else{
-            
+            //createNewParticule();
         }
     }
-    last_logic_update=finish;
+}
+void Game::updateInput(){
+    vector <INPUT_KEY> all_key_pressed;
+    for(unsigned i=0;i<_all_inputs.size();i++){
+        vector <INPUT_KEY> tmp=_all_inputs[i]->getBuffer();
+        for(unsigned j=0;j<tmp.size();j++)
+            all_key_pressed.push_back(tmp[j]);
+        _all_inputs[i]->clearBuffer();
+    }
+    for(unsigned i=0;i<all_key_pressed.size();i++){
+        if(all_key_pressed[i].name==SCROOL_WHEEL_UP)
+            _graphics.cameraZoomIn();
+        if(all_key_pressed[i].name==SCROOL_WHEEL_DOWN)
+            _graphics.cameraZoomOut();
+        if(all_key_pressed[i].name==32) //32 is SPACE
+            createNewParticule(Vector3D(0,0,0),Vector3D(0,0,0),Vector3D(0,0,0),10,0.9);
+    }
+}
+void Game::gameloop(){
+    //Start the clock for the gameloop:
+    static auto last_time_of_gameloop = std::chrono::high_resolution_clock::now();
 
+    //Update Input:
+    updateInput();
+    //Update Logic:
+    updateLogic();
+    //Update Graphics:
     updateGraphic();
-    
 
     //Stop the clock and make constant frame:
-    finish = std::chrono::high_resolution_clock::now();
-    elapsed = finish - start;
-    cout<<"Time between two frame: "<<elapsed.count()<<" s"<<endl;
-    start=finish;
+    auto finish = std::chrono::high_resolution_clock::now();
+    std::chrono::duration<double> elapsed = finish - last_time_of_gameloop;
+    //cout<<"Time between two frame: "<<elapsed.count()<<" s"<<endl;
+    last_time_of_gameloop=finish;
     makeConstantFrameRate(elapsed.count());
 }
 void Game::makeConstantFrameRate(double elapsed_time){

@@ -23,15 +23,25 @@
 
 class Game{
     public:
+        //Constructor:
         Game();
+
+        //Getters:
+        
+        //Setters:
+        inline void addInput(Input * input){_all_inputs.push_back(input);}
+
+        //Methods:
         void start();
         void init(int* argc,char **argv);
         void updateGraphic();
+        void updateLogic();
+        void updateInput();
         void gameloop();
-        void createNewParticule();
+        void createNewParticule(Vector3D position,Vector3D speed,Vector3D acceleration,double mass,double damping);
         void makeConstantFrameRate(double elapsed_time);
 
-        inline void addInput(Input * input){_all_inputs.push_back(input);}
+        //Destructor:
         ~Game();
 
     protected:

@@ -1,8 +1,11 @@
 #ifndef PARTICULE_H
 #define PARTICULE_H
 
+#include <iostream>
 #include "Utils.h"
 #include "Vector3D.h"
+
+#define ALIVE_TIME 3.0f
 
 class Particule{
     public:
@@ -22,7 +25,7 @@ class Particule{
     inline void setMass(double m){_reverseMass=1/m;}
 
     //Methods:
-    void update(float delta_t);
+    int update(float delta_t);
 
     protected:
     //Atributes:
@@ -31,6 +34,7 @@ class Particule{
     Vector3D _acceleration;
     double _reverseMass;
     double _damping;
+    double _time_alive;
 
     //Protected methods:
     void updatePosition(float delta_t);

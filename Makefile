@@ -12,7 +12,7 @@ OBJ = $(SRC:$(SRC_DIR)/%.cpp=$(OBJ_DIR)/%.o)
 CPPFLAGS += -Iinclude
 CFLAGS += -Wall
 LDFLAGS += -Llib
-LDLIBS += -lm -lGL -lglut
+LDLIBS += -lm -lGL -lglut -lGLU 
 
 all: $(EXE)
 

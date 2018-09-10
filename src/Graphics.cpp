@@ -2,7 +2,7 @@
 
 using namespace std;
 
-Graphics::Graphics():_position_of_camera(300,300,300),_position_of_center_point(0,0,0){
+Graphics::Graphics():_position_of_camera(0,0,550),_position_of_center_point(0,0,0){
 
 }
 void Graphics::init(int* argc,char **argv){
@@ -26,7 +26,7 @@ void Graphics::init(int* argc,char **argv){
     glEnable(GL_DEPTH_TEST);
 
     //Define perspectrive parameters:
-    gluPerspective(70,(double)640/480,1,1000);
+    gluPerspective(70,(double)640/480,1,100000);
 
     //Place the camera:
     gluLookAt(_position_of_camera.getX(),_position_of_camera.getY(),_position_of_camera.getZ(),_position_of_center_point.getX(),_position_of_center_point.getY(),_position_of_center_point.getZ(),0,1,0);
@@ -38,33 +38,62 @@ void Graphics::clearScreen(){
     //Draw 3D landmark:
     glColor3f(1.0,1.0,1.0);
     glBegin(GL_LINES);
-        glVertex3i(-1000,0,0);
-        glVertex3i(1000,0,0);
+        glVertex3i(-100000,0,0);
+        glVertex3i(100000,0,0);
     glEnd();
     glBegin(GL_LINES);
-        glVertex3i(0,-1000,0);
-        glVertex3i(0,1000,0);
+        glVertex3i(0,-100000,0);
+        glVertex3i(0,100000,0);
     glEnd();
     glBegin(GL_LINES);
-        glVertex3i(0,0,-1000);
-        glVertex3i(0,0,1000);
+        glVertex3i(0,0,-100000);
+        glVertex3i(0,0,100000);
     glEnd();
 }
 void Graphics::setPositionOfCamera(Vector3D const& v){
     _position_of_camera=v;
+    v.display();
+
+    //Define the projection mode:
+    glMatrixMode( GL_PROJECTION );
+
+    //Load the identity matrix:
+    glLoadIdentity( );
+
+    //Enable Z buffer:
+    glEnable(GL_DEPTH_TEST);
+
+    //Restart perspective:
+    gluPerspective(70,(double)640/480,1,100000);
+
+    //Change position of camera:
     gluLookAt(_position_of_camera.getX(),_position_of_camera.getY(),_position_of_camera.getZ(),_position_of_center_point.getX(),_position_of_center_point.getY(),_position_of_center_point.getZ(),0,1,0);
 
 }
 void Graphics::setPositionOfCenterPoint(Vector3D const& v){
     _position_of_center_point=v;
+
+    //Define the projection mode:
+    glMatrixMode( GL_PROJECTION );
+
+    //Load the identity matrix:
+    glLoadIdentity( );
+
+    //Enable Z buffer:
+    glEnable(GL_DEPTH_TEST);
+
+    //Restart perspective:
+    gluPerspective(70,(double)640/480,1,100000);
+
+    //Change position of camera:
     gluLookAt(_position_of_camera.getX(),_position_of_camera.getY(),_position_of_camera.getZ(),_position_of_center_point.getX(),_position_of_center_point.getY(),_position_of_center_point.getZ(),0,1,0);
 }
 void Graphics::cameraZoomIn(){
-    _position_of_camera-=30;
+    _position_of_camera-=30.0f;
     setPositionOfCamera(_position_of_camera);
 }
 void Graphics::cameraZoomOut(){
-    _position_of_camera+=30;
+    _position_of_camera+=30.0f;
     setPositionOfCamera(_position_of_camera);
 }
 void Graphics::drawSphere(double posX,double posY,double posZ){

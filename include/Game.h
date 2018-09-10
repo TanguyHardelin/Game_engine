@@ -39,6 +39,7 @@ class Game{
         void updateInput();
         void gameloop();
         void createNewParticule(Vector3D position,Vector3D speed,Vector3D acceleration,double mass,double damping);
+        void clearAllParticules();
         void makeConstantFrameRate(double elapsed_time);
 
         //Destructor:

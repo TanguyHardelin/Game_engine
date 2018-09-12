@@ -14,16 +14,3 @@ void log(std::string header,std::string msg,bool check_is_valid){
     else
         cout<<"\033[41m"<<"\033[1m"<<"KO"<<"\033[0m "<<"\033[31m"<<"\033[1m"<<"["<<header<<"] "<<"\033[0m"<<msg<<endl;
 }
-
-void drawCube(){
-    gluLookAt(3,4,2,1,1,1,0,0,1);
-
-    GLUquadric* params;
-    params = gluNewQuadric();
-
-    gluQuadricDrawStyle(params,GLU_FILL);
-
-    gluSphere(params,1.0,100,100);
-
-    
-}

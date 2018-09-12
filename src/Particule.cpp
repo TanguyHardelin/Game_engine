@@ -10,7 +10,6 @@ int Particule::update(float delta_t){
     updateSpeed(delta_t);
     updatePosition(delta_t);
     _time_alive+=delta_t;
-    //cout<<"Time alive: "<<_time_alive<<endl;
     if(_time_alive>ALIVE_TIME){
         return -1;
     }

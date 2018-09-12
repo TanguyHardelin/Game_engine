@@ -25,7 +25,7 @@ class Particule{
     inline void setMass(double m){_reverseMass=1/m;}
 
     //Methods:
-    int update(float delta_t);
+    int update(float delta_t);              //Integrator
 
     protected:
     //Atributes:

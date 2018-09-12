@@ -74,7 +74,6 @@ void Game::updateInput(){
             camera_position[1]-=30;
             _graphics.setPositionOfCamera(camera_position);
         }
-        cout<<all_key_pressed[i].name<<endl;
     }
 }
 void Game::clearAllParticules(){
@@ -98,7 +97,6 @@ void Game::gameloop(){
     //Stop the clock and make constant frame:
     auto finish = std::chrono::high_resolution_clock::now();
     std::chrono::duration<double> elapsed = finish - last_time_of_gameloop;
-    //cout<<"Time between two frame: "<<elapsed.count()<<" s"<<endl;
     last_time_of_gameloop=finish;
     makeConstantFrameRate(elapsed.count());
 }

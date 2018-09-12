@@ -52,7 +52,7 @@ void Graphics::clearScreen(){
 }
 void Graphics::setPositionOfCamera(Vector3D const& v){
     _position_of_camera=v;
-    v.display();
+    cout<<"Position of camera: ";v.display();
 
     //Define the projection mode:
     glMatrixMode( GL_PROJECTION );
@@ -104,7 +104,6 @@ void Graphics::drawSphere(double posX,double posY,double posZ){
     gluQuadricDrawStyle(params,GLU_FILL);
     glTranslatef(posX,posY,posZ);
     gluSphere(params,10,50,50);
-  
 }
 void Graphics::drawCube(double posX,double posY,double posZ){
     // White side - BACK

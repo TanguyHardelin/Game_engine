@@ -32,15 +32,15 @@ class Game{
         inline void addInput(Input * input){_all_inputs.push_back(input);}
 
         //Methods:
-        void start();
-        void init(int* argc,char **argv);
-        void updateGraphic();
-        void updateLogic();
-        void updateInput();
-        void gameloop();
-        void createNewParticule(Vector3D position,Vector3D speed,Vector3D acceleration,double mass,double damping);
-        void clearAllParticules();
-        void makeConstantFrameRate(double elapsed_time);
+        void start();                                                                                               //Start graphic library
+        void init(int* argc,char **argv);                                                                           //Init graphic library
+        void updateGraphic();                                                                                       //Use for update graphic on game
+        void updateLogic();                                                                                         //Use for update logic on game
+        void updateInput();                                                                                         //Use for update input on game
+        void gameloop();                                                                                            //Gameloop
+        void createNewParticule(Vector3D position,Vector3D speed,Vector3D acceleration,double mass,double damping); //Create a new Particule on screen
+        void clearAllParticules();                                                                                  //Remove all particules on screen
+        void makeConstantFrameRate(double elapsed_time);                                                            //Make frame constant
 
         //Destructor:
         ~Game();

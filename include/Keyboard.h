@@ -5,7 +5,9 @@
 
 class Keyboard:public Input{
     public:
+        //Constructor:
         Keyboard();
+        //Methods:
         void handleKeyboard(unsigned char key, int x, int y);
 
 };

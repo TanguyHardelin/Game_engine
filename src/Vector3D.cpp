@@ -85,6 +85,11 @@ void Vector3D::operator=(Vector3D a){
     _y=a.getY();
     _z=a.getZ();
 }
+void Vector3D::operator=(double value){
+    _x=value;
+    _y=value;
+    _z=value;
+}
 void Vector3D::operator+=(Vector3D const& a){
     _x+=a.getX();
     _y+=a.getY();

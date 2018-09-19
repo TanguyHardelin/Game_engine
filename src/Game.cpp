@@ -4,7 +4,7 @@ using namespace std;
 
 Game::Game(){
     //For the demo we create one particule when the game start
-    _all_particules.push_back(new Particule(Vector3D(-100,0,0),Vector3D(100,150,0),Vector3D(0,-30,0),10,0.9));
+    //_all_particules.push_back(new Particule(Vector3D(-100,0,0),Vector3D(100,150,0),Vector3D(0,-30,0),10,0.9));
 }
 void Game::init(int* argc,char **argv){
     //Initialize GLUT:
@@ -23,7 +23,13 @@ void Game::updateGraphic(){
     }
 }
 void Game::createNewParticule(Vector3D position,Vector3D speed,Vector3D acceleration,double mass,double damping){
+    //Create the particule
     _all_particules.push_back(new Particule(position,speed,acceleration,mass,damping));
+
+    //Add force:
+    _force_register.addForce(_all_particules[_all_particules.size()-1],new GravityForce(20));
+    _force_register.addForce(_all_particules[_all_particules.size()-1],new DragForce(0.5,0.1));
+
 }
 void Game::updateLogic(){
     static auto last_logic_update = std::chrono::high_resolution_clock::now();
@@ -32,10 +38,18 @@ void Game::updateLogic(){
     std::chrono::duration<double> elapsed = finish - last_logic_update;
     last_logic_update=finish;
 
+    //Update all forces generators:
+    _force_register.updateAllForce(elapsed.count());
+
+    //Update position / speed / acceleration:
     for(unsigned i=0;i<_all_particules.size();i++){
         //cout<<"Position of particule: ";_all_particules[i]->getPosition().display();
         _all_particules[i]->update(elapsed.count());
+        //_all_particules[i]->update();
     }
+    
+    //Clear accumulator of particules:
+    _force_register.clearAllForce();
 }
 void Game::updateInput(){
     vector <INPUT_KEY> all_key_pressed;
@@ -100,7 +114,7 @@ void Game::gameloop(){
     //Stop the clock and make constant frame:
     auto finish = std::chrono::high_resolution_clock::now();
     std::chrono::duration<double> elapsed = finish - last_time_of_gameloop;
-    cout<<"Time between two frame: "<<elapsed.count()<<" s"<<endl;
+    //cout<<"Time between two frame: "<<elapsed.count()<<" s"<<endl;
     last_time_of_gameloop=finish;
     makeConstantFrameRate(elapsed.count());
 }

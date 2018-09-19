@@ -29,15 +29,15 @@ class Graphics{
         void setPositionOfCenterPoint(Vector3D const& v);
 
         //Methods:
-        void init(int* argc,char **argv);
-        void start();
-        void clearScreen();
+        void init(int* argc,char **argv);                           //Initialisation of GLUT
+        void start();                                               //Start main loop of GLUT
+        void clearScreen();                                         //Clear screen
 
-        void cameraZoomIn();
-        void cameraZoomOut();
+        void cameraZoomIn();                                        //Zoom
+        void cameraZoomOut();                                       //Dezoom
 
-        void drawSphere(double posX,double posY,double posZ);
-        void drawCube(double posX,double posY,double posZ);
+        void drawSphere(double posX,double posY,double posZ);       //Draw sphere on scene
+        void drawCube(double posX,double posY,double posZ);         //Draw cube on scene
 
     protected:
         Vector3D _position_of_camera;

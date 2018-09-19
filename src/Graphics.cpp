@@ -104,7 +104,6 @@ void Graphics::drawSphere(double posX,double posY,double posZ){
     gluQuadricDrawStyle(params,GLU_FILL);
     glTranslatef(posX,posY,posZ);
     gluSphere(params,10,50,50);
-  
 }
 void Graphics::drawCube(double posX,double posY,double posZ){
     // White side - BACK

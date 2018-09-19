@@ -11,7 +11,6 @@ typedef struct{
 } INPUT_KEY;
 
 //Defines:
-
 #define MOUSE_OFFSET 5000
 #define KEYBOARD_OFFSET 0
 

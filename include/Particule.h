@@ -25,7 +25,9 @@ class Particule{
     inline void setMass(double m){_reverseMass=1/m;}
 
     //Methods:
-    int update(float delta_t);
+    int update(double delta_t);              //Integrator
+    void addForce(const Vector3D & force);
+    void clearAccum();
 
     protected:
     //Atributes:
@@ -36,9 +38,12 @@ class Particule{
     double _damping;
     double _time_alive;
 
+    Vector3D _accum_forces;
+
     //Protected methods:
-    void updatePosition(float delta_t);
-    void updateSpeed(float delta_t);
+    void updatePosition(double delta_t);
+    void updateSpeed(double delta_t);
+    void updateAcceleration();
 
 };
 

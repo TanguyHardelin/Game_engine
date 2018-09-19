@@ -38,6 +38,7 @@ class Vector3D{
     double& operator[] (int index);
 
     void operator=(Vector3D a);
+    void operator=(double value);
 
     void operator+=(Vector3D const& a);
     void operator-=(Vector3D const& a);

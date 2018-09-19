@@ -52,7 +52,7 @@ void Graphics::clearScreen(){
 }
 void Graphics::setPositionOfCamera(Vector3D const& v){
     _position_of_camera=v;
-    v.display();
+    cout<<"Position of camera: ";v.display();
 
     //Define the projection mode:
     glMatrixMode( GL_PROJECTION );

@@ -10,5 +10,4 @@ void log(std::string msg);
 void log(std::string header,std::string msg);
 void log(std::string header,std::string msg,bool check=true);
 
-void drawCube();
 #endif

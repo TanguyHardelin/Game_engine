@@ -3,14 +3,16 @@
 using namespace std;
 
 Game::Game(){
+    //For the demo we create one particule when the game start
     _all_particules.push_back(new Particule(Vector3D(-100,0,0),Vector3D(100,150,0),Vector3D(0,-30,0),10,0.9));
-
 }
 void Game::init(int* argc,char **argv){
+    //Initialize GLUT:
     _graphics.init(argc,argv);
 }
 
 void Game::start(){
+    //Start the mainloop of glut
     _graphics.start();
 }
 void Game::updateGraphic(){
@@ -31,7 +33,7 @@ void Game::updateLogic(){
     last_logic_update=finish;
 
     for(unsigned i=0;i<_all_particules.size();i++){
-        //_all_particules[i]->getPosition().display();
+        //cout<<"Position of particule: ";_all_particules[i]->getPosition().display();
         _all_particules[i]->update(elapsed.count());
     }
 }
@@ -74,7 +76,7 @@ void Game::updateInput(){
             camera_position[1]-=30;
             _graphics.setPositionOfCamera(camera_position);
         }
-        cout<<all_key_pressed[i].name<<endl;
+        //cout<<all_key_pressed[i].name<<endl;
     }
 }
 void Game::clearAllParticules(){
@@ -98,7 +100,7 @@ void Game::gameloop(){
     //Stop the clock and make constant frame:
     auto finish = std::chrono::high_resolution_clock::now();
     std::chrono::duration<double> elapsed = finish - last_time_of_gameloop;
-    //cout<<"Time between two frame: "<<elapsed.count()<<" s"<<endl;
+    cout<<"Time between two frame: "<<elapsed.count()<<" s"<<endl;
     last_time_of_gameloop=finish;
     makeConstantFrameRate(elapsed.count());
 }

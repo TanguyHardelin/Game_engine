@@ -28,7 +28,7 @@ void Game::createNewParticule(Vector3D position,Vector3D speed,Vector3D accelera
 
     //Add force:
     _force_register.addForce(_all_particules[_all_particules.size()-1],new GravityForce(20));
-    _force_register.addForce(_all_particules[_all_particules.size()-1],new DragForce(0.5,0.1));
+    _force_register.addForce(_all_particules[_all_particules.size()-1],new DragForce(0.1,0.01));
 
 }
 void Game::updateLogic(){
@@ -43,9 +43,7 @@ void Game::updateLogic(){
 
     //Update position / speed / acceleration:
     for(unsigned i=0;i<_all_particules.size();i++){
-        //cout<<"Position of particule: ";_all_particules[i]->getPosition().display();
         _all_particules[i]->update(elapsed.count());
-        //_all_particules[i]->update();
     }
     
     //Clear accumulator of particules:

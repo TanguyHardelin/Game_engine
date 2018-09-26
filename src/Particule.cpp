@@ -34,5 +34,5 @@ void Particule::updateSpeed(double delta_t){
 void Particule::updateAcceleration(){
     cout<<"accum forces: ";
     _accum_forces.display();
-    _acceleration=_accum_forces*_reverseMass;
+    _acceleration=_accum_forces*1/_reverseMass;
 }

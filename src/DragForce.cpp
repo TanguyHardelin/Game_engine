@@ -11,6 +11,6 @@ void DragForce::updateForce(Particule *p,float delta_t){
         Vector3D speed=p->getSpeed();
         Vector3D drag=speed.normalize()*-1.0*(_k1*speed.norm()+_k2*speed.norm());
         p->addForce(drag);
-        cout<<"drag: ";drag.display();
+        //cout<<"drag: ";drag.display();
     }
 }

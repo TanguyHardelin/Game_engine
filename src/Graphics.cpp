@@ -105,10 +105,14 @@ void Graphics::drawSphere(double posX,double posY,double posZ){
     glTranslatef(posX,posY,posZ);
     gluSphere(params,10,50,50);
 }
-void Graphics::drawCube(double posX,double posY,double posZ){
+void Graphics::drawCube(double posX,double posY,double posZ,int red,int green,int blue){
+    double R=red/255.0f;
+    double G=green/255.0f;
+    double B=blue/255.0f;
+
     // White side - BACK
     glBegin(GL_POLYGON);
-    glColor3f(   1.0,  1.0, 1.0 );
+    glColor3f(R,G,B);
     glVertex3f(posX + 5,posY - 5,posZ + 5 );
     glVertex3f(posX + 5,posY + 5,posZ + 5 );
     glVertex3f(posX - 5,posY + 5,posZ + 5 );
@@ -117,7 +121,7 @@ void Graphics::drawCube(double posX,double posY,double posZ){
 
     // Purple side - RIGHT
     glBegin(GL_POLYGON);
-    glColor3f(  1.0,  0.0,  1.0 );
+    glColor3f(R,G,B);
     glVertex3f(posX + 5,posY - 5,posZ - 5 );
     glVertex3f(posX + 5,posY + 5,posZ - 5 );
     glVertex3f(posX + 5,posY + 5,posZ + 5 );
@@ -126,7 +130,7 @@ void Graphics::drawCube(double posX,double posY,double posZ){
 
     // Green side - LEFT
     glBegin(GL_POLYGON);
-    glColor3f(   0.0,  1.0,  0.0 );
+    glColor3f(R,G,B);
     glVertex3f(posX - 5,posY - 5,posZ + 5 );
     glVertex3f(posX - 5,posY + 5,posZ + 5 );
     glVertex3f(posX - 5,posY + 5,posZ - 5 );
@@ -135,7 +139,7 @@ void Graphics::drawCube(double posX,double posY,double posZ){
 
     // Blue side - TOP
     glBegin(GL_POLYGON);
-    glColor3f(   0.0,  0.0,  1.0 );
+    glColor3f(R,G,B);
     glVertex3f(posX + 5,posY + 5,posZ + 5 );
     glVertex3f(posX + 5,posY + 5,posZ - 5 );
     glVertex3f(posX - 5,posY + 5,posZ - 5 );
@@ -144,7 +148,7 @@ void Graphics::drawCube(double posX,double posY,double posZ){
 
     // Red side - BOTTOM
     glBegin(GL_POLYGON);
-    glColor3f(   1.0,  0.0,  0.0 );
+    glColor3f(R,G,B);
     glVertex3f(posX + 5,posY - 5,posZ - 5 );
     glVertex3f(posX + 5,posY - 5,posZ + 5 );
     glVertex3f(posX - 5,posY - 5,posZ + 5 );

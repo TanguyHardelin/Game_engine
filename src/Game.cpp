@@ -2,6 +2,13 @@
 
 using namespace std;
 
+/*
+    TODO LIST:
+    - Ajouter abstraction pour creer une API pour le moteur de jeux.
+    - Revoir asservissement temps entre frame.
+    - Thread les calculs physique pour optimiser le temps de calcul.
+*/
+
 Game::Game(){
     //For the demo we create one particule when the game start
     //_all_particules.push_back(new Particule(Vector3D(-100,0,0),Vector3D(100,150,0),Vector3D(0,-30,0),10,0.9));
@@ -88,7 +95,6 @@ void Game::updateInput(){
             camera_position[1]-=30;
             _graphics.setPositionOfCamera(camera_position);
         }
-        //cout<<all_key_pressed[i].name<<endl;
     }
 }
 void Game::clearAllParticules(){

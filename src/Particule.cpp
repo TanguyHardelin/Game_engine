@@ -2,7 +2,7 @@
 
 using namespace std;
 
-Particule::Particule(Vector3D p,Vector3D s,Vector3D a,double m,double d):_position(p),_speed(s),_acceleration(a),_reverseMass(1/m),_damping(d),_time_alive(0),_accum_forces(Vector3D(0,0,0)){
+Particule::Particule(Vector3D p,Vector3D s,Vector3D a,double m,double d):_position(p),_speed(s),_acceleration(a),_reverseMass(1/(m*1.0f)),_damping(d),_time_alive(0),_accum_forces(Vector3D(0,0,0)){
     _acceleration.setY(_acceleration[1]*m);
 }
 

@@ -37,7 +37,7 @@ class Graphics{
         void cameraZoomOut();                                       //Dezoom
 
         void drawSphere(double posX,double posY,double posZ);       //Draw sphere on scene
-        void drawCube(double posX,double posY,double posZ);         //Draw cube on scene
+        void drawCube(double posX,double posY,double posZ,int red=0,int green=0,int blue=255);         //Draw cube on scene
 
     protected:
         Vector3D _position_of_camera;

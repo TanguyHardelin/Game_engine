@@ -35,8 +35,17 @@ void Graphics::clearScreen(){
     glClearColor(0.0f, 0.0f, 0.0f, 1.0f );
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-    //Draw 3D landmark:
+    //Draw floor:
     glColor3f(1.0,1.0,1.0);
+    glBegin(GL_QUADS);
+        glVertex4f(-1, -1, 0, 0);
+        glVertex4f(-1, 1, 0, 0);
+        glVertex4f(1, 1, 0, 0);
+        glVertex4f(1, -1, 0, 0);
+    glEnd();
+
+    //Draw 3D landmark:
+    glColor3f(1.0,0,0);
     glBegin(GL_LINES);
         glVertex3i(-100000,0,0);
         glVertex3i(100000,0,0);

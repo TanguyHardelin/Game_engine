@@ -4,6 +4,7 @@
 #include <vector>
 #include "Particule.h"
 #include "Vector3D.h"
+#include "ParticuleContactResolver.h"
 
 #define DEFAULT_RESTITUTION 0.9
 
@@ -13,9 +14,11 @@ class ParticuleContact{
         ParticuleContact(std::vector<Particule *> p);
 
         void resolve(double time);
-        double calculateVs();
-        void resolveVelocity();
+        Vector3D calculateVs();
+        void resolveVelocity(double time);
         void resolveInterpenetration();
+
+        friend class ParticuleContactResolver;
 
     protected:
         std::vector<Particule *> _p;

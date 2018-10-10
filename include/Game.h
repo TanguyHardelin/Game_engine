@@ -21,6 +21,9 @@
 #include "ForceRegister.h"
 #include "GravityForce.h"
 #include "DragForce.h"
+#include "BungeeSpring.h"
+#include "AnchorSpring.h"
+#include "ParticuleSpring.h"
 
 #define SLEEPING_TIME 16666
 

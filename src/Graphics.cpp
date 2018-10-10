@@ -112,6 +112,7 @@ void Graphics::drawSphere(double posX,double posY,double posZ){
 
     gluQuadricDrawStyle(params,GLU_FILL);
     glTranslatef(posX,posY,posZ);
+    glColor3f(0.0f, 1.0f, 0.0f);
     gluSphere(params,10,50,50);
 }
 void Graphics::drawCube(double posX,double posY,double posZ,int red,int green,int blue){

@@ -2,7 +2,7 @@
 
 using namespace std;
 
-Graphics::Graphics():_position_of_camera(0,0,550),_position_of_center_point(0,0,0){
+Graphics::Graphics():_position_of_camera(30,30,580),_position_of_center_point(0,0,0){
 
 }
 void Graphics::init(int* argc,char **argv){

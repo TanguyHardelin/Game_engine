@@ -15,20 +15,21 @@ void ParticuleContact::resolve(double time){
 }
 Vector3D ParticuleContact::calculateVs(){
     _n=(_p[0]->getSpeed()-_p[1]->getSpeed()).normalize();
+    cout<<"Normalize ";_n.display();cout<<endl;
     return ((_p[0]->getSpeed()-_p[1]->getSpeed())*_n);
 }
 void ParticuleContact::resolveVelocity(double time){
-    Vector3D vs=calculateVs();
-    Vector3D vc=vs*-1*_restitution;
-
-    for(unsigned i=0;i<_p.size();i++){
-        Vector3D impulsion=vc*_p[i]->getMass();
-        _p[i]->setSpeed(_p[i]->getSpeed()+impulsion*1/_p[i]->getMass());
-    }
-    
-
+    Vector3D vs=calculateVs()*-1*_restitution;
+    cout<<"VS"<<endl;
+    vs.display();
+    Vector3D impulsion=vs*_p[0]->getMass();
+    _p[0]->setSpeed(_p[0]->getSpeed()+impulsion*1.0f/_p[0]->getMass());
+    _p[0]->getSpeed().display();
 }
 void ParticuleContact::resolveInterpenetration(){
+    _d=norm(_p[0]->getPosition()-_p[1]->getPosition());
+    cout<<"D"<<endl;
+    _d.display();
     double ma=1/_p[0]->getMass();
     double mb=1/_p[1]->getMass();
     Vector3D delta_pa=_d*_n*mb/(ma+mb);

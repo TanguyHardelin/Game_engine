@@ -24,6 +24,9 @@
 #include "BungeeSpring.h"
 #include "AnchorSpring.h"
 #include "ParticuleSpring.h"
+#include "ParticuleContactGenerator.h"
+#include "ParticuleContact.h"
+#include "ParticuleContactResolver.h"
 
 #define SLEEPING_TIME 16666
 
@@ -56,6 +59,7 @@ class Game{
         std::vector<Particule *> _all_particules;
         Graphics _graphics;
         ForceRegister _force_register;
+        ParticuleContactGenerator _particule_contact_generator;
 };
 
 #endif

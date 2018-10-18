@@ -10,18 +10,24 @@ using namespace std;
 */
 
 Game::Game(){
-    //For the demo we create one particule when the game start
+    _particule_contact_generator    = ParticuleContactGenerator();
+    _particule_contact_resolver     = NULL;
 
-    for(int k=0;k<4;k++){
+    //_all_particules.push_back(new Particule(Vector3D(0,0,0),Vector3D(0,0,0),Vector3D(0,0,0),10,0.9));
+
+    //_all_particules[0]->getPosition().display();
+    //For the demo we create one particule when the game start
+    for(int k=0;k<1;k++){
         for(int j=0;j<4;j++){
             for(int i=0;i<4;i++){
-                _all_particules.push_back(new Particule(Vector3D(i*50,50*k,j*50),Vector3D(0,0,0),Vector3D(0,0,0),10,0.9));
+                _all_particules.push_back(new Particule(Vector3D(i*50,50+50*k,j*50),Vector3D(0,0,0),Vector3D(0,0,0),10,0.9));
             }
         }
     }
     
     
-    for(int i=0;i<_all_particules.size();i++){
+    for(unsigned i=0;i<_all_particules.size();i++){
+        /*
         if((i%16-4)>0){
             _force_register.addForce(_all_particules[i],new ParticuleSpring(0.1,50,_all_particules[i-4]));
         }
@@ -42,10 +48,11 @@ Game::Game(){
         if((i+16)<_all_particules.size()){
             _force_register.addForce(_all_particules[i],new ParticuleSpring(0.1,50,_all_particules[i+16]));
         }
-        //_force_register.addForce(_all_particules[i],new GravityForce(20));
+        */
        
+       _force_register.addForce(_all_particules[i],new GravityForce(20));
     }
-  
+    
     //_all_particules.push_back(new Particule(Vector3D(0,100,0),Vector3D(0,0,0),Vector3D(0,0,0),10,0.9));
 
     //_all_particules.push_back(new Particule(Vector3D(0,50,0),Vector3D(0,0,0),Vector3D(0,0,0),10,0.9));
@@ -80,10 +87,12 @@ void Game::start(){
 }
 void Game::updateGraphic(){
     _graphics.clearScreen();
+    //_graphics.addFloor(255,255,255);
     for(unsigned i=0;i<_all_particules.size();i++){
-        _graphics.drawCube(_all_particules[i]->getPosition().getX(),_all_particules[i]->getPosition().getY(),_all_particules[i]->getPosition().getZ());
+        _graphics.addCube(_all_particules[i]->getPosition().getX(),_all_particules[i]->getPosition().getY(),_all_particules[i]->getPosition().getZ());
         //_graphics.drawSphere(_all_particules[i]->getPosition().getX(),_all_particules[i]->getPosition().getY(),_all_particules[i]->getPosition().getZ());
     }
+    _graphics.draw();
 }
 void Game::createNewParticule(Vector3D position,Vector3D speed,Vector3D acceleration,double mass,double damping){
     //Create the particule
@@ -110,7 +119,6 @@ void Game::updateLogic(){
     }
 
     //Detect collisions:
-    /*
     for(unsigned i=0;i<_all_particules.size();i++){
         for(unsigned j=0;j<_all_particules.size();j++){
             if(i!=j){
@@ -121,16 +129,31 @@ void Game::updateLogic(){
                     _particule_contact_generator.addContact(new ParticuleContact(particules,0.9));
                 }
             }
+            if(i==j){
+                //Manage floor colision:
+                if(_all_particules[i]->getPosition().getY()<0){
+                    cout<<"FLOOR"<<endl;
+                    vector<Particule *> particules;
+                    
+                    particules.push_back(_all_particules[i]);
+                    particules.push_back(_all_particules[0]);   //0 index is floor
+                    _particule_contact_generator.addContact(new ParticuleContact(particules,0.9,true));
+                }
+            }
         }
     }
-    */
-    vector<ParticuleContact*> all_contact=_particule_contact_generator.getContacts();
 
-    _particule_contact_generator.clearContacts();
+    vector<ParticuleContact*> all_contacts=_particule_contact_generator.getContacts();
 
-    for(unsigned i=0;i<all_contact.size();i++){
-        all_contact[i]->resolve(elapsed.count());
-    }
+    _particule_contact_resolver=new ParticuleContactResolver((long)all_contacts.size(),0);
+
+    _particule_contact_resolver->resolveContacts(all_contacts,elapsed.count());
+
+    _particule_contact_generator.clearContacts();  
+
+    delete _particule_contact_resolver;
+
+      
     
     //Clear accumulator of particules:
     _force_register.clearAllForce();

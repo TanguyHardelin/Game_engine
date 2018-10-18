@@ -25,9 +25,9 @@
 #include "AnchorSpring.h"
 #include "ParticuleSpring.h"
 #include "ParticuleContactGenerator.h"
-#include "ParticuleContact.h"
-#include "ParticuleContactResolver.h"
 
+#include "ParticuleContactResolver.h"
+#include "ParticuleContact.h"
 #define SLEEPING_TIME 16666
 
 class Game{
@@ -55,11 +55,12 @@ class Game{
         ~Game();
 
     protected:
-        std::vector<Input *> _all_inputs;
-        std::vector<Particule *> _all_particules;
-        Graphics _graphics;
-        ForceRegister _force_register;
-        ParticuleContactGenerator _particule_contact_generator;
+        std::vector<Input *>        _all_inputs;
+        std::vector<Particule *>    _all_particules;
+        Graphics                    _graphics;
+        ForceRegister               _force_register;
+        ParticuleContactGenerator   _particule_contact_generator;
+        ParticuleContactResolver*   _particule_contact_resolver;
 };
 
 #endif

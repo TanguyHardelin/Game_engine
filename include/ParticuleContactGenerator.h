@@ -15,6 +15,7 @@ class ParticuleContactGenerator{
             }
         }
 
+        
     protected:
         std::vector<ParticuleContact *> _all_contact;
 };  

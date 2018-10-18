@@ -2,6 +2,7 @@
 #define PARTICULE_STIFF_SPRING_H
 
 #include "Vector3D.h"
+#include "Particule.h"
 
 class ParticuleStiffSpring{
     public:

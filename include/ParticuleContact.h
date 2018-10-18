@@ -10,6 +10,7 @@
 
 class ParticuleContact{
     public:
+        ParticuleContact(std::vector<Particule *> p,double restitution,bool interact_with_floor);
         ParticuleContact(std::vector<Particule *> p,double restitution);
         ParticuleContact(std::vector<Particule *> p);
 
@@ -25,6 +26,7 @@ class ParticuleContact{
         double _restitution;
         Vector3D _n;
         Vector3D _d;
+        bool _interact_with_floor;
 
 };
 

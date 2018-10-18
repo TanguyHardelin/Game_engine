@@ -105,7 +105,7 @@ void Graphics::cameraZoomOut(){
     _position_of_camera+=30.0f;
     setPositionOfCamera(_position_of_camera);
 }
-void Graphics::drawSphere(double posX,double posY,double posZ){
+void Graphics::addSphere(double posX,double posY,double posZ){
     GLUquadric* params;
     _all_quadric.push_back(params);
     params = gluNewQuadric();
@@ -115,7 +115,7 @@ void Graphics::drawSphere(double posX,double posY,double posZ){
     glColor3f(0.0f, 1.0f, 0.0f);
     gluSphere(params,10,50,50);
 }
-void Graphics::drawCube(double posX,double posY,double posZ,int red,int green,int blue){
+void Graphics::addCube(double posX,double posY,double posZ,int red,int green,int blue){
     double R=red/255.0f;
     double G=green/255.0f;
     double B=blue/255.0f;
@@ -164,11 +164,24 @@ void Graphics::drawCube(double posX,double posY,double posZ,int red,int green,in
     glVertex3f(posX - 5,posY - 5,posZ + 5 );
     glVertex3f(posX - 5,posY - 5,posZ - 5 );
     glEnd();
+}
+void Graphics::addFloor(int red,int green,int blue){
+    double R=red/255.0f;
+    double G=green/255.0f;
+    double B=blue/255.0f;
 
+    glBegin(GL_POLYGON);
+    glColor3f(R,G,B);
+    glVertex3f(5000,0,5000);
+    glVertex3f(-5000,0,5000);
+    glVertex3f(-5000,0,-5000);
+    glVertex3f(5000,0,-5000);
+    
+    glEnd();
+}
+void Graphics::draw(){
     glFlush();
     glutSwapBuffers();
- 
-  
 }
 void Graphics::start(){
     glutMainLoop();

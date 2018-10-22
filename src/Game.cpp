@@ -10,142 +10,11 @@ using namespace std;
 
 Game::Game(){
     _particule_contact_generator    = ParticuleContactGenerator();
-    _particule_contact_resolver     = NULL;
+    _particule_contact_resolver     = ParticuleContactResolver();
     _continue_game                  = true;
-
-    /*
-    //Demo of blob technologie:
-    _all_particules.push_back(new Particule(Vector3D(50,50,50),Vector3D(0,0,0),Vector3D(0,0,0),10,0.9));
-    _all_particules.push_back(new Particule(Vector3D(50,150,50),Vector3D(0,0,0),Vector3D(0,0,0),10,0.9));
-
-    vector<Particule *> particules;
-    particules.push_back(_all_particules[1]);
-    particules.push_back(_all_particules[0]);
-    _particule_contact_generator.addLink(new ParticuleLinkContact(particules,0.1,Vector3D(0,100,0)));
     
-
-    for(int i=0;i<2;i++){
-        _force_register.addForce(_all_particules[i],new GravityForce(20));
-    }
-    */
-
-    createBlob();
-}
-void Game::createBlob(){
-    //For the demo we create one particule when the game start
-    /*
-    _all_particules.push_back(new Particule(Vector3D(50,200,50),Vector3D(0,0,0),Vector3D(0,0,0),10,0.9));
-    _all_particules.push_back(new Particule(Vector3D(50,250,50),Vector3D(0,0,0),Vector3D(0,0,0),10,0.9));
-    _all_particules.push_back(new Particule(Vector3D(0,200,50),Vector3D(0,0,0),Vector3D(0,0,0),10,0.9));
-    _all_particules.push_back(new Particule(Vector3D(100,200,50),Vector3D(0,0,0),Vector3D(0,0,0),10,0.9));
-    _all_particules.push_back(new Particule(Vector3D(50,200,0),Vector3D(0,0,0),Vector3D(0,0,0),10,0.9));
-    _all_particules.push_back(new Particule(Vector3D(50,200,100),Vector3D(0,0,0),Vector3D(0,0,0),10,0.9));
-    _all_particules.push_back(new Particule(Vector3D(50,150,50),Vector3D(0,0,0),Vector3D(0,0,0),10,0.9));
-
-    for(int i=0;i<7;i++){
-        _force_register.addForce(_all_particules[i],new GravityForce(20));
-        vector<Particule *> particules;
-        particules.push_back(_all_particules[0]);
-        particules.push_back(_all_particules[i]);
-        _particule_contact_generator.addLink(new ParticuleLinkContact(particules,0.1));
-    }
-    */
- 
-    for(int k=0;k<4;k++){
-        for(int j=0;j<4;j++){
-            for(int i=0;i<4;i++){
-                _all_particules.push_back(new Particule(Vector3D(50+i*50,200+50*k,50+j*50),Vector3D(0,0,0),Vector3D(0,0,0),10,2.5,Vector3D(134,255,92)));
-            }
-        }
-    }
-    
-    for(int i=0;i<(int)_all_particules.size();i++){
-  
-        if((i%16-4)>=0){
-            
-            vector<Particule *> particules;
-            particules.push_back(_all_particules[i]);
-            particules.push_back(_all_particules[i-4]);
-            _particule_contact_generator.addLink(new ParticuleLinkContact(particules,0.1));
-            
-            //_force_register.addForce(_all_particules[i],new ParticuleSpring(0.9,50,_all_particules[i-4]));
-        }
-        /*
-        if((i%16+4)<16){
-            vector<Particule *> particules;
-            particules.push_back(_all_particules[i]);
-            particules.push_back(_all_particules[i+4]);
-            _particule_contact_generator.addLink(new ParticuleLinkContact(particules,0.99));
-
-            //_force_register.addForce(_all_particules[i],new ParticuleSpring(0.9,50,_all_particules[i+4]));
-        }
-        */
-        if((i%4-1)>=0){
-            
-            vector<Particule *> particules;
-            particules.push_back(_all_particules[i]);
-            particules.push_back(_all_particules[i-1]);
-            _particule_contact_generator.addLink(new ParticuleLinkContact(particules,0.1));
-            
-            //_force_register.addForce(_all_particules[i],new ParticuleSpring(0.9,50,_all_particules[i-1]));
-        }
-        
-       /*
-        if((i%4+1)<4){
-            vector<Particule *> particules;
-            particules.push_back(_all_particules[i]);
-            particules.push_back(_all_particules[i+1]);
-            _particule_contact_generator.addLink(new ParticuleLinkContact(particules,0.99));
-            //_force_register.addForce(_all_particules[i],new ParticuleSpring(0.9,50,_all_particules[i+1]));
-        }
-        */
-        
-        if((i-16)>=0){
-            
-            vector<Particule *> particules;
-            particules.push_back(_all_particules[i]);
-            particules.push_back(_all_particules[i-16]);
-            _particule_contact_generator.addLink(new ParticuleLinkContact(particules,0.1));
-            
-            //_force_register.addForce(_all_particules[i],new ParticuleSpring(0.9,50,_all_particules[i-16]));
-        }
-        
-        /*
-        if((i+16)<(int)_all_particules.size()){
-            vector<Particule *> particules;
-            particules.push_back(_all_particules[i]);
-            particules.push_back(_all_particules[i+16]);
-            _particule_contact_generator.addLink(new ParticuleLinkContact(particules,0.99));
-            //_force_register.addForce(_all_particules[i],new ParticuleSpring(0.9,50,_all_particules[i+16]));
-        }
-        */
-       //_force_register.addForce(_all_particules[i],new DragForce(0.0009,0.00001));
-       
-    }
-    for(int i=0;i<16;i++){
-        _force_register.addForce(_all_particules[i],new GravityForce(20));
-    }
-    
-    //_all_particules.push_back(new Particule(Vector3D(0,100,0),Vector3D(0,0,0),Vector3D(0,0,0),10,0.9));
-
-    //_all_particules.push_back(new Particule(Vector3D(0,50,0),Vector3D(0,0,0),Vector3D(0,0,0),10,0.9));
-
-    //_force_register.addForce(_all_particules[0],new ParticuleSpring(0.9,50,_all_particules[1]));
-    //_force_register.addForce(_all_particules[1],new ParticuleSpring(0.9,50,_all_particules[0]));
-    //_force_register.addForce(_all_particules[0],new GravityForce(20));
-    /*
-    for(int i=0;i<_all_particules.size();i++){
-        for(int j=0;j<_all_particules.size();j++){
-            if(i!=j){
-                _force_register.addForce(_all_particules[i],new ParticuleSpring(0.9,50,_all_particules[j]));
-            }
-        }
-    }
-    */
-
-    //_force_register.addForce(_all_particules[_all_particules.size()-1],new GravityForce(20));
-    //_force_register.addForce(_all_particules[_all_particules.size()-1],new DragForce(0.9,0.01));
-
+    cout<<"size: "<<_all_blobs.size()<<endl;
+    _all_blobs.push_back(new Blob(4,4,4,Vector3D(50,50,50),Vector3D(50,50,50),&_particule_contact_generator,&_force_register,&_graphics));
 }
 void Game::init(int* argc,char **argv){
     //Initialize GLUT:
@@ -154,29 +23,23 @@ void Game::init(int* argc,char **argv){
 
 void Game::start(){
     //Start the mainloop of glut
-    _graphics.start();
+    _graphics.start();   
 }
 void Game::updateGraphic(){
     _graphics.clearScreen();
     //_graphics.addFloor(Vector3D(255,255,255));
-    Vector3D blob_color=Vector3D(72,234,255);
+
+    //We draw all particules:
     for(int i=0;i<(int)_all_particules.size();i++){
-        //TODO: ajouter ces fonctions d'affichages dans une classe blob
-        if((i%4+1)<4 && (i+1+16)<_all_particules.size() && (i+16)<_all_particules.size()){
-            _graphics.addPlane(_all_particules[i]->getPosition(),_all_particules[i+1]->getPosition(),_all_particules[i+1+16]->getPosition(),_all_particules[i+16]->getPosition(),blob_color);
-        }
-        if((i%4+1)<4 && (i+4+1)<_all_particules.size() && (i+4)<_all_particules.size()){
-            _graphics.addPlane(_all_particules[i]->getPosition(),_all_particules[i+1]->getPosition(),_all_particules[i+1+4]->getPosition(),_all_particules[i+4]->getPosition(),blob_color);
-        }
-        if((i%4+1)<4 && (i+1+16)<_all_particules.size() && (i+16)<_all_particules.size()){
-            _graphics.addPlane(_all_particules[i]->getPosition(),_all_particules[i+1]->getPosition(),_all_particules[i+1+16]->getPosition(),_all_particules[i+16]->getPosition(),blob_color);
-        }
-        if((i%16+4)<16 && (i+4+16)<_all_particules.size() && (i+16)<_all_particules.size()){
-            _graphics.addPlane(_all_particules[i]->getPosition(),_all_particules[i+4]->getPosition(),_all_particules[i+16+4]->getPosition(),_all_particules[i+16]->getPosition(),blob_color);
-        }
         _graphics.addSphere(_all_particules[i]->getPosition(),2*_all_particules[i]->getRadius(),_all_particules[i]->getColor());   
     }
+    //We draw all blobs:
+    cout<<"size: "<<(int)_all_blobs.size()<<endl;
+    for(int i=0;i<(int)_all_blobs.size();i++){
+        _all_blobs[i]->drawBlob();
+    }
     _graphics.draw();
+ 
 }
 void Game::createNewParticule(Vector3D position,Vector3D speed,Vector3D acceleration,double mass,double damping){
     //Create the particule
@@ -201,7 +64,7 @@ void Game::updateLogic(){
     for(unsigned i=0;i<_all_particules.size();i++){
         _all_particules[i]->update(elapsed.count());
     }
-
+    /*
     //Detect collisions:
     //Links:
     vector<ParticuleLinkContact*> all_links=_particule_contact_generator.getLinks();
@@ -249,15 +112,10 @@ void Game::updateLogic(){
 
     vector<ParticuleContact*> all_contacts=_particule_contact_generator.getContacts(); 
 
-    _particule_contact_resolver=new ParticuleContactResolver();
-
-    _particule_contact_resolver->resolve(all_contacts,elapsed.count());
+    _particule_contact_resolver.resolve(all_contacts,elapsed.count());
 
     _particule_contact_generator.clearContacts();  
-
-    delete _particule_contact_resolver;
-
-      
+     */
     
     //Clear accumulator of particules:
     _force_register.clearAllForce();

@@ -2,10 +2,10 @@
 
 using namespace std;
 
-ParticuleCableContact::ParticuleCableContact(std::vector<Particule *> p,double restitution):ParticuleContact(p,restitution),_length(Vector3D(_p[0]->getPosition()-_p[1]->getPosition())){
+ParticuleCableContact::ParticuleCableContact(std::vector<Particule *> p,double restitution):ParticuleLinkContact(p,restitution),_length(Vector3D(_p[0]->getPosition()-_p[1]->getPosition())){
 
 }
-ParticuleCableContact::ParticuleCableContact(std::vector<Particule *> p):ParticuleContact(p),_length(Vector3D(_p[0]->getPosition()-_p[1]->getPosition())){
+ParticuleCableContact::ParticuleCableContact(std::vector<Particule *> p):ParticuleLinkContact(p),_length(Vector3D(_p[0]->getPosition()-_p[1]->getPosition())){
 
 }
 

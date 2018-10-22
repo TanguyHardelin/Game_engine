@@ -105,11 +105,15 @@ void Graphics::cameraZoomOut(){
     _position_of_camera+=30.0f;
     setPositionOfCamera(_position_of_camera);
 }
-void Graphics::addSphere(double posX,double posY,double posZ,double radius,int red,int green,int blue){
-    double R=red/255.0f;
-    double G=green/255.0f;
-    double B=blue/255.0f;
+void Graphics::addSphere(Vector3D position,double radius,Vector3D color){
+    double R=color[0]/255.0f;
+    double G=color[1]/255.0f;
+    double B=color[2]/255.0f;
     
+    double posX=position[0];
+    double posY=position[1];
+    double posZ=position[2];
+
     glBegin(GL_POLYGON);
     glColor3f(R,G,B);
     for(int theta=0;theta<360;theta+=20){
@@ -121,10 +125,14 @@ void Graphics::addSphere(double posX,double posY,double posZ,double radius,int r
 
     glEnd();
 }
-void Graphics::addCube(double posX,double posY,double posZ,int red,int green,int blue){
-    double R=red/255.0f;
-    double G=green/255.0f;
-    double B=blue/255.0f;
+void Graphics::addCube(Vector3D position,Vector3D color){
+    double R=color[0]/255.0f;
+    double G=color[1]/255.0f;
+    double B=color[2]/255.0f;
+
+    double posX=position[0];
+    double posY=position[1];
+    double posZ=position[2];
 
     // White side - BACK
     glBegin(GL_POLYGON);
@@ -171,26 +179,22 @@ void Graphics::addCube(double posX,double posY,double posZ,int red,int green,int
     glVertex3f(posX - 5,posY - 5,posZ - 5 );
     glEnd();
 }
-void Graphics::addPlane(Vector3D pos0,Vector3D pos1,Vector3D pos2, Vector3D pos3){
+void Graphics::addPlane(Vector3D pos0,Vector3D pos1,Vector3D pos2, Vector3D pos3,Vector3D color){
     glBegin(GL_POLYGON);
-    glColor3f(0.5f,0.5f,0.5f);
-    cout<<"TEST"<<endl;
-    pos0.display();
-    pos1.display();
-    pos2.display();
-    pos3.display();
-    cout<<"------------------"<<endl;
-    glVertex3f(pos1[0],pos1[1],pos1[2]);
-    
-    glVertex3f(pos3[0],pos3[1],pos3[2]);
-    glVertex3f(pos2[0],pos2[1],pos2[2]);
+    glColor3f(color[0]/255.0f,color[1]/255.0f,color[2]/255.0f);
+
     glVertex3f(pos0[0],pos0[1],pos0[2]);
+    glVertex3f(pos1[0],pos1[1],pos1[2]);
+    glVertex3f(pos2[0],pos2[1],pos2[2]);
+    glVertex3f(pos3[0],pos3[1],pos3[2]);
+    
+    
     glEnd();
 }
-void Graphics::addFloor(int red,int green,int blue){
-    double R=red/255.0f;
-    double G=green/255.0f;
-    double B=blue/255.0f;
+void Graphics::addFloor(Vector3D color){
+    double R=color[0]/255.0f;
+    double G=color[1]/255.0f;
+    double B=color[2]/255.0f;
 
     glBegin(GL_POLYGON);
     glColor3f(R,G,B);

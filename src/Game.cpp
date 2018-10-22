@@ -4,9 +4,10 @@ using namespace std;
 
 /*
     TODO LIST:
-    - Ajouter abstraction pour creer une API pour le moteur de jeux.
-    - Revoir asservissement temps entre frame.
-    - Thread les calculs physique pour optimiser le temps de calcul.
+    -  Mettre resolution de contact comme vu dans le cour (prioritee de resolution ect ...)
+    -  Separation Blob
+    -  Implementation des ressorts restants
+    -  Ajouter la resolution de contacts dans contact resolver ?
 */
 
 Game::Game(){
@@ -34,14 +35,31 @@ Game::Game(){
 }
 void Game::createBlob(){
     //For the demo we create one particule when the game start
+    /*
+    _all_particules.push_back(new Particule(Vector3D(50,200,50),Vector3D(0,0,0),Vector3D(0,0,0),10,0.9));
+    _all_particules.push_back(new Particule(Vector3D(50,250,50),Vector3D(0,0,0),Vector3D(0,0,0),10,0.9));
+    _all_particules.push_back(new Particule(Vector3D(0,200,50),Vector3D(0,0,0),Vector3D(0,0,0),10,0.9));
+    _all_particules.push_back(new Particule(Vector3D(100,200,50),Vector3D(0,0,0),Vector3D(0,0,0),10,0.9));
+    _all_particules.push_back(new Particule(Vector3D(50,200,0),Vector3D(0,0,0),Vector3D(0,0,0),10,0.9));
+    _all_particules.push_back(new Particule(Vector3D(50,200,100),Vector3D(0,0,0),Vector3D(0,0,0),10,0.9));
+    _all_particules.push_back(new Particule(Vector3D(50,150,50),Vector3D(0,0,0),Vector3D(0,0,0),10,0.9));
+
+    for(int i=0;i<7;i++){
+        _force_register.addForce(_all_particules[i],new GravityForce(20));
+        vector<Particule *> particules;
+        particules.push_back(_all_particules[0]);
+        particules.push_back(_all_particules[i]);
+        _particule_contact_generator.addLink(new ParticuleLinkContact(particules,0.1));
+    }
+    */
+ 
     for(int k=0;k<4;k++){
         for(int j=0;j<4;j++){
             for(int i=0;i<4;i++){
-                _all_particules.push_back(new Particule(Vector3D(50+i*50,200+50*k,50+j*50),Vector3D(0,0,0),Vector3D(0,0,0),10,0.9));
+                _all_particules.push_back(new Particule(Vector3D(50+i*50,200+50*k,50+j*50),Vector3D(0,0,0),Vector3D(0,0,0),10,2.5,Vector3D(134,255,92)));
             }
         }
     }
-    
     
     for(int i=0;i<(int)_all_particules.size();i++){
   
@@ -103,7 +121,7 @@ void Game::createBlob(){
             //_force_register.addForce(_all_particules[i],new ParticuleSpring(0.9,50,_all_particules[i+16]));
         }
         */
-       //_force_register.addForce(_all_particules[i],new GravityForce(20));
+       //_force_register.addForce(_all_particules[i],new DragForce(0.0009,0.00001));
        
     }
     for(int i=0;i<16;i++){
@@ -142,34 +160,23 @@ void Game::start(){
 }
 void Game::updateGraphic(){
     _graphics.clearScreen();
-    _graphics.addFloor(255,255,255);
+    //_graphics.addFloor(Vector3D(255,255,255));
+    Vector3D blob_color=Vector3D(72,234,255);
     for(int i=0;i<(int)_all_particules.size();i++){
-        _graphics.addSphere(_all_particules[i]->getPosition().getX(),_all_particules[i]->getPosition().getY(),_all_particules[i]->getPosition().getZ(),5);
-        //_graphics.drawSphere(_all_particules[i]->getPosition().getX(),_all_particules[i]->getPosition().getY(),_all_particules[i]->getPosition().getZ());
-
-        //TODO: ameliorer ça!
+        //TODO: ajouter ces fonctions d'affichages dans une classe blob
         if((i%4+1)<4 && (i+1+16)<_all_particules.size() && (i+16)<_all_particules.size()){
-            _graphics.addPlane(_all_particules[i]->getPosition(),_all_particules[i+1]->getPosition(),_all_particules[i+1+16]->getPosition(),_all_particules[i+16]->getPosition());
+            _graphics.addPlane(_all_particules[i]->getPosition(),_all_particules[i+1]->getPosition(),_all_particules[i+1+16]->getPosition(),_all_particules[i+16]->getPosition(),blob_color);
         }
-        
-    }
-    /*
-    for(int i=0;i<6;i++){
-        for(int j=0;j<(int)_all_particules.size();j++){
-            for(int k=0;k<(int)_all_particules.size();k++){
-                for(int l=0;l<(int)_all_particules.size();l++){
-                    if(i!=j!=l!=k)
-                    _graphics.addPlane(_all_particules[i]->getPosition(),_all_particules[j]->getPosition(),_all_particules[k]->getPosition(),_all_particules[l]->getPosition());
-                }
-            }
+        if((i%4+1)<4 && (i+4+1)<_all_particules.size() && (i+4)<_all_particules.size()){
+            _graphics.addPlane(_all_particules[i]->getPosition(),_all_particules[i+1]->getPosition(),_all_particules[i+1+4]->getPosition(),_all_particules[i+4]->getPosition(),blob_color);
         }
+        _graphics.addSphere(_all_particules[i]->getPosition(),2*_all_particules[i]->getRadius(),_all_particules[i]->getColor());   
     }
-    */
     _graphics.draw();
 }
 void Game::createNewParticule(Vector3D position,Vector3D speed,Vector3D acceleration,double mass,double damping){
     //Create the particule
-    _all_particules.push_back(new Particule(position,speed,acceleration,mass,damping));
+    _all_particules.push_back(new Particule(position,speed,acceleration,mass,10,Vector3D(120,0,0)));
 
     //Add force:
     _force_register.addForce(_all_particules[_all_particules.size()-1],new GravityForce(20));
@@ -192,9 +199,29 @@ void Game::updateLogic(){
     }
 
     //Detect collisions:
+    //Links:
+    vector<ParticuleLinkContact*> all_links=_particule_contact_generator.getLinks();
+    for(unsigned i=0;i<all_links.size();i++){
+        Vector3D current_length=all_links[i]->getCurrentLength();
+        Vector3D length=all_links[i]->getLength();
+        if(norm(current_length)>norm(length)+norm(length)/100.0f*10.0f || norm(current_length)<norm(length)-norm(length)/100.0f*10.0f){
+            _particule_contact_generator.addContact(all_links[i]);
+        }
+    }
+    //Cables:
+    vector<ParticuleCableContact*> all_cables=_particule_contact_generator.getCables();
+    for(unsigned i=0;i<all_cables.size();i++){
+        Vector3D current_length=all_cables[i]->getCurrentLength();
+        Vector3D length=all_cables[i]->getLength();
+        if(norm(current_length)!=norm(length)){
+            _particule_contact_generator.addContact(all_links[i]);
+        }
+    }
+    //Other contact resolution:
     for(unsigned i=0;i<_all_particules.size();i++){
         for(unsigned j=0;j<_all_particules.size();j++){
             if(i!=j){
+                //Simple contact:
                 if(norm(_all_particules[i]->getPosition()-_all_particules[j]->getPosition())<=10){
                     vector<Particule *> particules;
                     particules.push_back(_all_particules[j]);
@@ -204,25 +231,23 @@ void Game::updateLogic(){
             }
             if(i==j){
                 //Manage floor colision:
-                if(_all_particules[i]->getPosition().getY()<0){
+                if(_all_particules[i]->getPosition().getY()<_all_particules[i]->getRadius()){
                     vector<Particule *> particules; 
                     particules.push_back(_all_particules[i]);
-                    particules.push_back(_all_particules[0]);   //0 index is floor
+                    particules.push_back(_all_particules[i]);
                     _particule_contact_generator.addContact(new ParticuleFloorContact(particules,0.9));
                 }
             }
         }
     }
+    
 
-    vector<ParticuleContact*> all_contacts=_particule_contact_generator.getContacts();
 
-    vector<ParticuleContact*> all_links=_particule_contact_generator.getLinks();
+    vector<ParticuleContact*> all_contacts=_particule_contact_generator.getContacts(); 
 
     _particule_contact_resolver=new ParticuleContactResolver();
 
-    _particule_contact_resolver->resolveSimpleContacts(all_contacts,elapsed.count());
-
-    _particule_contact_resolver->resolveSimpleContacts(all_links,elapsed.count());
+    _particule_contact_resolver->resolve(all_contacts,elapsed.count());
 
     _particule_contact_generator.clearContacts();  
 
@@ -279,37 +304,37 @@ void Game::updateInput(){
         //Mouvement of blob:
         if(all_key_pressed[i].name=='8'){
             for(unsigned i=0;i<_all_particules.size();i++){
-                Vector3D speed=_all_particules[i]->getPosition();
-                speed[2]-=20;
-                _all_particules[i]->setPosition(speed);
+                Vector3D pos=_all_particules[i]->getPosition();
+                pos[2]-=20;
+                _all_particules[i]->setPosition(pos);
             }
         }
         if(all_key_pressed[i].name=='2'){
             for(unsigned i=0;i<_all_particules.size();i++){
-                Vector3D speed=_all_particules[i]->getPosition();
-                speed[2]+=20;
-                _all_particules[i]->setPosition(speed);
+                Vector3D pos=_all_particules[i]->getPosition();
+                pos[2]+=20;
+                _all_particules[i]->setPosition(pos);
             }
         }
         if(all_key_pressed[i].name=='5'){
             for(unsigned i=0;i<_all_particules.size();i++){
-                Vector3D speed=_all_particules[i]->getPosition();
-                speed[1]+=200;
-                _all_particules[i]->setPosition(speed);
+                Vector3D pos=_all_particules[i]->getPosition();
+                pos[1]+=200;
+                _all_particules[i]->setPosition(pos);
             }
         }
         if(all_key_pressed[i].name=='6'){
             for(unsigned i=0;i<_all_particules.size();i++){
-                Vector3D speed=_all_particules[i]->getPosition();
-                speed[0]+=20;
-                _all_particules[i]->setPosition(speed);
+                Vector3D pos=_all_particules[i]->getPosition();
+                pos[0]+=20;
+                _all_particules[i]->setPosition(pos);
             }
         }
         if(all_key_pressed[i].name=='4'){
             for(unsigned i=0;i<_all_particules.size();i++){
-                Vector3D speed=_all_particules[i]->getPosition();
-                speed[0]-=20;
-                _all_particules[i]->setPosition(speed);
+                Vector3D pos=_all_particules[i]->getPosition();
+                pos[0]-=20;
+                _all_particules[i]->setPosition(pos);
             }
         }
         

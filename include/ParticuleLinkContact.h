@@ -13,6 +13,9 @@ class ParticuleLinkContact:public ParticuleContact{
         virtual Vector3D calculateVs();
         virtual void resolveVelocity(double time);
         virtual void resolveInterpenetration();
+
+        inline Vector3D getLength(){return _length;}
+        inline Vector3D getCurrentLength(){return _p[0]->getPosition()-_p[1]->getPosition();}
     
     protected:
         Vector3D _length;

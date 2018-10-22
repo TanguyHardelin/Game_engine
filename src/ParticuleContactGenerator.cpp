@@ -6,11 +6,11 @@ std::vector<ParticuleContact *> ParticuleContactGenerator::getContacts(){
     return _all_contact;
 }
 
-std::vector<ParticuleContact *> ParticuleContactGenerator::getLinks(){
+std::vector<ParticuleLinkContact *> ParticuleContactGenerator::getLinks(){
     return _all_link;
 }
 
-std::vector<ParticuleContact *> ParticuleContactGenerator::getCables(){
+std::vector<ParticuleCableContact *> ParticuleContactGenerator::getCables(){
     return _all_cable;
 }
 
@@ -18,11 +18,11 @@ void ParticuleContactGenerator::addContact(ParticuleContact *pc){
     _all_contact.push_back(pc);
 }
 
-void ParticuleContactGenerator::addLink(ParticuleContact *pc){
+void ParticuleContactGenerator::addLink(ParticuleLinkContact *pc){
     _all_link.push_back(pc);
 }
 
-void ParticuleContactGenerator::addCable(ParticuleContact *pc){
+void ParticuleContactGenerator::addCable(ParticuleCableContact *pc){
     _all_cable.push_back(pc);
 }
 

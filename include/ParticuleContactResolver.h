@@ -10,9 +10,7 @@ class ParticuleContactResolver{
     public:
         ParticuleContactResolver();
         void handleContacts(std::vector<Particule*> all_contacts, double dt);
-        void resolveSimpleContacts(std::vector<ParticuleContact*> all_contacts, double dt);
-        void resolveLinkContacts(std::vector<ParticuleContact*> all_contacts, double dt);
-        void resolveCableContacts(std::vector<ParticuleContact*> all_contacts, double dt);
+        void resolve(std::vector<ParticuleContact*> all_contacts, double dt);
 
         friend class ParticuleContact;
     

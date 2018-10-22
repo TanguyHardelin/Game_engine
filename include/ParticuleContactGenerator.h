@@ -3,18 +3,20 @@
 
 #include <vector>
 #include "ParticuleContact.h"
+#include "ParticuleLinkContact.h"
+#include "ParticuleCableContact.h"
 
 class ParticuleContactGenerator{
     public:
         ParticuleContactGenerator();
 
         std::vector<ParticuleContact *> getContacts();
-        std::vector<ParticuleContact *> getLinks();
-        std::vector<ParticuleContact *> getCables();
+        std::vector<ParticuleLinkContact *> getLinks();
+        std::vector<ParticuleCableContact *> getCables();
 
         void addContact(ParticuleContact *pc);
-        void addLink(ParticuleContact *pc);
-        void addCable(ParticuleContact *pc);
+        void addLink(ParticuleLinkContact *pc);
+        void addCable(ParticuleCableContact *pc);
 
         void clearContacts();
         void clearLinkAtIndex(int index);
@@ -22,8 +24,8 @@ class ParticuleContactGenerator{
         
     protected:
         std::vector<ParticuleContact *> _all_contact;
-        std::vector<ParticuleContact *> _all_link;
-        std::vector<ParticuleContact *> _all_cable;
+        std::vector<ParticuleLinkContact *> _all_link;
+        std::vector<ParticuleCableContact *> _all_cable;
 };  
 
 #endif

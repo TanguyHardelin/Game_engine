@@ -5,16 +5,14 @@ using namespace std;
 /*
     TODO LIST:
     -  Mettre resolution de contact comme vu dans le cour (prioritee de resolution ect ...)
-    -  Separation Blob
-*/
+    -  Separation Blob*/
 
 Game::Game(){
     _particule_contact_generator    = ParticuleContactGenerator();
     _particule_contact_resolver     = ParticuleContactResolver();
     _continue_game                  = true;
     
-    cout<<"size: "<<_all_blobs.size()<<endl;
-    _all_blobs.push_back(new Blob(4,4,4,Vector3D(50,50,50),Vector3D(50,50,50),&_particule_contact_generator,&_force_register,&_graphics));
+    addBlobToGame(new Blob(4,4,4,Vector3D(50,50,50),Vector3D(50,50,50),&_particule_contact_generator,&_force_register,&_graphics));
 }
 void Game::init(int* argc,char **argv){
     //Initialize GLUT:
@@ -34,7 +32,6 @@ void Game::updateGraphic(){
         _graphics.addSphere(_all_particules[i]->getPosition(),2*_all_particules[i]->getRadius(),_all_particules[i]->getColor());   
     }
     //We draw all blobs:
-    cout<<"size: "<<(int)_all_blobs.size()<<endl;
     for(int i=0;i<(int)_all_blobs.size();i++){
         _all_blobs[i]->drawBlob();
     }
@@ -64,24 +61,22 @@ void Game::updateLogic(){
     for(unsigned i=0;i<_all_particules.size();i++){
         _all_particules[i]->update(elapsed.count());
     }
-    /*
+    
     //Detect collisions:
     //Links:
-    vector<ParticuleLinkContact*> all_links=_particule_contact_generator.getLinks();
-    for(unsigned i=0;i<all_links.size();i++){
-        Vector3D current_length=all_links[i]->getCurrentLength();
-        Vector3D length=all_links[i]->getLength();
+    for(unsigned i=0;i<_all_links.size();i++){
+        Vector3D current_length=_all_links[i]->getCurrentLength();
+        Vector3D length=_all_links[i]->getLength();
         if(norm(current_length)>norm(length)+norm(length)/100.0f*10.0f || norm(current_length)<norm(length)-norm(length)/100.0f*10.0f){
-            _particule_contact_generator.addContact(all_links[i]);
+            _particule_contact_generator.addContact(_all_links[i]);
         }
     }
     //Cables:
-    vector<ParticuleCableContact*> all_cables=_particule_contact_generator.getCables();
-    for(unsigned i=0;i<all_cables.size();i++){
-        Vector3D current_length=all_cables[i]->getCurrentLength();
-        Vector3D length=all_cables[i]->getLength();
+    for(unsigned i=0;i<_all_cables.size();i++){
+        Vector3D current_length=_all_cables[i]->getCurrentLength();
+        Vector3D length=_all_cables[i]->getLength();
         if(norm(current_length)!=norm(length)){
-            _particule_contact_generator.addContact(all_links[i]);
+            _particule_contact_generator.addContact(_all_cables[i]);
         }
     }
     //Other contact resolution:
@@ -114,8 +109,7 @@ void Game::updateLogic(){
 
     _particule_contact_resolver.resolve(all_contacts,elapsed.count());
 
-    _particule_contact_generator.clearContacts();  
-     */
+    _particule_contact_generator.clearContacts();
     
     //Clear accumulator of particules:
     _force_register.clearAllForce();
@@ -134,9 +128,7 @@ void Game::updateInput(){
         if(all_key_pressed[i].name==SCROOL_WHEEL_DOWN)
             _graphics.cameraZoomOut();
         if(all_key_pressed[i].name==32){
-            //32 is SPACE
-            
-
+            addBlobToGame(new Blob(2,2,2,Vector3D(100,100,100),Vector3D(50,50,50),&_particule_contact_generator,&_force_register,&_graphics));
         } 
         if(all_key_pressed[i].name=='r')
             createNewParticule(Vector3D(-500,0,0),Vector3D(100+rand()%200,100+rand()%100,rand()%10),Vector3D(0,-10,0),1+rand()%10,0.9);
@@ -248,9 +240,28 @@ void Game::makeConstantFrameRate(double elapsed_time){
     if(sleeping_time<100)sleeping_time=100;
     usleep(sleeping_time);
 }
+void Game::addBlobToGame(Blob * blob){
+    _all_blobs.push_back(blob);
+
+    vector<ParticuleLinkContact *> all_links=blob->getAllLinks();
+    _all_links.insert(_all_links.end(),all_links.begin(),all_links.end());
+    
+    vector<Particule *> all_particules=blob->getAllParticules();
+    _all_particules.insert(_all_particules.end(),all_particules.begin(),all_particules.end());
+
+    vector<ParticuleCableContact *> all_cables=blob->getAllCables();
+    if(all_cables.size()>0) _all_cables.insert(_all_cables.end(),all_cables.begin(),all_cables.end());
+}
 Game::~Game(){
     for(unsigned i=0;i<_all_particules.size();i++)
         delete _all_particules[i];
+    for(unsigned i=0;i<_all_links.size();i++)
+        delete _all_links[i];
+    
+    for(unsigned i=0;i<_all_cables.size();i++)
+        //delete _all_cables[i];
+    
+    
     for(unsigned i=0;i<_all_inputs.size();i++)
         delete _all_inputs[i];
 }

@@ -52,6 +52,7 @@ class Game{
         void updateInput();                                                                                         //Use for update input on game
         void gameloop();                                                                                            //Gameloop
         void createNewParticule(Vector3D position,Vector3D speed,Vector3D acceleration,double mass,double damping); //Create a new Particule on screen
+        void addBlobToGame(Blob * blob);
         void clearAllParticules();                                                                                  //Remove all particules on screen
         void makeConstantFrameRate(double elapsed_time);                                                            //Make frame constant
 
@@ -59,15 +60,17 @@ class Game{
         ~Game();
 
     protected:
-        std::vector<Input *>        _all_inputs;
-        std::vector<Particule *>    _all_particules;
-        std::vector<Blob *>         _all_blobs;
-        Graphics                    _graphics;
-        ForceRegister               _force_register;
-        ParticuleContactGenerator   _particule_contact_generator;
-        ParticuleContactResolver    _particule_contact_resolver;
+        std::vector<Input *>                        _all_inputs;
+        std::vector<Particule *>                    _all_particules;
+        std::vector<ParticuleLinkContact *>         _all_links;
+        std::vector<ParticuleCableContact *>        _all_cables;
+        std::vector<Blob *>                         _all_blobs;
+        Graphics                                    _graphics;
+        ForceRegister                               _force_register;
+        ParticuleContactGenerator                   _particule_contact_generator;
+        ParticuleContactResolver                    _particule_contact_resolver;
         
-        bool                        _continue_game;
+        bool                                        _continue_game;
 };
 
 #endif

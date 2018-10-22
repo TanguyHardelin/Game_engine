@@ -14,3 +14,4 @@ void log(std::string header,std::string msg,bool check_is_valid){
     else
         cout<<"\033[41m"<<"\033[1m"<<"KO"<<"\033[0m "<<"\033[31m"<<"\033[1m"<<"["<<header<<"] "<<"\033[0m"<<msg<<endl;
 }
+

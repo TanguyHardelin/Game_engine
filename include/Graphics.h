@@ -7,6 +7,7 @@
 
 #include <chrono>
 #include <vector>
+#include <cmath>
 #include <GL/glut.h>
 
 //Window parameters:
@@ -36,8 +37,9 @@ class Graphics{
         void cameraZoomIn();                                        //Zoom
         void cameraZoomOut();                                       //Dezoom
 
-        void addSphere(double posX,double posY,double posZ);       //Draw sphere on scene
+        void addSphere(double posX,double posY,double posZ,double radius,int red=0,int green=0,int blue=255);       //Draw sphere on scene
         void addCube(double posX,double posY,double posZ,int red=0,int green=0,int blue=255);       //Draw cube on scene
+        void addPlane(Vector3D pos0,Vector3D pos1,Vector3D pos2, Vector3D pos3);
         void addFloor(int red,int green,int blue);
         
         void draw();

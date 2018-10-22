@@ -25,8 +25,9 @@
 #include "AnchorSpring.h"
 #include "ParticuleSpring.h"
 #include "ParticuleContactGenerator.h"
-
 #include "ParticuleContactResolver.h"
+#include "ParticuleFloorContact.h"
+#include "ParticuleLinkContact.h"
 #include "ParticuleContact.h"
 #define SLEEPING_TIME 16666
 
@@ -43,6 +44,7 @@ class Game{
         //Methods:
         void start();                                                                                               //Start graphic library
         void init(int* argc,char **argv);                                                                           //Init graphic library
+        void createBlob();                                                                                          //Create a blob
         void updateGraphic();                                                                                       //Use for update graphic on game
         void updateLogic();                                                                                         //Use for update logic on game
         void updateInput();                                                                                         //Use for update input on game
@@ -61,6 +63,7 @@ class Game{
         ForceRegister               _force_register;
         ParticuleContactGenerator   _particule_contact_generator;
         ParticuleContactResolver*   _particule_contact_resolver;
+        bool                        _continue_game;
 };
 
 #endif

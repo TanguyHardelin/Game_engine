@@ -7,17 +7,23 @@
 class ParticuleContactGenerator{
     public:
         ParticuleContactGenerator();
-        inline std::vector<ParticuleContact *> getContacts(){return _all_contact;}
-        inline void addContact(ParticuleContact *pc){_all_contact.push_back(pc);}
-        inline void clearContacts(){
-            for(unsigned i=0;i<_all_contact.size();i++){
-                _all_contact.pop_back();
-            }
-        }
 
+        std::vector<ParticuleContact *> getContacts();
+        std::vector<ParticuleContact *> getLinks();
+        std::vector<ParticuleContact *> getCables();
+
+        void addContact(ParticuleContact *pc);
+        void addLink(ParticuleContact *pc);
+        void addCable(ParticuleContact *pc);
+
+        void clearContacts();
+        void clearLinkAtIndex(int index);
+        void clearCableAtIndex(int index);
         
     protected:
         std::vector<ParticuleContact *> _all_contact;
+        std::vector<ParticuleContact *> _all_link;
+        std::vector<ParticuleContact *> _all_cable;
 };  
 
 #endif

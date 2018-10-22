@@ -10,14 +10,14 @@
 
 class ParticuleContact{
     public:
-        ParticuleContact(std::vector<Particule *> p,double restitution,bool interact_with_floor);
+        //ParticuleContact(std::vector<Particule *> p,double restitution,bool interact_with_floor);
         ParticuleContact(std::vector<Particule *> p,double restitution);
         ParticuleContact(std::vector<Particule *> p);
 
         void resolve(double time);
-        Vector3D calculateVs();
-        void resolveVelocity(double time);
-        void resolveInterpenetration();
+        virtual Vector3D calculateVs();
+        virtual void resolveVelocity(double time);
+        virtual void resolveInterpenetration();
 
         friend class ParticuleContactResolver;
 
@@ -26,8 +26,6 @@ class ParticuleContact{
         double _restitution;
         Vector3D _n;
         Vector3D _d;
-        bool _interact_with_floor;
-
 };
 
 #endif

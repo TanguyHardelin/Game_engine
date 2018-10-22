@@ -2,22 +2,23 @@
 #define PARTICULE_CONTACT_RESOLVER
 
 #include <vector>
-#include "ParticuleContact.h"
 #include "Particule.h"
 
 class ParticuleContact;
 
 class ParticuleContactResolver{
     public:
-        ParticuleContactResolver(long nb_particules,long current_iteration);
-        void resolveContacts(std::vector<ParticuleContact*> all_contacts, double dt);
+        ParticuleContactResolver();
+        void handleContacts(std::vector<Particule*> all_contacts, double dt);
+        void resolveSimpleContacts(std::vector<ParticuleContact*> all_contacts, double dt);
+        void resolveLinkContacts(std::vector<ParticuleContact*> all_contacts, double dt);
+        void resolveCableContacts(std::vector<ParticuleContact*> all_contacts, double dt);
 
         friend class ParticuleContact;
     
     protected: 
         long _nb_particules;
         long _current_iteration;
-
 };
 
 #endif

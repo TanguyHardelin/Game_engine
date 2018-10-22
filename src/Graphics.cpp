@@ -2,7 +2,7 @@
 
 using namespace std;
 
-Graphics::Graphics():_position_of_camera(30,30,580),_position_of_center_point(0,0,0){
+Graphics::Graphics():_position_of_camera(390,120,670),_position_of_center_point(0,0,0){
 
 }
 void Graphics::init(int* argc,char **argv){
@@ -105,15 +105,21 @@ void Graphics::cameraZoomOut(){
     _position_of_camera+=30.0f;
     setPositionOfCamera(_position_of_camera);
 }
-void Graphics::addSphere(double posX,double posY,double posZ){
-    GLUquadric* params;
-    _all_quadric.push_back(params);
-    params = gluNewQuadric();
+void Graphics::addSphere(double posX,double posY,double posZ,double radius,int red,int green,int blue){
+    double R=red/255.0f;
+    double G=green/255.0f;
+    double B=blue/255.0f;
+    
+    glBegin(GL_POLYGON);
+    glColor3f(R,G,B);
+    for(int theta=0;theta<360;theta+=20){
+        for(int rho=0;rho<180;rho+=20){
+            glVertex3f(posX+radius*cos(theta)*cos(rho),posY+radius*cos(theta)*sin(rho),posZ+radius*sin(theta));
+        }
+    }
 
-    gluQuadricDrawStyle(params,GLU_FILL);
-    glTranslatef(posX,posY,posZ);
-    glColor3f(0.0f, 1.0f, 0.0f);
-    gluSphere(params,10,50,50);
+
+    glEnd();
 }
 void Graphics::addCube(double posX,double posY,double posZ,int red,int green,int blue){
     double R=red/255.0f;
@@ -163,6 +169,22 @@ void Graphics::addCube(double posX,double posY,double posZ,int red,int green,int
     glVertex3f(posX + 5,posY - 5,posZ + 5 );
     glVertex3f(posX - 5,posY - 5,posZ + 5 );
     glVertex3f(posX - 5,posY - 5,posZ - 5 );
+    glEnd();
+}
+void Graphics::addPlane(Vector3D pos0,Vector3D pos1,Vector3D pos2, Vector3D pos3){
+    glBegin(GL_POLYGON);
+    glColor3f(0.5f,0.5f,0.5f);
+    cout<<"TEST"<<endl;
+    pos0.display();
+    pos1.display();
+    pos2.display();
+    pos3.display();
+    cout<<"------------------"<<endl;
+    glVertex3f(pos1[0],pos1[1],pos1[2]);
+    
+    glVertex3f(pos3[0],pos3[1],pos3[2]);
+    glVertex3f(pos2[0],pos2[1],pos2[2]);
+    glVertex3f(pos0[0],pos0[1],pos0[2]);
     glEnd();
 }
 void Graphics::addFloor(int red,int green,int blue){

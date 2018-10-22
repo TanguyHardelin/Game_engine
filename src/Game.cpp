@@ -6,8 +6,6 @@ using namespace std;
     TODO LIST:
     -  Mettre resolution de contact comme vu dans le cour (prioritee de resolution ect ...)
     -  Separation Blob
-    -  Implementation des ressorts restants
-    -  Ajouter la resolution de contacts dans contact resolver ?
 */
 
 Game::Game(){
@@ -170,6 +168,12 @@ void Game::updateGraphic(){
         if((i%4+1)<4 && (i+4+1)<_all_particules.size() && (i+4)<_all_particules.size()){
             _graphics.addPlane(_all_particules[i]->getPosition(),_all_particules[i+1]->getPosition(),_all_particules[i+1+4]->getPosition(),_all_particules[i+4]->getPosition(),blob_color);
         }
+        if((i%4+1)<4 && (i+1+16)<_all_particules.size() && (i+16)<_all_particules.size()){
+            _graphics.addPlane(_all_particules[i]->getPosition(),_all_particules[i+1]->getPosition(),_all_particules[i+1+16]->getPosition(),_all_particules[i+16]->getPosition(),blob_color);
+        }
+        if((i%16+4)<16 && (i+4+16)<_all_particules.size() && (i+16)<_all_particules.size()){
+            _graphics.addPlane(_all_particules[i]->getPosition(),_all_particules[i+4]->getPosition(),_all_particules[i+16+4]->getPosition(),_all_particules[i+16]->getPosition(),blob_color);
+        }
         _graphics.addSphere(_all_particules[i]->getPosition(),2*_all_particules[i]->getRadius(),_all_particules[i]->getColor());   
     }
     _graphics.draw();
@@ -292,10 +296,20 @@ void Game::updateInput(){
         }
         if(all_key_pressed[i].name=='z'){
             Vector3D camera_position=_graphics.getPositionOfCamera();
-            camera_position[1]+=30;
+            camera_position[2]-=30;
             _graphics.setPositionOfCamera(camera_position);
         }
         if(all_key_pressed[i].name=='s'){
+            Vector3D camera_position=_graphics.getPositionOfCamera();
+            camera_position[2]+=30;
+            _graphics.setPositionOfCamera(camera_position);
+        }
+        if(all_key_pressed[i].name=='a'){
+            Vector3D camera_position=_graphics.getPositionOfCamera();
+            camera_position[1]+=30;
+            _graphics.setPositionOfCamera(camera_position);
+        }
+        if(all_key_pressed[i].name=='e'){
             Vector3D camera_position=_graphics.getPositionOfCamera();
             camera_position[1]-=30;
             _graphics.setPositionOfCamera(camera_position);

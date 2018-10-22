@@ -11,7 +11,5 @@ void ParticuleSpring::updateForce(Particule *p,float delta_t){
     Vector3D force=d.normalize()*1.0f*_K*(d.norm()-_l0);
     
     if(d.norm()!=0)
-        p->addForce(force);
-    else
-        cout<<"TOTO "<<d.norm()<<endl;  
+        p->addForce(force); 
 }

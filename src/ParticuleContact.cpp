@@ -31,6 +31,10 @@ void ParticuleContact::resolveInterpenetration(){
     _d=norm(_p[0]->getPosition()-_p[1]->getPosition());
     double ma=1/_p[0]->getMass();
     double mb=1/_p[1]->getMass();
+    //Formules tenant compte des rayons des spheres:
+    //Vector3D delta_pa=_d*_n*mb/(ma+mb)+_d.normalize()*_p[0]->getRadius();
+    //Vector3D delta_pb=_d*_n*-1*ma/(ma+mb)-_d.normalize()*_p[1]->getRadius();
+    //Sans les rayons:
     Vector3D delta_pa=_d*_n*mb/(ma+mb);
     Vector3D delta_pb=_d*_n*-1*ma/(ma+mb);
     _p[0]->setPosition(_p[0]->getPosition()+delta_pa);

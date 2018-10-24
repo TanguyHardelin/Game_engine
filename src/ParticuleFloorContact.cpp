@@ -15,7 +15,6 @@ Vector3D ParticuleFloorContact::calculateVs(){
 void ParticuleFloorContact::resolveVelocity(double time){
         
         Vector3D vs=calculateVs()*_restitution*-1.0f;
-        cout<<"Floor vs= ";vs.display();cout<<endl;
         _p[0]->setSpeed(vs);
 }
 void ParticuleFloorContact::resolveInterpenetration(){
@@ -23,6 +22,5 @@ void ParticuleFloorContact::resolveInterpenetration(){
         if(pos[1]<_p[0]->getRadius()){
                 pos[1]=_p[0]->getRadius();
         }
-cout<<"Floor pos= ";pos.display();cout<<endl;
         _p[0]->setPosition(pos);
 }

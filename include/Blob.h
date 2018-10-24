@@ -19,6 +19,11 @@ class Blob{
         void drawBlob();
 
         inline Vector3D getPosition() const{return _all_particules[0]->getPosition();}
+        inline Vector3D getSize() const{return _size;}
+        inline int getHeight() const {return _height;}
+        inline int getWidth() const {return _width;}
+        inline int getDepth() const {return _depth;}
+
         inline std::vector<Particule *> getAllParticules() const{return _all_particules;}
         inline std::vector<ParticuleLinkContact *> getAllLinks() const{return _all_links;}
         inline std::vector<ParticuleCableContact *> getAllCables() const{return _all_cables;}

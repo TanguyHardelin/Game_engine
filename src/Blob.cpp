@@ -51,7 +51,9 @@ void Blob::buildBlob(){
             _all_links.push_back(new ParticuleLinkContact(particules,0.1));
         }
     }
+    //for(int i=0;i<(int)_width*_depth;i++){
     for(int i=0;i<(int)_all_particules.size();i++){
         _force_register->addForce(_all_particules[i],new GravityForce(20));
     }
 }
+

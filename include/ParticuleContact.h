@@ -19,6 +19,7 @@ class ParticuleContact{
         virtual void resolveVelocity(double time);
         virtual void resolveInterpenetration();
 
+        virtual ~ParticuleContact();
         friend class ParticuleContactResolver;
 
     protected:

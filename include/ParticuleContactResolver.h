@@ -9,7 +9,6 @@ class ParticuleContact;
 class ParticuleContactResolver{
     public:
         ParticuleContactResolver();
-        void handleContacts(std::vector<Particule*> all_contacts, double dt);
         void resolve(std::vector<ParticuleContact*> all_contacts, double dt);
 
         friend class ParticuleContact;

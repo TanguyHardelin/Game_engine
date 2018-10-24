@@ -16,6 +16,8 @@ class ParticuleLinkContact:public ParticuleContact{
 
         inline Vector3D getLength(){return _length;}
         inline Vector3D getCurrentLength(){return _p[0]->getPosition()-_p[1]->getPosition();}
+
+        virtual ~ParticuleLinkContact();
     
     protected:
         Vector3D _length;

@@ -12,6 +12,13 @@ Game::Game(){
     _particule_contact_resolver     = ParticuleContactResolver();
     _continue_game                  = true;
     
+    /*
+    createNewParticule(Vector3D(0,250,100),Vector3D(0,10,0),Vector3D(0,0,0),10,10);
+    createNewParticule(Vector3D(0,50,100),Vector3D(0,10,0),Vector3D(0,0,0),10,10);
+
+    _force_register.addForce(_all_particules[0],new GravityForce(20));
+    _force_register.addForce(_all_particules[1],new GravityForce(20));
+    */
     addBlobToGame(new Blob(4,4,4,Vector3D(50,50,50),Vector3D(50,50,50),&_particule_contact_generator,&_force_register,&_graphics));
 }
 void Game::init(int* argc,char **argv){
@@ -43,8 +50,8 @@ void Game::createNewParticule(Vector3D position,Vector3D speed,Vector3D accelera
     _all_particules.push_back(new Particule(position,speed,acceleration,mass,10,Vector3D(120,0,0)));
 
     //Add force:
-    _force_register.addForce(_all_particules[_all_particules.size()-1],new GravityForce(20));
-    _force_register.addForce(_all_particules[_all_particules.size()-1],new DragForce(0.9,0.01));
+    //_force_register.addForce(_all_particules[_all_particules.size()-1],new GravityForce(20));
+    //_force_register.addForce(_all_particules[_all_particules.size()-1],new DragForce(0.9,0.01));
 
 }
 void Game::updateLogic(){
@@ -128,10 +135,13 @@ void Game::updateInput(){
         if(all_key_pressed[i].name==SCROOL_WHEEL_DOWN)
             _graphics.cameraZoomOut();
         if(all_key_pressed[i].name==32){
-            addBlobToGame(new Blob(2,2,2,Vector3D(100,100,100),Vector3D(50,50,50),&_particule_contact_generator,&_force_register,&_graphics));
+            addBlobToGame(new Blob(2,2,2,Vector3D(100,400,100),Vector3D(50,50,50),&_particule_contact_generator,&_force_register,&_graphics));
         } 
-        if(all_key_pressed[i].name=='r')
+        if(all_key_pressed[i].name=='r'){
             createNewParticule(Vector3D(-500,0,0),Vector3D(100+rand()%200,100+rand()%100,rand()%10),Vector3D(0,-10,0),1+rand()%10,0.9);
+            _force_register.addForce(_all_particules[_all_particules.size()-1],new GravityForce(20));
+            _force_register.addForce(_all_particules[_all_particules.size()-1],new DragForce(0.9,0.01));
+        } 
         if(all_key_pressed[i].name=='c')
             clearAllParticules();
         if(all_key_pressed[i].name=='q'){
@@ -165,7 +175,7 @@ void Game::updateInput(){
             _graphics.setPositionOfCamera(camera_position);
         }
 
-        //Mouvement of blob:
+        //Mouvement of all blobs:
         if(all_key_pressed[i].name=='8'){
             for(unsigned i=0;i<_all_particules.size();i++){
                 Vector3D pos=_all_particules[i]->getPosition();

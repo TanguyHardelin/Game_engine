@@ -18,14 +18,8 @@ void ParticuleLinkContact::resolveVelocity(double time){
     Vector3D diff_pos=_p[0]->getPosition()-_p[1]->getPosition();
     if(norm(diff_pos)>norm(_length)+norm(_length)/100.0f*10.0f || norm(diff_pos)<norm(_length)-norm(_length)/100.0f*10.0f){
         Vector3D vs=calculateVs()*_restitution;
-        //vs.display();
         Vector3D new_speed=(vs+_p[0]->getSpeed());
-        //Vector3D impulsion=vs*_p[0]->getMass();
-        //Vector3D new_speed=(_p[0]->getSpeed()+impulsion*1.0f/_p[0]->getMass());
         _p[0]->setSpeed(new_speed);
-        //_p[1]->setSpeed(vs+_p[1]->getSpeed()*-1);
-        //cout<<"New speed: ";new_speed.display();cout<<endl;
-        //impulsion.display();
     }
 }
 void ParticuleLinkContact::resolveInterpenetration(){
@@ -33,11 +27,13 @@ void ParticuleLinkContact::resolveInterpenetration(){
     
     if(norm(diff_pos)>norm(_length)+norm(_length)/100.0f*10.0f){
         _p[0]->setPosition(_p[1]->getPosition()+_length.normalize()*(norm(_length)+norm(_length)/100.0f*10.0f));
-        //_p[0]->setSpeed(_p[0]->getSpeed()*-1);
+        _p[0]->setSpeed(_p[0]->getSpeed()*-1);
     }
     if(norm(diff_pos)<norm(_length)-norm(_length)/100.0f*10.0f){
         _p[0]->setPosition(_p[1]->getPosition()+_length.normalize()*(norm(_length)-norm(_length)/100.0f*10.0f));
         _p[0]->setSpeed(_p[0]->getSpeed()*-1);
     }
     
+}
+ParticuleLinkContact::~ParticuleLinkContact(){
 }

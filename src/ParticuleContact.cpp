@@ -19,13 +19,13 @@ Vector3D ParticuleContact::calculateVs(){
 }
 void ParticuleContact::resolveVelocity(double time){
     Vector3D vs=calculateVs()*-1*_restitution;
-    //cout<<"VS"<<endl;
-    //vs.display();
-    Vector3D impulsion=vs*_p[0]->getMass();
-    Vector3D new_speed=(_p[0]->getSpeed()+impulsion*1.0f/_p[0]->getMass());
-    _p[0]->setSpeed(new_speed);
-    //cout<<"New speed: ";new_speed.display();cout<<endl;
-    //impulsion.display();
+
+    Vector3D impulsion_0=vs*_p[0]->getMass();
+    Vector3D new_speed_0=(_p[0]->getSpeed()+impulsion_0*1.0f/_p[0]->getMass());
+    Vector3D impulsion_1=vs*_p[1]->getMass();
+    Vector3D new_speed_1=(_p[1]->getSpeed()+impulsion_1*1.0f/_p[1]->getMass()*-1.0f);
+    _p[0]->setSpeed(new_speed_0);
+    _p[1]->setSpeed(new_speed_1);
 }
 void ParticuleContact::resolveInterpenetration(){
     _d=norm(_p[0]->getPosition()-_p[1]->getPosition());
@@ -35,4 +35,7 @@ void ParticuleContact::resolveInterpenetration(){
     Vector3D delta_pb=_d*_n*-1*ma/(ma+mb);
     _p[0]->setPosition(_p[0]->getPosition()+delta_pa);
     _p[1]->setPosition(_p[1]->getPosition()+delta_pb);
+}
+ParticuleContact::~ParticuleContact(){
+   
 }

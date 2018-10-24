@@ -2,7 +2,7 @@
 
 using namespace std;
 
-Particule::Particule(Vector3D p,Vector3D s,Vector3D a,double m,double r,Vector3D color):_position(p),_speed(s),_acceleration(a),_reverseMass(1/(m*1.0f)),_radius(r),_color(color),_time_alive(0),_accum_forces(Vector3D(0,0,0)){
+Particule::Particule(Vector3D p,Vector3D s,Vector3D a,double m,double r,Vector3D color):_position(p),_speed(s),_acceleration(a),_reverseMass(1/(m*1.0f)),_radius(r),_time_alive(0),_color(color),_accum_forces(Vector3D(0,0,0)){
     _acceleration.setY(_acceleration[1]*m);
 }
 
@@ -26,7 +26,5 @@ void Particule::updateSpeed(double delta_t){
     _speed+=_acceleration*delta_t;
 }
 void Particule::updateAcceleration(){
-    //cout<<"accum forces: ";
-    //_accum_forces.display();
     _acceleration=_accum_forces*1/_reverseMass;
 }

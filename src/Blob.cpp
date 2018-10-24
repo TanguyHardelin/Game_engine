@@ -8,16 +8,16 @@ Blob::Blob(int width,int height,int depth,Vector3D initial_position,Vector3D siz
 void Blob::drawBlob(){
     Vector3D blob_color=Vector3D(72,234,255);
     for(int i=0;i<(int)_all_particules.size();i++){
-        if((i%_width+1)<_width && (i+1+_width*_depth)<_all_particules.size() && (i+_width*_depth)<_all_particules.size()){
+        if((i%_width+1)<_width && (i+1+_width*_depth)<(int)_all_particules.size() && (i+_width*_depth)<(int)_all_particules.size()){
             _graphics->addPlane(_all_particules[i]->getPosition(),_all_particules[i+1]->getPosition(),_all_particules[i+1+_width*_depth]->getPosition(),_all_particules[i+_width*_depth]->getPosition(),blob_color);
         }
-        if((i%_width+1)<_width && (i+_width+1)<_all_particules.size() && (i+_width)<_all_particules.size()){
+        if((i%_width+1)<_width && (i+_width+1)<(int)_all_particules.size() && (i+_width)<(int)_all_particules.size()){
             _graphics->addPlane(_all_particules[i]->getPosition(),_all_particules[i+1]->getPosition(),_all_particules[i+1+_width]->getPosition(),_all_particules[i+_width]->getPosition(),blob_color);
         }
-        if((i%_width+1)<_width && (i+1+_width*_depth)<_all_particules.size() && (i+_width*_depth)<_all_particules.size()){
+        if((i%_width+1)<_width && (i+1+_width*_depth)<(int)_all_particules.size() && (i+_width*_depth)<(int)_all_particules.size()){
             _graphics->addPlane(_all_particules[i]->getPosition(),_all_particules[i+1]->getPosition(),_all_particules[i+1+_width*_depth]->getPosition(),_all_particules[i+_width*_depth]->getPosition(),blob_color);
         }
-        if((i%_width*_depth+_width)<_width*_depth && (i+_width+_width*_depth)<_all_particules.size() && (i+_width*_depth)<_all_particules.size()){
+        if((i%_width*_depth+_width)<_width*_depth && (i+_width+_width*_depth)<(int)_all_particules.size() && (i+_width*_depth)<(int)_all_particules.size()){
             _graphics->addPlane(_all_particules[i]->getPosition(),_all_particules[i+_width]->getPosition(),_all_particules[i+_width*_depth+_width]->getPosition(),_all_particules[i+_width*_depth]->getPosition(),blob_color);
         }
         _graphics->addSphere(_all_particules[i]->getPosition(),2*_all_particules[i]->getRadius(),_all_particules[i]->getColor());   
@@ -51,7 +51,7 @@ void Blob::buildBlob(){
             _all_links.push_back(new ParticuleLinkContact(particules,0.1));
         }
     }
-    for(int i=0;i<_width*_depth;i++){
+    for(int i=0;i<(int)_all_particules.size();i++){
         _force_register->addForce(_all_particules[i],new GravityForce(20));
     }
 }

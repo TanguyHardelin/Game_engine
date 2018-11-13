@@ -25,12 +25,12 @@ void ParticuleLinkContact::resolveVelocity(double time){
 void ParticuleLinkContact::resolveInterpenetration(){
     Vector3D diff_pos=_p[0]->getPosition()-_p[1]->getPosition();
     
-    if(norm(diff_pos)>norm(_length)+norm(_length)/100.0f*10.0f){
-        _p[0]->setPosition(_p[1]->getPosition()+_length.normalize()*(norm(_length)+norm(_length)/100.0f*10.0f));
+    if(norm(diff_pos)>norm(_length)+norm(_length)/100.0f*40.0f){
+        _p[0]->setPosition(_p[1]->getPosition()+_length.normalize()*(norm(_length)+norm(_length)/100.0f*40.0f));
         _p[0]->setSpeed(_p[0]->getSpeed()*-1);
     }
-    if(norm(diff_pos)<norm(_length)-norm(_length)/100.0f*10.0f){
-        _p[0]->setPosition(_p[1]->getPosition()+_length.normalize()*(norm(_length)-norm(_length)/100.0f*10.0f));
+    if(norm(diff_pos)<norm(_length)-norm(_length)/100.0f*40.0f){
+        _p[0]->setPosition(_p[1]->getPosition()+_length.normalize()*(norm(_length)-norm(_length)/100.0f*40.0f));
         _p[0]->setSpeed(_p[0]->getSpeed()*-1);
     }
     

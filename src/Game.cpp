@@ -74,7 +74,7 @@ void Game::updateLogic(){
     for(unsigned i=0;i<_all_links.size();i++){
         Vector3D current_length=_all_links[i]->getCurrentLength();
         Vector3D length=_all_links[i]->getLength();
-        if(norm(current_length)>norm(length)+norm(length)/100.0f*10.0f || norm(current_length)<norm(length)-norm(length)/100.0f*10.0f){
+        if(norm(current_length)>norm(length)+norm(length)/100.0f*40.0f || norm(current_length)<norm(length)-norm(length)/100.0f*40.0f){
             _particule_contact_generator.addContact(_all_links[i]);
         }
     }

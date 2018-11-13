@@ -27,10 +27,15 @@ class Quaternion{
         void updateAngularVelocity(Vector3D v,double dt);
 
         //Operator:
-        void operator *= (Quaternion & q);
+        void operator*= (Quaternion & q);
+        void operator* (double a);
+        void operator=  (Quaternion & q);
         
     protected:
         double _w,_x,_y,_z;
 };
+
+Quaternion operator* (Quaternion & q1,Quaternion &q2);
+Quaternion operator* (Quaternion & q1,double a);
 
 #endif

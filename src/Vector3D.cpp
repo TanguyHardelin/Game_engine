@@ -202,6 +202,19 @@ Vector3D operator*(Vector3D  const&a,double k){
     return v;
 }
 
+Vector3D operator+(double const&k , Vector3D  const&a){
+    return a+k;
+}
+Vector3D operator-(double const&k , Vector3D  const&a){
+    return a-k;
+}
+Vector3D operator/(double const&k , Vector3D  const&a){
+    return a/k;
+}
+Vector3D operator*(double const&k , Vector3D  const&a){
+    return a*k;
+}
+
 //Other functions:
 double norm(Vector3D const& v){
     return v.norm();

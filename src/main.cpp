@@ -32,31 +32,35 @@ void keyboardControl(unsigned char key,int x, int y){
 }
 int main(int argc, char** argv)
 {
-    //Unit tests ... remove this function in production
-    //runTests();
-     srand (time(NULL));
+    if(argc>1){
+        runTests();
+    }
+    else{
+        srand (time(NULL));
 
-    //Initialisation of libs:
-    game.init(&argc,argv);
+        //Initialisation of libs:
+        game.init(&argc,argv);
 
-    //Add mouse and keyboard to the game: 
-    game.addInput(_mouse);
-    game.addInput(_keyboard);
+        //Add mouse and keyboard to the game: 
+        game.addInput(_mouse);
+        game.addInput(_keyboard);
 
-    //Glut display:
-    //glutIdleFunc(updateGraphic);
+        //Glut display:
+        //glutIdleFunc(updateGraphic);
 
-    //Add gameloop:
-    glutIdleFunc(gameloop);
+        //Add gameloop:
+        glutIdleFunc(gameloop);
 
-    //Add mouse control:
-    glutMouseFunc(mouseControl);
+        //Add mouse control:
+        glutMouseFunc(mouseControl);
+        
+        //Add keyboard control:
+        glutKeyboardFunc(keyboardControl);
+
+        //Start the game:
+        game.start();
+    }
     
-    //Add keyboard control:
-    glutKeyboardFunc(keyboardControl);
-
-    //Start the game:
-    game.start();
 
     return 0;
 }

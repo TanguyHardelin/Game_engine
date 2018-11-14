@@ -51,6 +51,44 @@ Matrix3x3 Matrix3x3::inverse(){
 
     return matrix;
 }
+Matrix3x3 Matrix3x3::transpose(){
+    Matrix3x3 matrix(0,0,0,0,0,0,0,0,0);
+
+    matrix[0]=_a;
+    matrix[1]=_d;
+    matrix[2]=_g;
+    matrix[3]=_b;
+    matrix[4]=_e;
+    matrix[5]=_h;
+    matrix[6]=_c;
+    matrix[7]=_f;
+    matrix[8]=_i;
+
+    return matrix;
+}
+Matrix3x3 Matrix3x3::setOrientation(Quaternion & q){
+    Matrix3x3 matrix(0,0,0,0,0,0,0,0,0);
+
+    matrix[0]= 1-(2*q.getY()*q.getY()+2*q.getZ()*q.getZ());
+    matrix[1]= 2*q.getX()*q.getY()+2*q.getZ()*q.getW();
+    matrix[2]= 2*q.getX()*q.getZ()-2*q.getY()*q.getW();
+    matrix[3]= 2*q.getX()*q.getY()-2*q.getZ()*q.getW();
+    matrix[4]= 1-(2*q.getX()*q.getX()+2*q.getZ()*q.getZ());
+    matrix[5]= 2*q.getY()*q.getZ()-2*q.getX()*q.getW();
+    matrix[6]= 2*q.getX()*q.getZ()+2*q.getY()*q.getW();
+    matrix[7]= 2*q.getY()*q.getZ()-2*q.getX()*q.getW();
+    matrix[8]= 1-(2*q.getX()*q.getX()+2*q.getY()*q.getY());
+
+    /*
+    return Matrix3x3(
+        1-(2*q.getY()*q.getY()+2*q.getZ()*q.getZ())     , 2*q.getX()*q.getY()+2*q.getZ()*q.getW()    , 2*q.getX()*q.getZ()-2*q.getY()*q.getW(),
+        2*q.getX()*q.getY()-2*q.getZ()*q.getW()         , 1-(2*q.getX()*q.getX()+2*q.getZ()*q.getZ()), 2*q.getY()*q.getZ()-2*q.getX()*q.getW(),
+        2*q.getX()*q.getZ()+2*q.getY()*q.getW()         , 2*q.getY()*q.getZ()-2*q.getX()*q.getW()    , 1-(2*q.getX()*q.getX()+2*q.getY()*q.getY())
+    );
+    */
+
+    return matrix;
+}
 double Matrix3x3::Det(){
     return _a*_e*_i+_d*_h*_c+_g*_b*_f-_a*_h*_f-_g*_e*_c-_d*_b*_i;
 }
@@ -134,17 +172,29 @@ void Matrix3x3::operator-=(Matrix3x3 & a){
     _i-=a[8];
 }
 void Matrix3x3::operator*=(Matrix3x3 & a){
-    _a=_a*a[0]+_b*a[3]+_c*a[6];
-    _b=_a*a[1]+_b*a[4]+_c*a[7];
-    _c=_a*a[2]+_b*a[5]+_c*a[8];
+    Matrix3x3 r(0,0,0,0,0,0,0,0,0);
 
-    _d=_d*a[0]+_e*a[3]+_f*a[6];
-    _e=_d*a[1]+_e*a[4]+_f*a[7];
-    _f=_d*a[0]+_e*a[3]+_f*a[6];
+    r[0]=_a*a[0]+_b*a[3]+_c*a[6];
+    r[1]=_a*a[1]+_b*a[4]+_c*a[7];
+    r[2]=_a*a[2]+_b*a[5]+_c*a[8];
+
+    r[3]=_d*a[0]+_e*a[3]+_f*a[6];
+    r[4]=_d*a[1]+_e*a[4]+_f*a[7];
+    r[5]=_d*a[2]+_e*a[5]+_f*a[8];
     
-    _g=_g*a[0]+_h*a[3]+_i*a[6];
-    _h=_g*a[1]+_h*a[4]+_i*a[7];
-    _i=_g*a[0]+_h*a[3]+_i*a[6];
+    r[6]=_g*a[0]+_h*a[3]+_i*a[6];
+    r[7]=_g*a[1]+_h*a[4]+_i*a[7];
+    r[8]=_g*a[2]+_h*a[5]+_i*a[8];
+
+    _a=r[0];
+    _b=r[1];
+    _c=r[2];
+    _d=r[3];
+    _e=r[4];
+    _f=r[5];
+    _g=r[6];
+    _h=r[7];
+    _i=r[8];
 }
 
 void Matrix3x3::operator+=(double a){
@@ -181,6 +231,14 @@ void Matrix3x3::operator*=(double a){
     _i*=a;
 }
 
+Vector3D operator*(Matrix3x3  &a,Vector3D v){
+    Vector3D r(0,0,0);
+    r[0]=a[0]*v[0]+a[1]*v[1]+a[2]*v[2];
+    r[1]=a[3]*v[0]+a[4]*v[1]+a[5]*v[2];
+    r[2]=a[6]*v[0]+a[7]*v[1]+a[8]*v[2];
+
+    return r;
+}
 
 //Other:
 void Matrix3x3::display(){
@@ -190,13 +248,14 @@ void Matrix3x3::display(){
 
     for(int i=0;i<9;i++){
         if(i!=0 && i%3==0){
-            cout << m[i];
             cout<<" )"<<endl;
             cout<<"( ";
+            cout << m[i];
         }
         else{
-            cout << m[i] <<" ,";
+            cout << m[i];
         }
+        if((i+1)%3!=0)cout<<" ,";
     }
     cout<<" )"<<endl;
 

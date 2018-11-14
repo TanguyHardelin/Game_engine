@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include "Vector3D.h"
+#include "Quaternion.h"
 
 class Matrix3x3{
     public:
@@ -14,7 +15,11 @@ class Matrix3x3{
         
         //Mathematical method:
         Matrix3x3 inverse();
+        Matrix3x3 transpose();
+        
         double Det();       //Calcule le déterminant de la matrice
+
+        static Matrix3x3 setOrientation(Quaternion & q);
 
         double& operator[] (int index);
         void operator=(Matrix3x3 a);
@@ -27,6 +32,9 @@ class Matrix3x3{
         void operator+=(double a);
         void operator-=(double a);
         void operator*=(double a);
+
+
+        
 
         //Other:
         void display();
@@ -45,5 +53,7 @@ Matrix3x3 operator*(Matrix3x3  &a, Matrix3x3 &b);
 Matrix3x3 operator+(Matrix3x3  &a, double k);
 Matrix3x3 operator-(Matrix3x3  &a, double k);
 Matrix3x3 operator*(Matrix3x3  &a, double k);
+
+Vector3D operator*(Matrix3x3  &a,Vector3D v);
 
 #endif

@@ -3,11 +3,132 @@
 #include "Vector3D.h"
 #include "Utils.h"
 #include "UnitTests.h"
+#include "Matrix3x3.h"
+#include "Matrix4x4.h"
+#include "Quaternion.h"
 
 using namespace std;
 
 void runTests(){
-    runVector3DTest();
+    //runVector3DTest();
+    //runMaxtrix3x3Test();
+    //runMaxtrix4x4Test();
+    runQuaternionTest();
+}
+
+void runQuaternionTest(){
+    Quaternion t(4,15,45,32);
+
+    Matrix4x4::setOrientation(t).display();
+
+    t.normalize();
+}
+
+void runMaxtrix3x3Test(){
+    log("Matrix 3x3:");
+    Matrix3x3 A(1,2,3,4,5,6,7,8,9);
+
+    log("A");
+    A.display();
+
+    Matrix3x3 B(11,20,30,7,45,2,13,8,1);
+
+    log("B");
+    B.display();
+
+    log("B inverse");
+    B.inverse().display();
+
+    log("A inverse");
+    A.inverse().display();
+
+    log("B transpose");
+    B.transpose().display();
+
+    log("A transpose");
+    A.transpose().display();
+
+    log("A*B");
+    (A*B).display();
+
+    log("B*A");
+    (B*A).display();
+
+    Vector3D v0(4,5,6);
+    log("v0");
+    v0.display();
+
+    Vector3D v1(11,35,45);
+    log("v1");
+    v1.display();
+
+    log("A*v0");
+    (A*v0).display();
+
+    log("A*v1");
+    (A*v1).display();
+
+    log("B*v0");
+    (B*v0).display();
+
+    log("B*v1");
+    (B*v1).display();
+    
+}
+
+void runMaxtrix4x4Test(){
+    log("Matrix 4x4:");
+    Matrix4x4 A(1,2,3,4,5,6,7,8,9,10,11,12);
+
+    log("A");
+    A.display();
+
+    Matrix4x4 B(11,20,30,6,7,45,2,5,13,8,1,15);
+
+    log("B");
+    B.display();
+
+    log("B inverse");
+    B.inverse().display();
+
+    log("A inverse");
+    A.inverse().display();
+
+
+    log("B Det");
+    cout<<B.Det()<<endl;
+
+    log("A Det");
+    cout<<A.Det()<<endl;
+
+
+
+    log("A*B");
+    (A*B).display();
+
+    log("B*A");
+    (B*A).display();
+
+    Vector3D v0(4,5,6);
+    log("v0");
+    v0.display();
+
+    Vector3D v1(11,35,45);
+    log("v1");
+    v1.display();
+
+    log("A*v0");
+    (A*v0).display();
+
+    log("A*v1");
+    (A*v1).display();
+
+    log("B*v0");
+    (B*v0).display();
+
+    log("B*v1");
+    (B*v1).display();
+    
 }
 void runVector3DTest(){
     Vector3D v(1,2,3),w(1,4,1);

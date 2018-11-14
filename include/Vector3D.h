@@ -62,10 +62,16 @@ Vector3D operator+(Vector3D  const&a, Vector3D const&b);
 Vector3D operator-(Vector3D  const&a, Vector3D const&b);
 Vector3D operator*(Vector3D  const&a, Vector3D const&b);
 Vector3D operator/(Vector3D  const&a, Vector3D const&b);
+
 Vector3D operator+(Vector3D  const&a, double k);
 Vector3D operator-(Vector3D  const&a, double k);
 Vector3D operator/(Vector3D  const&a, double k);
 Vector3D operator*(Vector3D  const&a, double k);
+
+Vector3D operator+(double const&k , Vector3D  const&a);
+Vector3D operator-(double const&k , Vector3D  const&a);
+Vector3D operator/(double const&k , Vector3D  const&a);
+Vector3D operator*(double const&k , Vector3D  const&a);
 
 //Other functions:
 double norm(Vector3D const& v);                                         //Return the norm of vector v

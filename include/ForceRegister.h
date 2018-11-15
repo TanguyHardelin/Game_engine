@@ -4,12 +4,20 @@
 #include <vector>
 #include "ParticuleForceGenerator.h"
 #include "Particule.h"
+#include "RigidBody.h"
+#include  "RigidBodyForceGenerator.h"
 
 //Define struct for force:
-struct ForceRecording{
+struct ParticuleForceRecording{
     Particule *p;
     ParticuleForceGenerator *fg;
-} typedef ForceRecording;
+} typedef ParticuleForceRecording;
+
+struct RigidBodyForceRecording{
+    RigidBody *p;
+    RigidBodyForceGenerator *fg;
+} typedef RigidBodyForceRecording;
+
 
 class ForceRegister{
     public:
@@ -19,14 +27,20 @@ class ForceRegister{
         //Methods
         void addForce(Particule *p,ParticuleForceGenerator *fg);
         void deleteForce(Particule *p,ParticuleForceGenerator *fg);
+
+        void addForce(RigidBody *p,RigidBodyForceGenerator *fg);
+        void deleteForce(RigidBody *p,RigidBodyForceGenerator *fg);
+
         void updateAllForce(double delta_t);
         void clearAllForce();
 
         //Getter:
-        inline std::vector<ForceRecording> getRegister(){return _register;}
+        inline std::vector<ParticuleForceRecording> getParticuleRegister(){return _particule_register;}
+        inline std::vector<RigidBodyForceGenerator> getRigidBodyRegister(){return _rigidBody_register;}
 
     protected:
-        std::vector<ForceRecording> _register;
+        std::vector<ParticuleForceRecording> _particule_register;
+        std::vector<ParticuleForRigidBodyForceRecordingceRecording> _rigidBody_register;
 
 };
 

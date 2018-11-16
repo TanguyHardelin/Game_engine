@@ -4,6 +4,8 @@
 //Includes:
 #include <iostream>
 #include "Vector3D.h"
+#include "Quaternion.h"
+#include "Matrix4x4.h"
 
 #include <chrono>
 #include <vector>
@@ -38,7 +40,7 @@ class Graphics{
         void cameraZoomOut();                                       //Dezoom
 
         void addSphere(Vector3D position,double radius,Vector3D color);       //Draw sphere on scene
-        void addCube(Vector3D position,Vector3D color);       //Draw cube on scene
+        void addCube(Vector3D position,Quaternion orientation);       //Draw cube on scene
         void addPlane(Vector3D pos0,Vector3D pos1,Vector3D pos2, Vector3D pos3,Vector3D color);
         void addFloor(Vector3D color);
         

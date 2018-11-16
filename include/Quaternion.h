@@ -5,7 +5,6 @@
 #include <cmath>
 #include "Vector3D.h"
 
-
 class Quaternion{
     public:
         Quaternion(double w,double x,double y,double z);

@@ -11,8 +11,10 @@ class Matrix4x4{
     public:
         //Constructor:
         Matrix4x4(double a,double b,double c,double d,double e,double f,double g,double h,double i,double j,double k,double l);
-        Matrix4x4(Matrix4x4 & a);
+        Matrix4x4(Matrix4x4 const & a);
         
+        inline double get(int index) const{return _values[index];}
+
         //Mathematical method:
         Matrix4x4 inverse();
         

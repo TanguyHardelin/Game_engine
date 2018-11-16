@@ -25,9 +25,9 @@ Matrix4x4::Matrix4x4(double a,double b,double c,double d,double e,double f,doubl
     _values[15] = 1; 
 }
 
-Matrix4x4::Matrix4x4(Matrix4x4 & a){
+Matrix4x4::Matrix4x4(Matrix4x4 const & a){
     for(int i=0;i<16;i++){
-        _values[i]=a[i];
+        _values[i]=a.get(i);
     }
 }
 
@@ -71,22 +71,25 @@ double Matrix4x4::Det(){
 
 Matrix4x4 Matrix4x4::setOrientation(Quaternion & q){
     Matrix3x3 tmp=Matrix3x3::setOrientation(q);
+
+    tmp=tmp.transpose();
+    
     Matrix4x4 r(0,0,0,0,0,0,0,0,0,0,0,1);
 
     r[0]=tmp[0];
     r[1]=tmp[1];
     r[2]=tmp[2];
-    r[3]=q.getX();
+    r[3]=0;
 
     r[4]=tmp[3];
     r[5]=tmp[4];
     r[6]=tmp[5];
-    r[7]=q.getY();
+    r[7]=0;
 
     r[8]=tmp[6];
     r[9]=tmp[7];
     r[10]=tmp[8];
-    r[11]=q.getZ();
+    r[11]=0;
 
     r[12] = 0;
     r[13] = 0;

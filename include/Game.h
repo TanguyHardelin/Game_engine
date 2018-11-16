@@ -30,6 +30,7 @@
 #include "ParticuleLinkContact.h"
 #include "ParticuleContact.h"
 #include "Blob.h"
+#include "RigidBody.h"
 
 
 #define SLEEPING_TIME 16666
@@ -52,6 +53,7 @@ class Game{
         void updateInput();                                                                                         //Use for update input on game
         void gameloop();                                                                                            //Gameloop
         void createNewParticule(Vector3D position,Vector3D speed,Vector3D acceleration,double mass,double damping); //Create a new Particule on screen
+        void createNewRigidBody(Vector3D position,Vector3D center_of_gravity,Vector3D speed,Vector3D acceleration,Matrix3x3 inverse_inertie_tensor,double mass,double damping);
         void addBlobToGame(Blob * blob);
         void clearAllParticules();                                                                                  //Remove all particules on screen
         void makeConstantFrameRate(double elapsed_time);                                                            //Make frame constant
@@ -62,6 +64,7 @@ class Game{
     protected:
         std::vector<Input *>                        _all_inputs;
         std::vector<Particule *>                    _all_particules;
+        std::vector<RigidBody *>                    _all_rigidBody;
         std::vector<ParticuleLinkContact *>         _all_links;
         std::vector<ParticuleCableContact *>        _all_cables;
         std::vector<Blob *>                         _all_blobs;

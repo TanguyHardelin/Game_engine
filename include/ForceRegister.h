@@ -36,11 +36,11 @@ class ForceRegister{
 
         //Getter:
         inline std::vector<ParticuleForceRecording> getParticuleRegister(){return _particule_register;}
-        inline std::vector<RigidBodyForceGenerator> getRigidBodyRegister(){return _rigidBody_register;}
+        inline std::vector<RigidBodyForceRecording> getRigidBodyRegister(){return _rigidBody_register;}
 
     protected:
         std::vector<ParticuleForceRecording> _particule_register;
-        std::vector<ParticuleForRigidBodyForceRecordingceRecording> _rigidBody_register;
+        std::vector<RigidBodyForceRecording> _rigidBody_register;
 
 };
 

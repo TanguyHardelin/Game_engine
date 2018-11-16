@@ -13,13 +13,15 @@ Game::Game(){
     _continue_game                  = true;
     
     
-    createNewParticule(Vector3D(0,250,100),Vector3D(0,10,0),Vector3D(0,0,0),10,10);
-    createNewParticule(Vector3D(0,50,100),Vector3D(0,10,0),Vector3D(0,0,0),10,10);
+    //createNewParticule(Vector3D(0,250,100),Vector3D(0,10,0),Vector3D(0,0,0),10,10);
+    //createNewParticule(Vector3D(0,50,100),Vector3D(0,10,0),Vector3D(0,0,0),10,10);
 
-    _force_register.addForce(_all_particules[0],new GravityForce(10));
-    _force_register.addForce(_all_particules[1],new GravityForce(10));
+    //_force_register.addForce(_all_particules[0],new GravityForce(10));
+    //_force_register.addForce(_all_particules[1],new GravityForce(10));
   
-    addBlobToGame(new Blob(4,4,4,Vector3D(50,50,50),Vector3D(50,50,50),&_particule_contact_generator,&_force_register,&_graphics));
+    //addBlobToGame(new Blob(4,4,4,Vector3D(50,50,50),Vector3D(50,50,50),&_particule_contact_generator,&_force_register,&_graphics));
+
+    createNewRigidBody(Vector3D(0,0,0),Vector3D(0,0,0),Vector3D(0,0,0),Vector3D(0,0,0),Matrix3x3(2,0,0,0,2,0,0,0,2),0.1,0.9f);
 }
 void Game::init(int* argc,char **argv){
     //Initialize GLUT:
@@ -32,18 +34,27 @@ void Game::start(){
 }
 void Game::updateGraphic(){
     _graphics.clearScreen();
-    //_graphics.addFloor(Vector3D(255,255,255));
 
     //We draw all particules:
     for(int i=0;i<(int)_all_particules.size();i++){
         _graphics.addSphere(_all_particules[i]->getPosition(),2*_all_particules[i]->getRadius(),_all_particules[i]->getColor());   
     }
+    //We draw all rigid body:
+    for(int i=0;i<(int)_all_rigidBody.size();i++){
+        //cout<<"Rigid body orientation: ";_all_rigidBody[i]->getOrientation().display();cout<<endl;
+        _graphics.addCube(_all_rigidBody[i]->getPosition(),_all_rigidBody[i]->getOrientation());
+    }
     //We draw all blobs:
     for(int i=0;i<(int)_all_blobs.size();i++){
         _all_blobs[i]->drawBlob();
     }
+
     _graphics.draw();
  
+}
+void Game::createNewRigidBody(Vector3D position,Vector3D center_of_gravity,Vector3D speed,Vector3D acceleration,Matrix3x3 inverse_inertie_tensor,double mass,double damping){
+    _all_rigidBody.push_back(new RigidBody(1/mass,damping,damping,center_of_gravity,position,speed,acceleration,Vector3D(0,0,0),Vector3D(0,0,0),Quaternion(0,0,0,0),
+    Matrix3x3(0,0,0,0,0,0,0,0,0),inverse_inertie_tensor));
 }
 void Game::createNewParticule(Vector3D position,Vector3D speed,Vector3D acceleration,double mass,double damping){
     //Create the particule
@@ -109,6 +120,11 @@ void Game::updateLogic(){
             }
         }
     }
+    //Rigid body:
+    for(unsigned i=0;i<_all_rigidBody.size();i++){
+        _all_rigidBody[i]->update(elapsed.count());
+    }
+    
     
 
 
@@ -135,8 +151,10 @@ void Game::updateInput(){
         if(all_key_pressed[i].name==SCROOL_WHEEL_DOWN)
             _graphics.cameraZoomOut();
         if(all_key_pressed[i].name==32){
-            addBlobToGame(new Blob(2,2,2,Vector3D(100,400,100),Vector3D(50,50,50),&_particule_contact_generator,&_force_register,&_graphics));
-        } 
+            for(unsigned i=0;i<_all_rigidBody.size();i++){
+                _all_rigidBody[i]->addForceAtPoint(Vector3D(10,50,87),Vector3D(70,70,70));
+            }
+        }
         if(all_key_pressed[i].name=='r'){
             createNewParticule(Vector3D(-500,100,0),Vector3D(400+rand()%200,100+rand()%100,rand()%10),Vector3D(0,-10,0),1+rand()%10,0.9);
             _force_register.addForce(_all_particules[_all_particules.size()-1],new GravityForce(10));

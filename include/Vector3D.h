@@ -6,6 +6,7 @@
 #include <sstream>
 #include <cmath>
 
+
 class Vector3D{
     public:
     //Constructors:
@@ -33,7 +34,7 @@ class Vector3D{
     double distanceOf(Vector3D const& v) const;
     Vector3D vectorProduct(Vector3D const& v) const;
 
-
+    
     //Operators:
     double& operator[] (int index);
 

@@ -125,59 +125,78 @@ void Graphics::addSphere(Vector3D position,double radius,Vector3D color){
 
     glEnd();
 }
-void Graphics::addCube(Vector3D position,Vector3D color){
-    double R=color[0]/255.0f;
-    double G=color[1]/255.0f;
-    double B=color[2]/255.0f;
+void Graphics::addCube(Vector3D position,Quaternion orientation){
+    double R=1.0f;
+    double G=0.0f;
+    double B=0.0f;
 
     double posX=position[0];
     double posY=position[1];
     double posZ=position[2];
 
+    orientation.normalize();
+    Matrix4x4 orientation_matrix(0,0,0,0,0,0,0,0,0,0,0,0);
+    orientation_matrix=Matrix4x4::setOrientation(orientation);
+    
+    
+    GLfloat * mult_matrix=new GLfloat[16];
+
+    for(int i=0;i<16;i++){
+        mult_matrix[i]=orientation_matrix[i];
+    }
+    
+
+    glPushMatrix();
+    glMultMatrixf(mult_matrix);
+
     // White side - BACK
     glBegin(GL_POLYGON);
     glColor3f(R,G,B);
-    glVertex3f(posX + 5,posY - 5,posZ + 5 );
-    glVertex3f(posX + 5,posY + 5,posZ + 5 );
-    glVertex3f(posX - 5,posY + 5,posZ + 5 );
-    glVertex3f(posX - 5,posY - 5,posZ + 5 );
+    glVertex3f(posX + 70,posY - 70,posZ + 70 );
+    glVertex3f(posX + 70,posY + 70,posZ + 70 );
+    glVertex3f(posX - 70,posY + 70,posZ + 70 );
+    glVertex3f(posX - 70,posY - 70,posZ + 70 );
     glEnd();
 
     // Purple side - RIGHT
     glBegin(GL_POLYGON);
     glColor3f(R,G,B);
-    glVertex3f(posX + 5,posY - 5,posZ - 5 );
-    glVertex3f(posX + 5,posY + 5,posZ - 5 );
-    glVertex3f(posX + 5,posY + 5,posZ + 5 );
-    glVertex3f(posX + 5,posY - 5,posZ + 5 );
+    glVertex3f(posX + 70,posY - 70,posZ - 70 );
+    glVertex3f(posX + 70,posY + 70,posZ - 70 );
+    glVertex3f(posX + 70,posY + 70,posZ + 70 );
+    glVertex3f(posX + 70,posY - 70,posZ + 70 );
     glEnd();
 
     // Green side - LEFT
     glBegin(GL_POLYGON);
     glColor3f(R,G,B);
-    glVertex3f(posX - 5,posY - 5,posZ + 5 );
-    glVertex3f(posX - 5,posY + 5,posZ + 5 );
-    glVertex3f(posX - 5,posY + 5,posZ - 5 );
-    glVertex3f(posX - 5,posY - 5,posZ - 5 );
+    glVertex3f(posX - 70,posY - 70,posZ + 70 );
+    glVertex3f(posX - 70,posY + 70,posZ + 70 );
+    glVertex3f(posX - 70,posY + 70,posZ - 70 );
+    glVertex3f(posX - 70,posY - 70,posZ - 70 );
     glEnd();
 
     // Blue side - TOP
     glBegin(GL_POLYGON);
     glColor3f(R,G,B);
-    glVertex3f(posX + 5,posY + 5,posZ + 5 );
-    glVertex3f(posX + 5,posY + 5,posZ - 5 );
-    glVertex3f(posX - 5,posY + 5,posZ - 5 );
-    glVertex3f(posX - 5,posY + 5,posZ + 5 );
+    glVertex3f(posX + 70,posY + 70,posZ + 70 );
+    glVertex3f(posX + 70,posY + 70,posZ - 70 );
+    glVertex3f(posX - 70,posY + 70,posZ - 70 );
+    glVertex3f(posX - 70,posY + 70,posZ + 70 );
     glEnd();
 
     // Red side - BOTTOM
     glBegin(GL_POLYGON);
     glColor3f(R,G,B);
-    glVertex3f(posX + 5,posY - 5,posZ - 5 );
-    glVertex3f(posX + 5,posY - 5,posZ + 5 );
-    glVertex3f(posX - 5,posY - 5,posZ + 5 );
-    glVertex3f(posX - 5,posY - 5,posZ - 5 );
+    glVertex3f(posX + 70,posY - 70,posZ - 70 );
+    glVertex3f(posX + 70,posY - 70,posZ + 70 );
+    glVertex3f(posX - 70,posY - 70,posZ + 70 );
+    glVertex3f(posX - 70,posY - 70,posZ - 70 );
     glEnd();
+
+    glPopMatrix();
+
+    
 }
 void Graphics::addPlane(Vector3D pos0,Vector3D pos1,Vector3D pos2, Vector3D pos3,Vector3D color){
     glBegin(GL_POLYGON);

@@ -44,16 +44,17 @@ class Matrix3x3{
 };
 
 
-bool operator==(Matrix3x3 & a, Matrix3x3 & b);
-bool operator!=(Matrix3x3 &a, Matrix3x3 &b);
+bool operator==(Matrix3x3 a, Matrix3x3 b);
+bool operator!=(Matrix3x3 a, Matrix3x3 b);
 
-Matrix3x3 operator+(Matrix3x3  &a, Matrix3x3 &b);
-Matrix3x3 operator-(Matrix3x3  &a, Matrix3x3 &b);
-Matrix3x3 operator*(Matrix3x3  &a, Matrix3x3 &b);
-Matrix3x3 operator+(Matrix3x3  &a, double k);
-Matrix3x3 operator-(Matrix3x3  &a, double k);
-Matrix3x3 operator*(Matrix3x3  &a, double k);
+Matrix3x3 operator+(Matrix3x3  a, Matrix3x3 b);
+Matrix3x3 operator-(Matrix3x3  a, Matrix3x3 b);
+Matrix3x3 operator*(Matrix3x3  a, Matrix3x3 b);
+Matrix3x3 operator+(Matrix3x3  a, double k);
+Matrix3x3 operator-(Matrix3x3  a, double k);
+Matrix3x3 operator*(Matrix3x3  a, double k);
 
-Vector3D operator*(Matrix3x3  &a,Vector3D v);
+Vector3D operator*(Matrix3x3  a,Vector3D v);
+Vector3D operator*(Vector3D v,Matrix3x3  a);
 
 #endif

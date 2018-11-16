@@ -72,9 +72,11 @@ Matrix3x3 Matrix3x3::setOrientation(Quaternion & q){
     matrix[0]= 1-(2*q.getY()*q.getY()+2*q.getZ()*q.getZ());
     matrix[1]= 2*q.getX()*q.getY()+2*q.getZ()*q.getW();
     matrix[2]= 2*q.getX()*q.getZ()-2*q.getY()*q.getW();
+
     matrix[3]= 2*q.getX()*q.getY()-2*q.getZ()*q.getW();
     matrix[4]= 1-(2*q.getX()*q.getX()+2*q.getZ()*q.getZ());
-    matrix[5]= 2*q.getY()*q.getZ()-2*q.getX()*q.getW();
+    matrix[5]= 2*q.getY()*q.getZ()+2*q.getX()*q.getW();
+
     matrix[6]= 2*q.getX()*q.getZ()+2*q.getY()*q.getW();
     matrix[7]= 2*q.getY()*q.getZ()-2*q.getX()*q.getW();
     matrix[8]= 1-(2*q.getX()*q.getX()+2*q.getY()*q.getY());
@@ -231,7 +233,15 @@ void Matrix3x3::operator*=(double a){
     _i*=a;
 }
 
-Vector3D operator*(Matrix3x3  &a,Vector3D v){
+Vector3D operator*(Matrix3x3  a,Vector3D v){
+    Vector3D r(0,0,0);
+    r[0]=a[0]*v[0]+a[1]*v[1]+a[2]*v[2];
+    r[1]=a[3]*v[0]+a[4]*v[1]+a[5]*v[2];
+    r[2]=a[6]*v[0]+a[7]*v[1]+a[8]*v[2];
+
+    return r;
+}
+Vector3D operator*(Vector3D v,Matrix3x3  a){
     Vector3D r(0,0,0);
     r[0]=a[0]*v[0]+a[1]*v[1]+a[2]*v[2];
     r[1]=a[3]*v[0]+a[4]*v[1]+a[5]*v[2];
@@ -277,32 +287,32 @@ bool operator!=(Matrix3x3 &a, Matrix3x3 &b){
     }
     return true;
 }
-Matrix3x3 operator+(Matrix3x3  &a, Matrix3x3 &b){
+Matrix3x3 operator+(Matrix3x3  a, Matrix3x3 b){
     Matrix3x3 tmp(a);
     tmp+=b;
     return tmp;
 }
-Matrix3x3 operator-(Matrix3x3  &a, Matrix3x3 &b){
+Matrix3x3 operator-(Matrix3x3  a, Matrix3x3 b){
     Matrix3x3 tmp(a);
     tmp-=b;
     return tmp;
 }
-Matrix3x3 operator*(Matrix3x3  &a, Matrix3x3 &b){
+Matrix3x3 operator*(Matrix3x3  a, Matrix3x3 b){
     Matrix3x3 tmp(a);
     tmp*=b;
     return tmp;
 }
-Matrix3x3 operator+(Matrix3x3  &a, double k){
+Matrix3x3 operator+(Matrix3x3  a, double k){
     Matrix3x3 tmp(a);
     tmp+=k;
     return tmp;
 }
-Matrix3x3 operator-(Matrix3x3  &a, double k){
+Matrix3x3 operator-(Matrix3x3  a, double k){
     Matrix3x3 tmp(a);
     tmp-=k;
     return tmp;
 }
-Matrix3x3 operator*(Matrix3x3  &a, double k){
+Matrix3x3 operator*(Matrix3x3  a, double k){
     Matrix3x3 tmp(a);
     tmp*=k;
     return tmp;

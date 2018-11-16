@@ -17,9 +17,10 @@ void runTests(){
 }
 
 void runQuaternionTest(){
-    Quaternion t(4,15,45,32);
+    Quaternion t(1,1,2,3);
 
-    Matrix4x4::setOrientation(t).display();
+    t.normalize();
+    Matrix3x3::setOrientation(t).transpose().display();
 
     t.normalize();
 }

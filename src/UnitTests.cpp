@@ -18,6 +18,12 @@ void runTests(){
 
 void runQuaternionTest(){
     Quaternion t(1,1,2,3);
+    Quaternion te(2,5,3,4);
+
+    cout<<"t: ";t.display();
+    cout<<"te: ";te.display();
+    t*=te;
+    cout<<"t*te: ";t.display();
 
     t.normalize();
     Matrix3x3::setOrientation(t).transpose().display();

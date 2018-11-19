@@ -125,18 +125,21 @@ void Graphics::addSphere(Vector3D position,double radius,Vector3D color){
 
     glEnd();
 }
-void Graphics::addCube(Vector3D position,Quaternion orientation){
-    double R=1.0f;
-    double G=0.0f;
-    double B=0.0f;
-
+void Graphics::addCube(Vector3D position,Quaternion orientation,Vector3D size){
     double posX=position[0];
     double posY=position[1];
     double posZ=position[2];
 
-    orientation.normalize();
+    //orientation.normalize();
     Matrix4x4 orientation_matrix(0,0,0,0,0,0,0,0,0,0,0,0);
     orientation_matrix=Matrix4x4::setOrientation(orientation);
+
+
+    cout<<"orientation";orientation.display();
+
+    cout<<"orientation_matrix";
+    orientation_matrix.display();
+
     
     
     GLfloat * mult_matrix=new GLfloat[16];
@@ -151,47 +154,56 @@ void Graphics::addCube(Vector3D position,Quaternion orientation){
 
     // White side - BACK
     glBegin(GL_POLYGON);
-    glColor3f(R,G,B);
-    glVertex3f(posX + 70,posY - 70,posZ + 70 );
-    glVertex3f(posX + 70,posY + 70,posZ + 70 );
-    glVertex3f(posX - 70,posY + 70,posZ + 70 );
-    glVertex3f(posX - 70,posY - 70,posZ + 70 );
+    glColor3f(1.0f,0,0);
+    glVertex3f(posX + size[0],posY - size[1],posZ + size[2] );
+    glVertex3f(posX + size[0],posY + size[1],posZ + size[2] );
+    glVertex3f(posX - size[0],posY + size[1],posZ + size[2] );
+    glVertex3f(posX - size[0],posY - size[1],posZ + size[2] );
     glEnd();
 
     // Purple side - RIGHT
     glBegin(GL_POLYGON);
-    glColor3f(R,G,B);
-    glVertex3f(posX + 70,posY - 70,posZ - 70 );
-    glVertex3f(posX + 70,posY + 70,posZ - 70 );
-    glVertex3f(posX + 70,posY + 70,posZ + 70 );
-    glVertex3f(posX + 70,posY - 70,posZ + 70 );
+    glColor3f(1.0f,1.0f,0);
+    glVertex3f(posX + size[0],posY - size[1],posZ - size[2] );
+    glVertex3f(posX + size[0],posY + size[1],posZ - size[2] );
+    glVertex3f(posX + size[0],posY + size[1],posZ + size[2] );
+    glVertex3f(posX + size[0],posY - size[1],posZ + size[2] );
     glEnd();
 
     // Green side - LEFT
     glBegin(GL_POLYGON);
-    glColor3f(R,G,B);
-    glVertex3f(posX - 70,posY - 70,posZ + 70 );
-    glVertex3f(posX - 70,posY + 70,posZ + 70 );
-    glVertex3f(posX - 70,posY + 70,posZ - 70 );
-    glVertex3f(posX - 70,posY - 70,posZ - 70 );
+    glColor3f(0,1.0f,0);
+    glVertex3f(posX - size[0],posY - size[1],posZ + size[2] );
+    glVertex3f(posX - size[0],posY + size[1],posZ + size[2] );
+    glVertex3f(posX - size[0],posY + size[1],posZ - size[2] );
+    glVertex3f(posX - size[0],posY - size[1],posZ - size[2] );
     glEnd();
 
     // Blue side - TOP
     glBegin(GL_POLYGON);
-    glColor3f(R,G,B);
-    glVertex3f(posX + 70,posY + 70,posZ + 70 );
-    glVertex3f(posX + 70,posY + 70,posZ - 70 );
-    glVertex3f(posX - 70,posY + 70,posZ - 70 );
-    glVertex3f(posX - 70,posY + 70,posZ + 70 );
+    glColor3f(0.0f,1.0f,1.0f);
+    glVertex3f(posX + size[0],posY + size[1],posZ + size[2] );
+    glVertex3f(posX + size[0],posY + size[1],posZ - size[2] );
+    glVertex3f(posX - size[0],posY + size[1],posZ - size[2] );
+    glVertex3f(posX - size[0],posY + size[1],posZ + size[2] );
     glEnd();
 
     // Red side - BOTTOM
     glBegin(GL_POLYGON);
-    glColor3f(R,G,B);
-    glVertex3f(posX + 70,posY - 70,posZ - 70 );
-    glVertex3f(posX + 70,posY - 70,posZ + 70 );
-    glVertex3f(posX - 70,posY - 70,posZ + 70 );
-    glVertex3f(posX - 70,posY - 70,posZ - 70 );
+    glColor3f(0,0,1.0f);
+    glVertex3f(posX + size[0],posY - size[1],posZ - size[2] );
+    glVertex3f(posX + size[0],posY - size[1],posZ + size[2] );
+    glVertex3f(posX - size[0],posY - size[1],posZ + size[2] );
+    glVertex3f(posX - size[0],posY - size[1],posZ - size[2] );
+    glEnd();
+
+    // Red side - BOTTOM
+    glBegin(GL_POLYGON);
+    glColor3f(1.0f,0,1.0f);
+    glVertex3f(posX - size[0],posY - size[1],posZ - size[2] );
+    glVertex3f(posX - size[0],posY - size[1],posZ - size[2] );
+    glVertex3f(posX - size[0],posY - size[1],posZ + size[2] );
+    glVertex3f(posX - size[0],posY - size[1],posZ + size[2] );
     glEnd();
 
     glPopMatrix();

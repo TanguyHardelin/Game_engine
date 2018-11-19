@@ -9,7 +9,7 @@ Quaternion::Quaternion(double w,double x,double y,double z):_w(w),_x(x),_y(y),_z
 
 void Quaternion::normalize(){
     double d=_w*_w+_x*_x+_y*_y+_z*_z;
-    if(d!=0){
+    if(d!=0 && d!=1){
         d=1/sqrt(d);
         _w*=d;
         _x*=d;
@@ -22,10 +22,17 @@ void Quaternion::normalize(){
     }
 }
 void Quaternion::operator*= (Quaternion const& q){
-    _w=_w*q.getW()-_x*q.getX()-_y*q.getY()-_z*q.getZ();
-    _x=_w*q.getX()+q.getW()*_x+_y*q.getZ()-_z*q.getY();  
-    _y=_w*q.getY()+q.getW()*_y+_z*q.getX()-_x*q.getZ();
-    _z=_w*q.getZ()+q.getW()*_z+_x*q.getY()-_y*q.getX();
+    Quaternion result(0,0,0,0);
+
+    result.setW(_w*q.getW()-_x*q.getX()-_y*q.getY()-_z*q.getZ());
+    result.setX(_w*q.getX()+q.getW()*_x+_y*q.getZ()-_z*q.getY());  
+    result.setY(_w*q.getY()+q.getW()*_y+_z*q.getX()-_x*q.getZ());
+    result.setZ(_w*q.getZ()+q.getW()*_z+_x*q.getY()-_y*q.getX());
+
+    _w=result.getW();
+    _x=result.getX();
+    _y=result.getY();
+    _z=result.getZ();
 }
 void Quaternion::operator+=  (Quaternion const& q){
     _w+=q.getW();
@@ -52,12 +59,22 @@ void Quaternion::makeRotation(Vector3D v){
 }
 void Quaternion::updateAngularVelocity(Vector3D v,double dt){
     Quaternion O1(_w,_x,_y,_z);
-    Quaternion w(0,v[0],v[1],v[2]);
+    Quaternion w(1,v[0],v[1],v[2]);
     Quaternion result(0,0,0,0);
+    
 
+    result+= w * O1 * (dt/2.0f);
+    result.normalize();
 
-    result= O1 +  w * O1 * (dt/2.0f);
+/*
+    cout<<"result: ";result.display();
+    cout<<" w * O1 * (dt/2.0f): ";( w * O1 * (dt/2.0f)).display();
+*/
 
+    _w=result.getW();
+    _x=result.getX();
+    _y=result.getY();
+    _z=result.getZ();
 }
 
 void Quaternion::operator*= (double a){
@@ -92,5 +109,5 @@ Quaternion operator* (double a,Quaternion const& q1){
 }
 
 void Quaternion::display() const{
-    cout<<"w: "<<_w<<" x: "<<_x<<" y: "<<_y<<" z: "<<_z<<endl;
+    cout<<"w: "<<_w<<"\t\t x: "<<_x<<"\t\t y: "<<_y<<"\t\t z: "<<_z<<endl;
 }

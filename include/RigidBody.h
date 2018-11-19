@@ -10,7 +10,7 @@ class RigidBody{
     public:
         RigidBody(double inverse_mass,double linear_damping,double angular_damping,
         Vector3D center_of_gravity,Vector3D position,Vector3D linear_speed,Vector3D linear_acceleration,Vector3D angular_speed,
-        Vector3D angular_acceleration,Quaternion orientation,Matrix3x3 transform_matrix,Matrix3x3 inverse_inertie_tensor);
+        Vector3D angular_acceleration,Quaternion orientation,Matrix3x3 transform_matrix,Matrix3x3 inverse_inertie_tensor,Vector3D size);
         
         //Getter:
         inline double getInverseMass() const{return _inverse_mass;}
@@ -29,6 +29,8 @@ class RigidBody{
         inline Quaternion getOrientation() const{return _orientation;}
         inline Matrix3x3 getTransformMatrix() const{return _transform_matrix;}
         inline Matrix3x3 getInverseInertieTensor() const{return _inverse_inertie_tensor;}
+
+        inline Vector3D getSize(){return _size;}
 
 
         
@@ -63,6 +65,8 @@ class RigidBody{
         Quaternion _orientation;
         Matrix3x3 _transform_matrix;
         Matrix3x3 _inverse_inertie_tensor;
+
+        Vector3D _size;
 
         Vector3D _linear_accum_forces;
         Vector3D _angular_accum_forces;

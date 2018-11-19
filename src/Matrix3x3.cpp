@@ -151,7 +151,7 @@ void Matrix3x3::operator=(double value){
     _i=value;
 }
 
-void Matrix3x3::operator+=(Matrix3x3 & a){
+void Matrix3x3::operator+=(Matrix3x3 a){
     _a+=a[0];
     _b+=a[1];
     _c+=a[2];
@@ -162,7 +162,7 @@ void Matrix3x3::operator+=(Matrix3x3 & a){
     _h+=a[7];
     _i+=a[8];
 }
-void Matrix3x3::operator-=(Matrix3x3 & a){
+void Matrix3x3::operator-=(Matrix3x3 a){
     _a-=a[0];
     _b-=a[1];
     _c-=a[2];
@@ -173,7 +173,7 @@ void Matrix3x3::operator-=(Matrix3x3 & a){
     _h-=a[7];
     _i-=a[8];
 }
-void Matrix3x3::operator*=(Matrix3x3 & a){
+void Matrix3x3::operator*=(Matrix3x3 a){
     Matrix3x3 r(0,0,0,0,0,0,0,0,0);
 
     r[0]=_a*a[0]+_b*a[3]+_c*a[6];

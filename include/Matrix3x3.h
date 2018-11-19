@@ -25,9 +25,9 @@ class Matrix3x3{
         void operator=(Matrix3x3 a);
         void operator=(double value);
 
-        void operator+=(Matrix3x3 & a);
-        void operator-=(Matrix3x3 & a);
-        void operator*=(Matrix3x3 & a);
+        void operator+=(Matrix3x3 a);
+        void operator-=(Matrix3x3 a);
+        void operator*=(Matrix3x3 a);
 
         void operator+=(double a);
         void operator-=(double a);

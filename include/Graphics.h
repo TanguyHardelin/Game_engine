@@ -40,7 +40,7 @@ class Graphics{
         void cameraZoomOut();                                       //Dezoom
 
         void addSphere(Vector3D position,double radius,Vector3D color);       //Draw sphere on scene
-        void addCube(Vector3D position,Quaternion orientation);       //Draw cube on scene
+        void addCube(Vector3D position,Quaternion orientation, Vector3D size);       //Draw cube on scene
         void addPlane(Vector3D pos0,Vector3D pos1,Vector3D pos2, Vector3D pos3,Vector3D color);
         void addFloor(Vector3D color);
         

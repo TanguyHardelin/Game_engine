@@ -8,12 +8,13 @@
 
 class RigidBody{
     public:
-        RigidBody(double inverse_mass,double linear_damping,double angular_damping,
+        RigidBody(double mass,double linear_damping,double angular_damping,
         Vector3D center_of_gravity,Vector3D position,Vector3D linear_speed,Vector3D linear_acceleration,Vector3D angular_speed,
         Vector3D angular_acceleration,Quaternion orientation,Matrix3x3 transform_matrix,Matrix3x3 inverse_inertie_tensor,Vector3D size);
         
         //Getter:
         inline double getInverseMass() const{return _inverse_mass;}
+        inline double getMass() const{return 1/_inverse_mass;}
         inline double getLinearDamping() const{return _linear_damping;}
         inline double getAngularDamping() const{return _angular_damping;}
 
@@ -32,12 +33,9 @@ class RigidBody{
 
         inline Vector3D getSize(){return _size;}
 
-
-        
-        //Setter:
-
         //Methods:
         int update(double delta_t);              //Integrator
+        void addForce(const Vector3D & force);
         void addForceAtPoint(const Vector3D & force, const Vector3D & point);
         void addForceAtBodyPoint(const Vector3D & force, const Vector3D & point);
         void clearAccums();
@@ -45,8 +43,8 @@ class RigidBody{
         void CalculateDerivedData();
 
         //Utils:
-        Vector3D localToWorld(Vector3D v,Matrix3x3 transform_matrix);
-        Vector3D worldToLocal(Vector3D v,Matrix3x3 transform_matrix);
+        static Vector3D localToWorld(Vector3D v,Matrix3x3 transform_matrix);
+        static Vector3D worldToLocal(Vector3D v,Matrix3x3 transform_matrix);
 
 
 

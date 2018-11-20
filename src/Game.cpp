@@ -7,22 +7,19 @@ using namespace std;
     -  Mettre resolution de contact comme vu dans le cour (prioritee de resolution ect ...)
     -  Separation Blob*/
 
-Game::Game(){
+Game::Game(string demo):_demo_type(demo){
     _particule_contact_generator    = ParticuleContactGenerator();
     _particule_contact_resolver     = ParticuleContactResolver();
     _continue_game                  = true;
     
     
-    //createNewParticule(Vector3D(0,250,100),Vector3D(0,10,0),Vector3D(0,0,0),10,10);
-    //createNewParticule(Vector3D(0,50,100),Vector3D(0,10,0),Vector3D(0,0,0),10,10);
-
-    //_force_register.addForce(_all_particules[0],new GravityForce(10));
-    //_force_register.addForce(_all_particules[1],new GravityForce(10));
-  
-    //addBlobToGame(new Blob(4,4,4,Vector3D(50,50,50),Vector3D(50,50,50),&_particule_contact_generator,&_force_register,&_graphics));
-
-    createNewRigidBody(Vector3D(0,0,0),Vector3D(0,0,0),Vector3D(0,0,0),Vector3D(0,0,0),Matrix3x3(833.3f,0,0,0,833.3f,0,0,0,833.3f),0.1,0.9f);
+    if(demo=="demo3"){
+        createNewRigidBody(Vector3D(0,0,0),Vector3D(0,0,0),Vector3D(0,0,0),Vector3D(0,0,0),Vector3D(0,0,0),Vector3D(0,0,0),Matrix3x3(4166.3f,0,0,0,4166.3f,0,0,0,4166.3f),40.0f,0.9);
+    }
+    
 }
+
+
 void Game::init(int* argc,char **argv){
     //Initialize GLUT:
     _graphics.init(argc,argv);
@@ -41,7 +38,6 @@ void Game::updateGraphic(){
     }
     //We draw all rigid body:
     for(int i=0;i<(int)_all_rigidBody.size();i++){
-        cout<<"Rigid body orientation: ";_all_rigidBody[i]->getOrientation().display();cout<<endl;
         _graphics.addCube(_all_rigidBody[i]->getPosition(),_all_rigidBody[i]->getOrientation(),_all_rigidBody[i]->getSize());
     }
     //We draw all blobs:
@@ -52,8 +48,8 @@ void Game::updateGraphic(){
     _graphics.draw();
  
 }
-void Game::createNewRigidBody(Vector3D position,Vector3D center_of_gravity,Vector3D speed,Vector3D acceleration,Matrix3x3 inverse_inertie_tensor,double mass,double damping){
-    _all_rigidBody.push_back(new RigidBody(1/mass,damping,damping,center_of_gravity,position,speed,acceleration,Vector3D(0,0,0),Vector3D(0,0,0),Quaternion(1.0f,0,0,0),
+void Game::createNewRigidBody(Vector3D position,Vector3D center_of_gravity,Vector3D speed,Vector3D acceleration,Vector3D angular_speed,Vector3D angular_acceleration,Matrix3x3 inverse_inertie_tensor,double mass,double damping){
+    _all_rigidBody.push_back(new RigidBody(mass,damping,damping,center_of_gravity,position,speed,acceleration,angular_speed,angular_acceleration,Quaternion(1.0f,0,0,0),
     Matrix3x3(1,0,0,0,1,0,0,0,1),inverse_inertie_tensor,Vector3D(50,50,50)));
 }
 void Game::createNewParticule(Vector3D position,Vector3D speed,Vector3D acceleration,double mass,double damping){
@@ -123,9 +119,13 @@ void Game::updateLogic(){
     //Rigid body:
     for(unsigned i=0;i<_all_rigidBody.size();i++){
         _all_rigidBody[i]->update(elapsed.count());
+        if(_demo_type=="demo2"){
+            if(_all_rigidBody[i]->getPosition().getX()<10.0f&&_all_rigidBody[i]->getPosition().getX()>-10.0f){
+                _all_rigidBody[i]->addForceAtBodyPoint(Vector3D(0.01,0,0),Vector3D(10,50,0));
+            }
+        
+        }
     }
-    
-    
 
 
     vector<ParticuleContact*> all_contacts=_particule_contact_generator.getContacts(); 
@@ -151,13 +151,26 @@ void Game::updateInput(){
         if(all_key_pressed[i].name==SCROOL_WHEEL_DOWN)
             _graphics.cameraZoomOut();
         if(all_key_pressed[i].name==32){
-            for(unsigned i=0;i<_all_rigidBody.size();i++){
-                _all_rigidBody[i]->addForceAtBodyPoint(Vector3D(1,0,0),Vector3D(50,50,50));
+            if(_demo_type=="demo1"){
+                createNewRigidBody(Vector3D(-500,0,0),Vector3D(0,0,0),Vector3D(500,1000,0),Vector3D(0,0,0),Vector3D(0.1f,0.1f,0.1f),Vector3D(0,0,0),Matrix3x3(888.3f,0,0,0,888.3f,0,0,0,888.3f),50.0f,0.9999);
+                _force_register.addForce(_all_rigidBody[_all_rigidBody.size()-1],new GravityRigidBodyForce(10));
             }
+            else if(_demo_type=="demo2"){
+                createNewRigidBody(Vector3D(-500,0,0),Vector3D(0,0,0),Vector3D(500,0,0),Vector3D(0,0,0),Vector3D(0,0,0),Vector3D(0,0,0),Matrix3x3(888.3f,0,0,0,888.3f,0,0,0,888.3f),50.0f,0.9999);
+                createNewRigidBody(Vector3D(500,0,0),Vector3D(0,0,0),Vector3D(-500,0,0),Vector3D(0,0,0),Vector3D(0,0,0),Vector3D(0,0,0),Matrix3x3(888.3f,0,0,0,888.3f,0,0,0,888.3f),50.0f,0.9999);
+            }
+            else if(_demo_type=="demo3"){
+                for(unsigned i=0;i<_all_rigidBody.size();i++){
+                    _all_rigidBody[i]->addForceAtBodyPoint(Vector3D(0.0001,0,0),Vector3D(10,50,0));
+                }
+            }
+            
         }
         if(all_key_pressed[i].name=='r'){
-            for(unsigned i=0;i<_all_rigidBody.size();i++){
-                _all_rigidBody[i]->addForceAtBodyPoint(Vector3D(-1,0,0),Vector3D(50,50,50));
+            if(_demo_type=="demo3"){
+                for(unsigned i=0;i<_all_rigidBody.size();i++){
+                    _all_rigidBody[i]->addForceAtBodyPoint(Vector3D(-0.0001,0,0),Vector3D(10,50,0));
+                }
             }
         } 
         if(all_key_pressed[i].name=='c')
@@ -194,6 +207,8 @@ void Game::updateInput(){
         }
 
         //Mouvement of all blobs:
+        //Inutile la partie 3 du projet
+        /*
         if(all_key_pressed[i].name=='8'){
             for(unsigned i=0;i<_all_particules.size();i++){
                 Vector3D pos=_all_particules[i]->getPosition();
@@ -229,6 +244,7 @@ void Game::updateInput(){
                 _all_particules[i]->setPosition(pos);
             }
         }
+        */
         
     }
 }

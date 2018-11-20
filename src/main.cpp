@@ -5,17 +5,19 @@
 #include <cmath>
 #include <vector>
 #include <unistd.h>
+#include <string>
 #include <GL/glut.h>
 
 #include "Vector3D.h"
 #include "Particule.h"
 #include "UnitTests.h"
+#include "Utils.h"
 #include "Game.h"
 
 using namespace std;
 
 //Create Game
-Game game;
+Game game("demoX");
 
 //Create mouse and keyboard:
 Mouse *_mouse=new Mouse();
@@ -30,35 +32,66 @@ void mouseControl(int button, int state,int x, int y){
 void keyboardControl(unsigned char key,int x, int y){
     _keyboard->handleKeyboard(key,x,y);
 }
+void launchGame(int argc, char** argv){
+    srand (time(NULL));
+
+    //Initialisation of libs:
+    game.init(&argc,argv);
+
+    //Add mouse and keyboard to the game: 
+    game.addInput(_mouse);
+    game.addInput(_keyboard);
+
+    //Glut display:
+    //glutIdleFunc(updateGraphic);
+
+    //Add gameloop:
+    glutIdleFunc(gameloop);
+
+    //Add mouse control:
+    glutMouseFunc(mouseControl);
+    
+    //Add keyboard control:
+    glutKeyboardFunc(keyboardControl);
+
+    //Start the game:
+    game.start();
+}
 int main(int argc, char** argv)
 {
     if(argc>1){
-        runTests();
+        string command(argv[1]);
+
+        if(command == "--runTest"){
+            runTests();
+        }
+        else if(command == "--demo1"){
+            game=Game("demo1");
+            launchGame(argc,argv);
+        }
+        else if(command == "--demo2"){
+            game=Game("demo2");
+            launchGame(argc,argv);
+        }
+        else if(command == "--demo3"){
+            game=Game("demo3");
+            launchGame(argc,argv);
+        }
+        else if(command=="--help"){
+            cout<<"\033[32m"<<"\033[1m"<<"["<<"AIDE"<<"] "<<"\033[0m"<<"USAGE: ./GAME_ENGINE --command"<<endl;
+            cout<<"\033[32m"<<"\033[1m"<<"["<<"AIDE"<<"] "<<"\033[0m"<<"--command:"<<endl;
+            cout<<"\033[32m"<<"\033[1m"<<"["<<"AIDE"<<"] "<<"\033[0m"<<"--runTest: Lance les tests unitaires du programe."<<endl;
+            cout<<"\033[32m"<<"\033[1m"<<"["<<"AIDE"<<"] "<<"\033[0m"<<"--demo1    Lance la démo n°1 du projet."<<endl;
+            cout<<"\033[32m"<<"\033[1m"<<"["<<"AIDE"<<"] "<<"\033[0m"<<"--demo2    Lance la démo n°2 du projet."<<endl;
+            cout<<"\033[32m"<<"\033[1m"<<"["<<"AIDE"<<"] "<<"\033[0m"<<"--demo3    Lance la démo n°3 du projet."<<endl;
+        }
+        else{
+            cout<<"\033[31m"<<"\033[1m"<<"["<<"COMMAND NOT FOUND"<<"] "<<"\033[0m"<<"./GAME_ENGINE --help pour obtenir de l'aide"<<endl;
+        }
+        
     }
     else{
-        srand (time(NULL));
-
-        //Initialisation of libs:
-        game.init(&argc,argv);
-
-        //Add mouse and keyboard to the game: 
-        game.addInput(_mouse);
-        game.addInput(_keyboard);
-
-        //Glut display:
-        //glutIdleFunc(updateGraphic);
-
-        //Add gameloop:
-        glutIdleFunc(gameloop);
-
-        //Add mouse control:
-        glutMouseFunc(mouseControl);
-        
-        //Add keyboard control:
-        glutKeyboardFunc(keyboardControl);
-
-        //Start the game:
-        game.start();
+        cout<<"\033[31m"<<"\033[1m"<<"["<<"COMMAND NOT FOUND"<<"] "<<"\033[0m"<<"./GAME_ENGINE --help pour obtenir de l'aide"<<endl;
     }
     
 

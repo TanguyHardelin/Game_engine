@@ -10,9 +10,9 @@
 using namespace std;
 
 void runTests(){
-    //runVector3DTest();
-    //runMaxtrix3x3Test();
-    //runMaxtrix4x4Test();
+    runVector3DTest();
+    runMaxtrix3x3Test();
+    runMaxtrix4x4Test();
     runQuaternionTest();
 }
 

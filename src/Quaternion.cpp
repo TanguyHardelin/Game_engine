@@ -9,7 +9,7 @@ Quaternion::Quaternion(double w,double x,double y,double z):_w(w),_x(x),_y(y),_z
 
 void Quaternion::normalize(){
     double d=_w*_w+_x*_x+_y*_y+_z*_z;
-    if(d!=0 && d!=1){
+    if(d!=0){
         d=1/sqrt(d);
         _w*=d;
         _x*=d;
@@ -61,15 +61,8 @@ void Quaternion::updateAngularVelocity(Vector3D v,double dt){
     Quaternion O1(_w,_x,_y,_z);
     Quaternion w(1,v[0],v[1],v[2]);
     Quaternion result(0,0,0,0);
-    
 
     result+= w * O1 * (dt/2.0f);
-    result.normalize();
-
-/*
-    cout<<"result: ";result.display();
-    cout<<" w * O1 * (dt/2.0f): ";( w * O1 * (dt/2.0f)).display();
-*/
 
     _w=result.getW();
     _x=result.getX();

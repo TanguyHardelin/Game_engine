@@ -5,6 +5,16 @@ A powerfull game engine develop in C++
     - g++ (compilateur présent sous linux utilisé dans le Makefile)
     - free-glut
 
+#Lancement:
+./GAME_ENGINE --command
+
+--command:
+--demo1:    Lance la démo n°1
+--demo2:    Lance la démo n°2
+--demo3:    Lance la démo n°3
+--runTest:  Lance les tests unitaires
+--help:     Affiche l'aide
+
 # Compilation
 make clean
 make

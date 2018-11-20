@@ -8,6 +8,7 @@
 #include <cmath>
 #include <vector>
 #include <unistd.h>
+#include <string>
 #include <functional>
 #include <GL/glut.h>
 
@@ -18,6 +19,7 @@
 #include "Mouse.h"
 #include "Keyboard.h"
 #include "Graphics.h"
+#include "GravityRigidBodyForce.h"
 #include "ForceRegister.h"
 #include "GravityForce.h"
 #include "DragForce.h"
@@ -38,7 +40,7 @@
 class Game{
     public:
         //Constructor:
-        Game();
+        Game(std::string demo);
 
         //Getters:
         
@@ -53,7 +55,7 @@ class Game{
         void updateInput();                                                                                         //Use for update input on game
         void gameloop();                                                                                            //Gameloop
         void createNewParticule(Vector3D position,Vector3D speed,Vector3D acceleration,double mass,double damping); //Create a new Particule on screen
-        void createNewRigidBody(Vector3D position,Vector3D center_of_gravity,Vector3D speed,Vector3D acceleration,Matrix3x3 inverse_inertie_tensor,double mass,double damping);
+        void createNewRigidBody(Vector3D position,Vector3D center_of_gravity,Vector3D speed,Vector3D acceleration,Vector3D angular_speed,Vector3D angular_acceleration,Matrix3x3 inverse_inertie_tensor,double mass,double damping);
         void addBlobToGame(Blob * blob);
         void clearAllParticules();                                                                                  //Remove all particules on screen
         void makeConstantFrameRate(double elapsed_time);                                                            //Make frame constant
@@ -62,6 +64,7 @@ class Game{
         ~Game();
 
     protected:
+        std::string                                 _demo_type;
         std::vector<Input *>                        _all_inputs;
         std::vector<Particule *>                    _all_particules;
         std::vector<RigidBody *>                    _all_rigidBody;
@@ -74,6 +77,7 @@ class Game{
         ParticuleContactResolver                    _particule_contact_resolver;
         
         bool                                        _continue_game;
+       
 };
 
 #endif

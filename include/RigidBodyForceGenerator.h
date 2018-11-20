@@ -5,7 +5,7 @@
 
 class RigidBodyForceGenerator{
     public:
-    virtual void updateForce(RigidBody *p,float delta_t)=0;
+        virtual void updateForce(RigidBody *r,float delta_t)=0;
 };
 
 #endif

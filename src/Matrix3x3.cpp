@@ -243,9 +243,9 @@ Vector3D operator*(Matrix3x3  a,Vector3D v){
 }
 Vector3D operator*(Vector3D v,Matrix3x3  a){
     Vector3D r(0,0,0);
-    r[0]=a[0]*v[0]+a[1]*v[1]+a[2]*v[2];
-    r[1]=a[3]*v[0]+a[4]*v[1]+a[5]*v[2];
-    r[2]=a[6]*v[0]+a[7]*v[1]+a[8]*v[2];
+    r[0]=a[0]*v[0]+a[3]*v[1]+a[6]*v[2];
+    r[1]=a[1]*v[0]+a[4]*v[1]+a[7]*v[2];
+    r[2]=a[2]*v[0]+a[5]*v[1]+a[8]*v[2];
 
     return r;
 }

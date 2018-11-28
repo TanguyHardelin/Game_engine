@@ -33,6 +33,7 @@
 #include "ParticuleContact.h"
 #include "Blob.h"
 #include "RigidBody.h"
+#include "Octree.h"
 
 
 #define SLEEPING_TIME 16666

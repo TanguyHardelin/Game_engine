@@ -125,88 +125,146 @@ void Graphics::addSphere(Vector3D position,double radius,Vector3D color){
 
     glEnd();
 }
+void Graphics::addCube(Vector3D position, Vector3D size,Vector3D color){
+    float R=color[0]/255.0f;
+    float G=color[1]/255.0f;
+    float B=color[2]/255.0f;
+
+    double posX=position[0];
+    double posY=position[1];
+    double posZ=position[2];
+
+    glTranslatef(posX,posY,posZ);
+    
+    glBegin(GL_POLYGON);
+    glColor3f(R,G,B);
+    glVertex3f(   size[0],   size[1], - size[2] );
+    glVertex3f( - size[0],   size[1], - size[2] );
+    glVertex3f( - size[0], - size[1], - size[2] );
+    glVertex3f(   size[0], - size[1], - size[2] );
+    glEnd();
+
+
+    glBegin(GL_POLYGON);
+    glColor3f(R,G,B);
+    glVertex3f( - size[0], - size[1],   size[2] );
+    glVertex3f( - size[0],   size[1],   size[2] );
+    glVertex3f( - size[0],   size[1], - size[2] );
+    glVertex3f( - size[0], - size[1], - size[2] );
+    glEnd();
+
+    glBegin(GL_POLYGON);
+    glColor3f(R,G,B);
+    glVertex3f(   size[0], - size[1], - size[2] );
+    glVertex3f(   size[0], - size[1],   size[2] );
+    glVertex3f( - size[0], - size[1],   size[2] );
+    glVertex3f( - size[0], - size[1], - size[2] );
+    glEnd();
+
+    glBegin(GL_POLYGON);
+    glColor3f(R,G,B);
+    glVertex3f(   size[0], - size[1], - size[2] );
+    glVertex3f(   size[0],   size[1], - size[2] );
+    glVertex3f(   size[0],   size[1],   size[2] );
+    glVertex3f(   size[0], - size[1],   size[2] );
+    glEnd();
+
+    glBegin(GL_POLYGON);
+    glColor3f(R,G,B);
+    glVertex3f(   size[0],   size[1],   size[2] );
+    glVertex3f(   size[0],   size[1], - size[2] );
+    glVertex3f( - size[0],   size[1], - size[2] );
+    glVertex3f( - size[0],   size[1],   size[2] );
+    glEnd();  
+    
+
+    glBegin(GL_POLYGON);
+    glColor3f(R,G,B);
+    glVertex3f(   size[0], - size[1],  size[2] );
+    glVertex3f(   size[0],   size[1],  size[2] );
+    glVertex3f( - size[0],   size[1],  size[2] );
+    glVertex3f( - size[0], - size[1],  size[2] );
+    glEnd();
+
+    glTranslatef(-posX,-posY,-posZ);
+
+}
 void Graphics::addCube(Vector3D position,Quaternion orientation,Vector3D size){
     //orientation.normalize();
     Matrix4x4 orientation_matrix(0,0,0,0,0,0,0,0,0,0,0,0);
-    orientation_matrix=Matrix4x4::setOrientation(orientation);    
-    
-    
+    orientation_matrix=Matrix4x4::setOrientation(orientation);     
 
     GLfloat * mult_matrix=new GLfloat[16];
 
     for(int i=0;i<16;i++){
         mult_matrix[i]=orientation_matrix[i];
     }
-    //cout<<"orientation: ";orientation.display();
-    //cout<<"orientation: ";orientation_matrix.display();
+    
 
     double posX=position[0];
     double posY=position[1];
     double posZ=position[2];
 
-    //glTranslatef(-posX,-posY,-posZ);
     glPushMatrix();
     glTranslatef(posX,posY,posZ);
     glMultMatrixf(mult_matrix);
 
-    // White side - BACK
-    glBegin(GL_POLYGON);
-    glColor3f(1.0f,0,0);
-    glVertex3f( + size[0], - size[1], + size[2] );
-    glVertex3f( + size[0], + size[1], + size[2] );
-    glVertex3f( - size[0], + size[1], + size[2] );
-    glVertex3f( - size[0], - size[1], + size[2] );
-    glEnd();
-
-    // Purple side - RIGHT
-    glBegin(GL_POLYGON);
-    glColor3f(1.0f,1.0f,0);
-    glVertex3f( + size[0], - size[1], - size[2] );
-    glVertex3f( + size[0], + size[1], - size[2] );
-    glVertex3f( + size[0], + size[1], + size[2] );
-    glVertex3f( + size[0], - size[1], + size[2] );
-    glEnd();
-
-    // Green side - LEFT
-    glBegin(GL_POLYGON);
-    glColor3f(0,1.0f,0);
-    glVertex3f( - size[0], - size[1], + size[2] );
-    glVertex3f( - size[0], + size[1], + size[2] );
-    glVertex3f( - size[0], + size[1], - size[2] );
-    glVertex3f( - size[0], - size[1], - size[2] );
-    glEnd();
-
-    // Blue side - TOP
-    glBegin(GL_POLYGON);
-    glColor3f(0.0f,1.0f,1.0f);
-    glVertex3f( + size[0], + size[1], + size[2] );
-    glVertex3f( + size[0], + size[1], - size[2] );
-    glVertex3f( - size[0], + size[1], - size[2] );
-    glVertex3f( - size[0], + size[1], + size[2] );
-    glEnd();
-
-    // Red side - BOTTOM
-    glBegin(GL_POLYGON);
-    glColor3f(0,0,1.0f);
-    glVertex3f( + size[0], - size[1], - size[2] );
-    glVertex3f( + size[0], - size[1], + size[2] );
-    glVertex3f( - size[0], - size[1], + size[2] );
-    glVertex3f( - size[0], - size[1], - size[2] );
-    glEnd();
-
-    // Red side - BOTTOM
     glBegin(GL_POLYGON);
     glColor3f(1.0f,1.0f,1.0f);
-    glVertex3f( + size[0], + size[1], - size[2] );
-    glVertex3f( - size[0], + size[1], - size[2] );
+    glVertex3f(   size[0],   size[1], - size[2] );
+    glVertex3f( - size[0],   size[1], - size[2] );
     glVertex3f( - size[0], - size[1], - size[2] );
-    glVertex3f( + size[0], - size[1], - size[2] );
-
+    glVertex3f(   size[0], - size[1], - size[2] );
     glEnd();
+
+
+    glBegin(GL_POLYGON);
+    glColor3f(0,1.0f,0);
+    glVertex3f( - size[0], - size[1],   size[2] );
+    glVertex3f( - size[0],   size[1],   size[2] );
+    glVertex3f( - size[0],   size[1], - size[2] );
+    glVertex3f( - size[0], - size[1], - size[2] );
+    glEnd();
+
+    glBegin(GL_POLYGON);
+    glColor3f(0,0,1.0f);
+    glVertex3f(   size[0], - size[1], - size[2] );
+    glVertex3f(   size[0], - size[1],   size[2] );
+    glVertex3f( - size[0], - size[1],   size[2] );
+    glVertex3f( - size[0], - size[1], - size[2] );
+    glEnd();
+
+    glBegin(GL_POLYGON);
+    glColor3f(1.0f,1.0f,0);
+    glVertex3f(   size[0], - size[1], - size[2] );
+    glVertex3f(   size[0],   size[1], - size[2] );
+    glVertex3f(   size[0],   size[1],   size[2] );
+    glVertex3f(   size[0], - size[1],   size[2] );
+    glEnd();
+
+    glBegin(GL_POLYGON);
+    glColor3f(0.0f,1.0f,1.0f);
+    glVertex3f(   size[0],   size[1],   size[2] );
+    glVertex3f(   size[0],   size[1], - size[2] );
+    glVertex3f( - size[0],   size[1], - size[2] );
+    glVertex3f( - size[0],   size[1],   size[2] );
+    glEnd();  
+    
+
+    glBegin(GL_POLYGON);
+    glColor3f(1.0f,0,0);
+    glVertex3f(   size[0], - size[1],  size[2] );
+    glVertex3f(   size[0],   size[1],  size[2] );
+    glVertex3f( - size[0],   size[1],  size[2] );
+    glVertex3f( - size[0], - size[1],  size[2] );
+    glEnd();
+
+    
+
+    
 
     glTranslatef(-posX,-posY,-posZ);
     glPopMatrix();
-    //glTranslatef(posX,posY,posZ);
     
 }
 void Graphics::addPlane(Vector3D pos0,Vector3D pos1,Vector3D pos2, Vector3D pos3,Vector3D color){

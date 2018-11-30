@@ -30,21 +30,10 @@ void Game::start(){
     _graphics.start();   
 }
 void Game::updateGraphic(){
-    _graphics.clearScreen();
-    Cell test(Vector3D(0,0,0),Vector3D(100,100,100));
-    std::vector<Cell *> tmp=test.divide();
-    _graphics.addCube(tmp[0]->getCenter(),tmp[0]->getSize(),Vector3D(255,0,0));
+    _graphics.clearScreen();  
     
-    _graphics.addCube(tmp[1]->getCenter(),tmp[1]->getSize(),Vector3D(255,255,0));
-    _graphics.addCube(tmp[2]->getCenter(),tmp[2]->getSize(),Vector3D(255,0,255));
-    _graphics.addCube(tmp[3]->getCenter(),tmp[3]->getSize(),Vector3D(0,255,255));
-
-    _graphics.addCube(tmp[4]->getCenter(),tmp[4]->getSize(),Vector3D(100,255,255));
-    _graphics.addCube(tmp[5]->getCenter(),tmp[5]->getSize(),Vector3D(255,100,255));
-    _graphics.addCube(tmp[6]->getCenter(),tmp[6]->getSize(),Vector3D(100,255,255));
-    _graphics.addCube(tmp[7]->getCenter(),tmp[7]->getSize(),Vector3D(255,255,100));
-    
-    
+    //We draw cube world:
+    _graphics.addCubeWorld(Vector3D(0,0,0),Vector3D(1000,1000,1000));
 
     //We draw all particules:
     for(int i=0;i<(int)_all_particules.size();i++){

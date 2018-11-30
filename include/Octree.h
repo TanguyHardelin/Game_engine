@@ -6,21 +6,40 @@
 
 #include "RigidBody.h"
 
+/*
+    TODO:
+        - Parcourt des cellules en profondeur
+        - contruction de l'octree
+        - Detection de possibilité de collision
+
+
+*/
+
 class Cell{
     public:
         Cell(Vector3D center,Vector3D size);
-        std::vector<Cell *> divide();
+        Cell(Vector3D center,Vector3D size,Cell * parent);
+        void divide();
 
         //Getter:
         inline Vector3D getCenter() const{return _center;}
         inline Vector3D getSize() const{return _size;}
-
+        inline bool haveChildren() const{
+            if(_children.size()>0) return true;
+            return false;
+        }
+        inline std::vector<Cell *> getChildren() const{return _children;}
+        inline Cell* getParent(){return _parent;}
+        
     protected:
         Vector3D _center;
         Vector3D _size;
         std::vector<RigidBody *> _objects;
 
-        //Ajouter un parent
+        //Parent:
+        Cell * _parent;
+        std::vector<Cell *> _children;
+        
 };
 
 class Octree{

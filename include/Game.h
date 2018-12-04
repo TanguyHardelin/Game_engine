@@ -56,7 +56,7 @@ class Game{
         void updateInput();                                                                                         //Use for update input on game
         void gameloop();                                                                                            //Gameloop
         void createNewParticule(Vector3D position,Vector3D speed,Vector3D acceleration,double mass,double damping); //Create a new Particule on screen
-        void createNewRigidBody(Vector3D position,Vector3D center_of_gravity,Vector3D speed,Vector3D acceleration,Vector3D angular_speed,Vector3D angular_acceleration,Matrix3x3 inverse_inertie_tensor,double mass,double damping);
+        void createNewRigidBody(Vector3D position,Vector3D center_of_gravity,Vector3D speed,Vector3D acceleration,Vector3D angular_speed,Vector3D angular_acceleration,Matrix3x3 inverse_inertie_tensor,Vector3D size,double mass,double damping,std::string tag);
         void addBlobToGame(Blob * blob);
         void clearAllParticules();                                                                                  //Remove all particules on screen
         void makeConstantFrameRate(double elapsed_time);                                                            //Make frame constant
@@ -76,6 +76,7 @@ class Game{
         ForceRegister                               _force_register;
         ParticuleContactGenerator                   _particule_contact_generator;
         ParticuleContactResolver                    _particule_contact_resolver;
+        Octree*                                     _octree;
         
         bool                                        _continue_game;
        

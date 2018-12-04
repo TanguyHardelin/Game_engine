@@ -63,7 +63,31 @@ Vector3D Vector3D::vectorProduct(Vector3D const& v) const{
 
     return a;
 }
+Vector3D Vector3D::abs(){
+    Vector3D tmp(0,0,0);
+    if(_x>0){
+        tmp[0]=_x;
+    }
+    else{
+        tmp[0]=_x*-1;
+    }
 
+    if(_y>0){
+        tmp[1]=_y;
+    }
+    else{
+        tmp[1]=_y*-1;
+    }
+
+
+    if(_z>0){
+        tmp[2]=_z;
+    }
+    else{
+        tmp[2]=_z*-1;
+    }
+    return tmp;
+}
 
 //Operators:
 double& Vector3D::operator[] (int index){
@@ -143,6 +167,23 @@ bool operator==(Vector3D const& a, Vector3D const& b){
 }
 bool operator!=(Vector3D const&a, Vector3D const&b){
     return !(a==b);
+}
+
+bool operator<(Vector3D const&a, Vector3D const&b){
+    if(a.getX()<b.getX()&&a.getY()<b.getY()&&a.getZ()<b.getZ()){
+        return true;
+    }
+    else{
+        return false;
+    }
+}
+bool operator>(Vector3D const&a, Vector3D const&b){
+    if(a.getX()>b.getX()&&a.getY()>b.getY()&&a.getZ()>b.getZ()){
+        return true;
+    }
+    else{
+        return false;
+    }
 }
 
 Vector3D operator+(Vector3D  const&a, Vector3D const&b){

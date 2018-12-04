@@ -10,13 +10,14 @@ class RigidBody{
     public:
         RigidBody(double mass,double linear_damping,double angular_damping,
         Vector3D center_of_gravity,Vector3D position,Vector3D linear_speed,Vector3D linear_acceleration,Vector3D angular_speed,
-        Vector3D angular_acceleration,Quaternion orientation,Matrix3x3 transform_matrix,Matrix3x3 inverse_inertie_tensor,Vector3D size);
+        Vector3D angular_acceleration,Quaternion orientation,Matrix3x3 transform_matrix,Matrix3x3 inverse_inertie_tensor,Vector3D size,std::string tag);
         
         //Getter:
         inline double getInverseMass() const{return _inverse_mass;}
         inline double getMass() const{return 1/_inverse_mass;}
         inline double getLinearDamping() const{return _linear_damping;}
         inline double getAngularDamping() const{return _angular_damping;}
+        inline std::string getTag() const{return _tag;};
 
         inline Vector3D getCenterOfGravity() const{return _center_of_gravity;}
         inline Vector3D getPosition() const{return _position;}
@@ -65,9 +66,12 @@ class RigidBody{
         Matrix3x3 _inverse_inertie_tensor;
 
         Vector3D _size;
+        std::string _tag;
 
         Vector3D _linear_accum_forces;
         Vector3D _angular_accum_forces;
+
+        
 
         //Protected methods:
         void updatePosition(double delta_t);

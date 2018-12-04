@@ -33,7 +33,7 @@ class Vector3D{
     Vector3D normalize() const;
     double distanceOf(Vector3D const& v) const;
     Vector3D vectorProduct(Vector3D const& v) const;
-
+    Vector3D abs();
     
     //Operators:
     double& operator[] (int index);
@@ -58,6 +58,9 @@ class Vector3D{
 //Others operators:
 bool operator==(Vector3D const& a, Vector3D const& b);
 bool operator!=(Vector3D const&a, Vector3D const&b);
+
+bool operator>(Vector3D const&a, Vector3D const&b);
+bool operator<(Vector3D const&a, Vector3D const&b);
 
 Vector3D operator+(Vector3D  const&a, Vector3D const&b);
 Vector3D operator-(Vector3D  const&a, Vector3D const&b);

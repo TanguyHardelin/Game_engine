@@ -12,11 +12,23 @@ Game::Game(string demo):_demo_type(demo){
     _particule_contact_resolver     = ParticuleContactResolver();
     _continue_game                  = true;
     
+    //Octree:
+    _octree                         = new Octree(1000, 1000, 1000);
+    _octree -> build();
+
+
+    //CubeWorld:
+    createNewRigidBody(Vector3D(-1000,0,0),Vector3D(-1000,0,0),Vector3D(0,0,0),Vector3D(0,0,0),Vector3D(0,0,0),Vector3D(0,0,0),Matrix3x3(1.0f,0,0,0,1.0f,0,0,0,1.0f),Vector3D(1,1000,1000),50.0f,0.9999,"Wall");
+    createNewRigidBody(Vector3D(1000,0,0),Vector3D(1000,0,0),Vector3D(0,0,0),Vector3D(0,0,0),Vector3D(0,0,0),Vector3D(0,0,0),Matrix3x3(1.0f,0,0,0,1.0f,0,0,0,1.0f),Vector3D(1,1000,1000),50.0f,0.9999,"Wall");
     
-    if(demo=="demo3"){
-        createNewRigidBody(Vector3D(0,0,0),Vector3D(0,0,0),Vector3D(0,0,0),Vector3D(0,0,0),Vector3D(0,0,0),Vector3D(0,0,0),Matrix3x3(4166.3f,0,0,0,4166.3f,0,0,0,4166.3f),40.0f,0.9);
-    }
+    createNewRigidBody(Vector3D(0,-1000,0),Vector3D(0,-1000,0),Vector3D(0,0,0),Vector3D(0,0,0),Vector3D(0,0,0),Vector3D(0,0,0),Matrix3x3(1.0f,0,0,0,1.0f,0,0,0,1.0f),Vector3D(1000,1,1000),50.0f,0.9999,"Wall");
+    createNewRigidBody(Vector3D(0,1000,0),Vector3D(0,1000,0),Vector3D(0,0,0),Vector3D(0,0,0),Vector3D(0,0,0),Vector3D(0,0,0),Matrix3x3(1.0f,0,0,0,1.0f,0,0,0,1.0f),Vector3D(1000,1,1000),50.0f,0.9999,"Wall");
+
+    createNewRigidBody(Vector3D(0,0,-1000),Vector3D(0,0,-1000),Vector3D(0,0,0),Vector3D(0,0,0),Vector3D(0,0,0),Vector3D(0,0,0),Matrix3x3(1.0f,0,0,0,1.0f,0,0,0,1.0f),Vector3D(1000,1000,1),50.0f,0.9999,"Wall");
+    createNewRigidBody(Vector3D(0,0,1000),Vector3D(0,0,1000),Vector3D(0,0,0),Vector3D(0,0,0),Vector3D(0,0,0),Vector3D(0,0,0),Matrix3x3(1.0f,0,0,0,1.0f,0,0,0,1.0f),Vector3D(1000,1000,1),50.0f,0.9999,"Wall");
     
+    //CubeTest:
+    createNewRigidBody(Vector3D(0,-50,0),Vector3D(0,0,0),Vector3D(0,100,0),Vector3D(0,10,0),Vector3D(0.01f,0.01f,0.01f),Vector3D(0,0,0),Matrix3x3(1.0f,0,0,0,1.0f,0,0,0,1.0f),Vector3D(50,50,50),50.0f,0.9999,"Cube");
 }
 
 
@@ -33,7 +45,31 @@ void Game::updateGraphic(){
     _graphics.clearScreen();  
     
     //We draw cube world:
-    _graphics.addCubeWorld(Vector3D(0,0,0),Vector3D(1000,1000,1000));
+    //_graphics.addCubeWorld(Vector3D(0,0,0),Vector3D(1000,1000,1000));
+
+    //Draw octree:
+    /*
+    vector<Cell *> all_cell = _octree->getAllCells();
+    Vector3D color1(255,0,255);
+    Vector3D color2(255,255,255);
+    Vector3D color3(255,0,255);
+    Vector3D color4(255,255,255);
+    for(unsigned i=0;i<all_cell.size();i++){
+        if(i%4==0){
+            _graphics.addCube(all_cell[i]->getCenter(),all_cell[i]->getSize(),color1);
+        }
+        else if(i%3==0){
+            _graphics.addCube(all_cell[i]->getCenter(),all_cell[i]->getSize(),color2);
+        }
+        else if(i%2==0){
+            _graphics.addCube(all_cell[i]->getCenter(),all_cell[i]->getSize(),color3);
+        }
+        else if(i%1==0){
+            _graphics.addCube(all_cell[i]->getCenter(),all_cell[i]->getSize(),color4);
+        }
+        
+    }
+    */
 
     //We draw all particules:
     for(int i=0;i<(int)_all_particules.size();i++){
@@ -51,9 +87,9 @@ void Game::updateGraphic(){
     _graphics.draw();
  
 }
-void Game::createNewRigidBody(Vector3D position,Vector3D center_of_gravity,Vector3D speed,Vector3D acceleration,Vector3D angular_speed,Vector3D angular_acceleration,Matrix3x3 inverse_inertie_tensor,double mass,double damping){
+void Game::createNewRigidBody(Vector3D position,Vector3D center_of_gravity,Vector3D speed,Vector3D acceleration,Vector3D angular_speed,Vector3D angular_acceleration,Matrix3x3 inverse_inertie_tensor,Vector3D size,double mass,double damping,string tag){
     _all_rigidBody.push_back(new RigidBody(mass,damping,damping,center_of_gravity,position,speed,acceleration,angular_speed,angular_acceleration,Quaternion(1.0f,0,0,0),
-    Matrix3x3(1,0,0,0,1,0,0,0,1),inverse_inertie_tensor,Vector3D(50,50,50)));
+    Matrix3x3(1,0,0,0,1,0,0,0,1),inverse_inertie_tensor,size,tag));
 }
 void Game::createNewParticule(Vector3D position,Vector3D speed,Vector3D acceleration,double mass,double damping){
     //Create the particule
@@ -122,14 +158,37 @@ void Game::updateLogic(){
     //Rigid body:
     for(unsigned i=0;i<_all_rigidBody.size();i++){
         _all_rigidBody[i]->update(elapsed.count());
-        if(_demo_type=="demo2"){
-            if(_all_rigidBody[i]->getPosition().getX()<10.0f&&_all_rigidBody[i]->getPosition().getX()>-10.0f){
-                _all_rigidBody[i]->addForceAtBodyPoint(Vector3D(0.01,0,0),Vector3D(10,50,0));
-            }
         
-        }
     }
 
+    //Résolution de contacts pour les corps rigides:
+    // 1. On ajoute tout les corps rigides au buffer
+    for(unsigned i=0;i<_all_rigidBody.size();i++){
+        _octree->addObjectToBuffer(_all_rigidBody[i]);
+    }
+    // 2. On recupere toute les cellules de l'octree
+    vector<Cell *> all_cell = _octree->getAllCells();
+    for(unsigned i=0;i<all_cell.size();i++){
+        //3. on regarde si il y a plus de 1 object dans la cellule (si oui possible collision)
+        cout<<"i= "<<i<<"size = "<<all_cell[i]->getObjects().size()<<endl;
+        if(all_cell[i]->IsPossibleCollision()){
+            //4.On regarde quelles sont les tag des obj:
+            vector<RigidBody *> all_obj_in_cell=all_cell[i]->getObjects();
+            bool isPossibleCollision = false;
+            for(unsigned j=0;j<all_obj_in_cell.size();j++){
+                if(all_obj_in_cell[j]->getTag()=="Cube"){
+                    isPossibleCollision=true;
+                }
+            }
+
+            if(isPossibleCollision){
+                cout<<"PossibleCollision"<<endl;
+            }
+            
+        }
+    }
+    //5. On clear le buffer
+    _octree->clearBuffer();
 
     vector<ParticuleContact*> all_contacts=_particule_contact_generator.getContacts(); 
 
@@ -155,12 +214,12 @@ void Game::updateInput(){
             _graphics.cameraZoomOut();
         if(all_key_pressed[i].name==32){
             if(_demo_type=="demo1"){
-                createNewRigidBody(Vector3D(-500,0,0),Vector3D(0,0,0),Vector3D(500,1000,0),Vector3D(0,0,0),Vector3D(0.1f,0.1f,0.1f),Vector3D(0,0,0),Matrix3x3(888.3f,0,0,0,888.3f,0,0,0,888.3f),50.0f,0.9999);
+                //createNewRigidBody(Vector3D(-500,0,0),Vector3D(0,0,0),Vector3D(500,1000,0),Vector3D(0,0,0),Vector3D(0.1.0f,0.1.0f,0.1.0f),Vector3D(0,0,0),Matrix3x3(888.3f,0,0,0,888.3f,0,0,0,888.3f),50.0f,0.9999);
                 _force_register.addForce(_all_rigidBody[_all_rigidBody.size()-1],new GravityRigidBodyForce(10));
             }
             else if(_demo_type=="demo2"){
-                createNewRigidBody(Vector3D(-500,0,0),Vector3D(0,0,0),Vector3D(500,0,0),Vector3D(0,0,0),Vector3D(0,0,0),Vector3D(0,0,0),Matrix3x3(888.3f,0,0,0,888.3f,0,0,0,888.3f),50.0f,0.9999);
-                createNewRigidBody(Vector3D(500,0,0),Vector3D(0,0,0),Vector3D(-500,0,0),Vector3D(0,0,0),Vector3D(0,0,0),Vector3D(0,0,0),Matrix3x3(888.3f,0,0,0,888.3f,0,0,0,888.3f),50.0f,0.9999);
+                //createNewRigidBody(Vector3D(-500,0,0),Vector3D(0,0,0),Vector3D(500,0,0),Vector3D(0,0,0),Vector3D(0,0,0),Vector3D(0,0,0),Matrix3x3(888.3f,0,0,0,888.3f,0,0,0,888.3f),50.0f,0.9999);
+                //reateNewRigidBody(Vector3D(500,0,0),Vector3D(0,0,0),Vector3D(-500,0,0),Vector3D(0,0,0),Vector3D(0,0,0),Vector3D(0,0,0),Matrix3x3(888.3f,0,0,0,888.3f,0,0,0,888.3f),50.0f,0.9999);
             }
             else if(_demo_type=="demo3"){
                 for(unsigned i=0;i<_all_rigidBody.size();i++){

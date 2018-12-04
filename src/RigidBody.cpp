@@ -4,7 +4,7 @@ using namespace std;
 
 RigidBody::RigidBody(double mass,double linear_damping,double angular_damping,
         Vector3D center_of_gravity,Vector3D position,Vector3D linear_speed,Vector3D linear_acceleration,Vector3D angular_speed,
-        Vector3D angular_acceleration,Quaternion orientation,Matrix3x3 transform_matrix,Matrix3x3 inverse_inertie_tensor,Vector3D size):_inverse_mass(1/mass),_linear_damping(linear_damping),_angular_damping(angular_damping),_center_of_gravity(center_of_gravity),_position(position),_linear_speed(linear_speed),_linear_acceleration(linear_acceleration),_angular_speed(angular_speed),_angular_acceleration(angular_acceleration),_orientation(orientation),_transform_matrix(transform_matrix),_inverse_inertie_tensor(inverse_inertie_tensor),_size(size),_linear_accum_forces(0,0,0),_angular_accum_forces(0,0,0){
+        Vector3D angular_acceleration,Quaternion orientation,Matrix3x3 transform_matrix,Matrix3x3 inverse_inertie_tensor,Vector3D size,string tag):_inverse_mass(1/mass),_linear_damping(linear_damping),_angular_damping(angular_damping),_center_of_gravity(center_of_gravity),_position(position),_linear_speed(linear_speed),_linear_acceleration(linear_acceleration),_angular_speed(angular_speed),_angular_acceleration(angular_acceleration),_orientation(orientation),_transform_matrix(transform_matrix),_inverse_inertie_tensor(inverse_inertie_tensor),_size(size),_tag(tag),_linear_accum_forces(0,0,0),_angular_accum_forces(0,0,0){
 
         //On rajoute la position de manière a bien mettre le centre de gravité dans l'objet
         _center_of_gravity=_center_of_gravity+_position;

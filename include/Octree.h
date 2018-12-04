@@ -20,6 +20,9 @@ class Cell{
         Cell(Vector3D center,Vector3D size);
         Cell(Vector3D center,Vector3D size,Cell * parent);
         void divide();
+        void addObjectToBuffer(RigidBody * rb);         //Ajoute le rigidBody dans un "buffer"
+        void clearBuffer();
+        bool IsPossibleCollision();
 
         //Getter:
         inline Vector3D getCenter() const{return _center;}
@@ -28,35 +31,42 @@ class Cell{
             if(_children.size()>0) return true;
             return false;
         }
+        inline std::vector<RigidBody *> getObjects(){return _objects;}
         inline std::vector<Cell *> getChildren() const{return _children;}
         inline Cell* getParent(){return _parent;}
+        
         
     protected:
         Vector3D _center;
         Vector3D _size;
-        std::vector<RigidBody *> _objects;
-
         //Parent:
         Cell * _parent;
+
+        //Object and children:
+        std::vector<RigidBody *> _objects;
         std::vector<Cell *> _children;
         
 };
 
 class Octree{
     public:
-    /*
         Octree(int width,int height,int depth);
         void build();                                   //Méthode d'initialisation de l'arbre à appeler au début
         void addObjectToBuffer(RigidBody * rb);         //Ajoute le rigidBody dans un "buffer"
-        void apply();
         void clearBuffer();
-    */
+        std::vector<Cell *> getAllCells();              //Retourne toute les cellules non meres
+
+
+        ~Octree();
 
     protected:
         int                           _depth;
         int                           _width;
         int                           _height;
-        std::vector<Cell*>             _all_cell;
+        Cell*                         _all_cell;
+
+
+        std::vector<Cell *> getAllNoMotherChildren(Cell* c);
 };
 
 

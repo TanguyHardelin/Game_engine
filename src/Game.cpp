@@ -18,8 +18,13 @@ Game::Game(string demo):_demo_type(demo){
 
 
     //CubeWorld:
-    createNewRigidBody(Vector3D(-1000,0,0),Vector3D(-1000,0,0),Vector3D(0,0,0),Vector3D(0,0,0),Vector3D(0,0,0),Vector3D(0,0,0),Matrix3x3(1.0f,0,0,0,1.0f,0,0,0,1.0f),Vector3D(1,1000,1000),50.0f,0.9999,"Wall");
-    createNewRigidBody(Vector3D(1000,0,0),Vector3D(1000,0,0),Vector3D(0,0,0),Vector3D(0,0,0),Vector3D(0,0,0),Vector3D(0,0,0),Matrix3x3(1.0f,0,0,0,1.0f,0,0,0,1.0f),Vector3D(1,1000,1000),50.0f,0.9999,"Wall");
+    for(int i=0;i<20;i++){
+        for(int j=0;j<20;j++){
+            createNewRigidBody(Vector3D(-1000,-500+100*i,-500+100*j),Vector3D(-1000,0,0),Vector3D(0,0,0),Vector3D(0,0,0),Vector3D(0,0,0),Vector3D(0,0,0),Matrix3x3(1.0f,0,0,0,1.0f,0,0,0,1.0f),Vector3D(1,50,50),50.0f,0.9999,"Wall");
+            createNewRigidBody(Vector3D(1000,-500+100*i,-500+100*j),Vector3D(1000,0,0),Vector3D(0,0,0),Vector3D(0,0,0),Vector3D(0,0,0),Vector3D(0,0,0),Matrix3x3(1.0f,0,0,0,1.0f,0,0,0,1.0f),Vector3D(1,50,50),50.0f,0.9999,"Wall");
+        }
+    }
+    
     
     createNewRigidBody(Vector3D(0,-1000,0),Vector3D(0,-1000,0),Vector3D(0,0,0),Vector3D(0,0,0),Vector3D(0,0,0),Vector3D(0,0,0),Matrix3x3(1.0f,0,0,0,1.0f,0,0,0,1.0f),Vector3D(1000,1,1000),50.0f,0.9999,"Wall");
     createNewRigidBody(Vector3D(0,1000,0),Vector3D(0,1000,0),Vector3D(0,0,0),Vector3D(0,0,0),Vector3D(0,0,0),Vector3D(0,0,0),Matrix3x3(1.0f,0,0,0,1.0f,0,0,0,1.0f),Vector3D(1000,1,1000),50.0f,0.9999,"Wall");
@@ -48,37 +53,28 @@ void Game::updateGraphic(){
     //_graphics.addCubeWorld(Vector3D(0,0,0),Vector3D(1000,1000,1000));
 
     //Draw octree:
-    /*
     vector<Cell *> all_cell = _octree->getAllCells();
-    Vector3D color1(255,0,255);
-    Vector3D color2(255,255,255);
-    Vector3D color3(255,0,255);
-    Vector3D color4(255,255,255);
     for(unsigned i=0;i<all_cell.size();i++){
-        if(i%4==0){
-            _graphics.addCube(all_cell[i]->getCenter(),all_cell[i]->getSize(),color1);
+        if(_octree_color[i][1]==0){
+            //Un objet est dedans:
+            _graphics.addCube(all_cell[i]->getCenter(),all_cell[i]->getSize(),Vector3D(255,0,0));
+
         }
-        else if(i%3==0){
-            _graphics.addCube(all_cell[i]->getCenter(),all_cell[i]->getSize(),color2);
-        }
-        else if(i%2==0){
-            _graphics.addCube(all_cell[i]->getCenter(),all_cell[i]->getSize(),color3);
-        }
-        else if(i%1==0){
-            _graphics.addCube(all_cell[i]->getCenter(),all_cell[i]->getSize(),color4);
-        }
-        
+        _graphics.addCell(all_cell[i]->getCenter(),all_cell[i]->getSize(),_octree_color[i]);
     }
-    */
+    
 
     //We draw all particules:
     for(int i=0;i<(int)_all_particules.size();i++){
         _graphics.addSphere(_all_particules[i]->getPosition(),2*_all_particules[i]->getRadius(),_all_particules[i]->getColor());   
     }
+    
     //We draw all rigid body:
     for(int i=0;i<(int)_all_rigidBody.size();i++){
         _graphics.addCube(_all_rigidBody[i]->getPosition(),_all_rigidBody[i]->getOrientation(),_all_rigidBody[i]->getSize());
     }
+    
+    
     //We draw all blobs:
     for(int i=0;i<(int)_all_blobs.size();i++){
         _all_blobs[i]->drawBlob();
@@ -161,6 +157,12 @@ void Game::updateLogic(){
         
     }
 
+    //On enleve les anciennes couleurs:
+    unsigned size = _octree_color.size();
+    for(unsigned i=0;i<size;i++){
+        _octree_color.pop_back();
+    }
+
     //Résolution de contacts pour les corps rigides:
     // 1. On ajoute tout les corps rigides au buffer
     for(unsigned i=0;i<_all_rigidBody.size();i++){
@@ -168,9 +170,9 @@ void Game::updateLogic(){
     }
     // 2. On recupere toute les cellules de l'octree
     vector<Cell *> all_cell = _octree->getAllCells();
+    //cout<<"size "<<all_cell.size()<<endl;
     for(unsigned i=0;i<all_cell.size();i++){
         //3. on regarde si il y a plus de 1 object dans la cellule (si oui possible collision)
-        cout<<"i= "<<i<<"size = "<<all_cell[i]->getObjects().size()<<endl;
         if(all_cell[i]->IsPossibleCollision()){
             //4.On regarde quelles sont les tag des obj:
             vector<RigidBody *> all_obj_in_cell=all_cell[i]->getObjects();
@@ -184,7 +186,17 @@ void Game::updateLogic(){
             if(isPossibleCollision){
                 cout<<"PossibleCollision"<<endl;
             }
-            
+        }
+
+        //On met les couleurs:
+        _octree_color.push_back(Vector3D(255,255,255));
+        if(all_cell[i]->getObjects().size()>0){
+            vector<RigidBody *> all_obj_in_cell=all_cell[i]->getObjects();
+            for(unsigned j=0;j<all_obj_in_cell.size();j++){
+                if(all_obj_in_cell[j]->getTag()=="Cube"){
+                    _octree_color[i]=Vector3D(255,0,0);
+                }
+            }
         }
     }
     //5. On clear le buffer

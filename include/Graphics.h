@@ -43,6 +43,8 @@ class Graphics{
         void addCube(Vector3D position,Quaternion orientation, Vector3D size);                      //Draw cube on scene
         void addCube(Vector3D position, Vector3D size,Vector3D color);                              //Draw cube on scene
         void addCubeWorld(Vector3D position,Vector3D size);                                         //Draw cube on scene
+        void addCell(Vector3D position,Vector3D size,Vector3D color);                               //Draw Cell
+        
         void addPlane(Vector3D pos0,Vector3D pos1,Vector3D pos2, Vector3D pos3,Vector3D color);
         void addFloor(Vector3D color);
         

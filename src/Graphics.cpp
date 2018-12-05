@@ -196,52 +196,70 @@ void Graphics::addCubeWorld(Vector3D position, Vector3D size){
 
     glTranslatef(posX,posY,posZ);
     
-    glBegin(GL_POLYGON);
+    glBegin(GL_LINES);
     glColor3f(1.0f,0,0);
     glVertex3f(   size[0],   size[1], - size[2] );
     glVertex3f( - size[0],   size[1], - size[2] );
+    glEnd();
+
+    glBegin(GL_LINES);
     glVertex3f( - size[0], - size[1], - size[2] );
     glVertex3f(   size[0], - size[1], - size[2] );
     glEnd();
 
 
-    glBegin(GL_POLYGON);
+    glBegin(GL_LINES);
     glColor3f(1.0f,1.0f,0);
     glVertex3f( - size[0], - size[1],   size[2] );
     glVertex3f( - size[0],   size[1],   size[2] );
+    glEnd();
+    
+    glBegin(GL_LINES);
     glVertex3f( - size[0],   size[1], - size[2] );
     glVertex3f( - size[0], - size[1], - size[2] );
     glEnd();
 
-    glBegin(GL_POLYGON);
+    glBegin(GL_LINES);
     glColor3f(1.0f,0,1.0f);
     glVertex3f(   size[0], - size[1], - size[2] );
     glVertex3f(   size[0], - size[1],   size[2] );
+    glEnd();
+    
+    glBegin(GL_LINES);
     glVertex3f( - size[0], - size[1],   size[2] );
     glVertex3f( - size[0], - size[1], - size[2] );
     glEnd();
 
-    glBegin(GL_POLYGON);
+    glBegin(GL_LINES);
     glColor3f(0,1.0f,1.0f);
     glVertex3f(   size[0], - size[1], - size[2] );
     glVertex3f(   size[0],   size[1], - size[2] );
+    glEnd();
+    
+    glBegin(GL_LINES);
     glVertex3f(   size[0],   size[1],   size[2] );
     glVertex3f(   size[0], - size[1],   size[2] );
     glEnd();
 
-    glBegin(GL_POLYGON);
+    glBegin(GL_LINES);
     glColor3f(0,1.0f,0);
     glVertex3f(   size[0],   size[1],   size[2] );
     glVertex3f(   size[0],   size[1], - size[2] );
+    glEnd();
+    
+    glBegin(GL_LINES);
     glVertex3f( - size[0],   size[1], - size[2] );
     glVertex3f( - size[0],   size[1],   size[2] );
     glEnd();  
     
 
-    glBegin(GL_POLYGON);
+    glBegin(GL_LINES);
     glColor3f(0,0,1.0f);
     glVertex3f(   size[0], - size[1],  size[2] );
     glVertex3f(   size[0],   size[1],  size[2] );
+    glEnd();
+    
+    glBegin(GL_LINES);
     glVertex3f( - size[0],   size[1],  size[2] );
     glVertex3f( - size[0], - size[1],  size[2] );
     glEnd();
@@ -249,6 +267,94 @@ void Graphics::addCubeWorld(Vector3D position, Vector3D size){
     glTranslatef(-posX,-posY,-posZ);
 
 }
+void Graphics::addCell(Vector3D position,Vector3D size,Vector3D color){
+    double posX=position[0];
+    double posY=position[1];
+    double posZ=position[2];
+
+    double R=color[0]/255.0f;
+    double G=color[1]/255.0f;
+    double B=color[2]/255.0f;
+
+    glTranslatef(posX,posY,posZ);
+    
+    glColor3f(R,G,B);
+
+    glBegin(GL_LINES);
+    glVertex3f(   size[0],   size[1], - size[2] );
+    glVertex3f( - size[0],   size[1], - size[2] );
+    glEnd();
+
+    glBegin(GL_LINES);
+    glVertex3f( - size[0], - size[1], - size[2] );
+    glVertex3f(   size[0], - size[1], - size[2] );
+    glEnd();
+
+
+    glBegin(GL_LINES);
+    glVertex3f( - size[0], - size[1],   size[2] );
+    glVertex3f( - size[0],   size[1],   size[2] );
+    glEnd();
+    
+    glBegin(GL_LINES);
+    glVertex3f( - size[0],   size[1], - size[2] );
+    glVertex3f( - size[0], - size[1], - size[2] );
+    glEnd();
+
+    glBegin(GL_LINES);
+    glVertex3f(   size[0], - size[1], - size[2] );
+    glVertex3f(   size[0], - size[1],   size[2] );
+    glEnd();
+    
+    glBegin(GL_LINES);
+    glVertex3f( - size[0], - size[1],   size[2] );
+    glVertex3f( - size[0], - size[1], - size[2] );
+    glEnd();
+
+    glBegin(GL_LINES);
+    glVertex3f(   size[0], - size[1], - size[2] );
+    glVertex3f(   size[0],   size[1], - size[2] );
+    glEnd();
+    
+    glBegin(GL_LINES);
+    glVertex3f(   size[0],   size[1],   size[2] );
+    glVertex3f(   size[0], - size[1],   size[2] );
+    glEnd();
+
+    glBegin(GL_LINES);
+    glVertex3f(   size[0],   size[1],   size[2] );
+    glVertex3f(   size[0],   size[1], - size[2] );
+    glEnd();
+    
+    glBegin(GL_LINES);
+    glVertex3f( - size[0],   size[1], - size[2] );
+    glVertex3f( - size[0],   size[1],   size[2] );
+    glEnd();  
+    
+
+    glBegin(GL_LINES);
+    glVertex3f(   size[0], - size[1],  size[2] );
+    glVertex3f(   size[0],   size[1],  size[2] );
+    glEnd();
+    
+    glBegin(GL_LINES);
+    glVertex3f( - size[0],   size[1],  size[2] );
+    glVertex3f( - size[0], - size[1],  size[2] );
+    glEnd();
+
+    glBegin(GL_LINES);
+    glVertex3f(  size[0],   size[1],  size[2] );
+    glVertex3f( - size[0],   size[1],  size[2] );
+    glEnd();
+
+    glBegin(GL_LINES);
+    glVertex3f(  size[0],    -size[1],  size[2] );
+    glVertex3f( - size[0],   -size[1],  size[2] );
+    glEnd();
+
+    glTranslatef(-posX,-posY,-posZ);
+}
+
 void Graphics::addCube(Vector3D position,Quaternion orientation,Vector3D size){
     //orientation.normalize();
     Matrix4x4 orientation_matrix(0,0,0,0,0,0,0,0,0,0,0,0);

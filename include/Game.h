@@ -76,7 +76,9 @@ class Game{
         ForceRegister                               _force_register;
         ParticuleContactGenerator                   _particule_contact_generator;
         ParticuleContactResolver                    _particule_contact_resolver;
+        
         Octree*                                     _octree;
+        std::vector<Vector3D>                       _octree_color;
         
         bool                                        _continue_game;
        

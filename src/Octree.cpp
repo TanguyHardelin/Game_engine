@@ -30,16 +30,13 @@ void Cell::divide(){
 }
 void Cell::addObjectToBuffer(RigidBody * rb){
     if(!haveChildren()){
-        
-        
-        
         if((_center-rb->getPosition())<_size){
             /*
             cout<<endl;
             cout<<"_center ";_center.display();
             cout<<"rb->getPosition() ";rb->getPosition().display();
             cout<<"_size ";_size.display();
-            cout<<"_center.distanceOfr(rb->getPosition()) ";(_center-rb->getPosition()).display();
+            cout<<"_center-rb->getPosition()  ";(_center-rb->getPosition()).display();
             cout<<endl;
             */
             _objects.push_back(rb);

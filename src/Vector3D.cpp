@@ -170,7 +170,7 @@ bool operator!=(Vector3D const&a, Vector3D const&b){
 }
 
 bool operator<(Vector3D const&a, Vector3D const&b){
-    if(a.getX()<b.getX()&&a.getY()<b.getY()&&a.getZ()<b.getZ()){
+    if(abs(a.getX())<abs(b.getX())&&abs(a.getY())<abs(b.getY())&&abs(a.getZ())<abs(b.getZ())){
         return true;
     }
     else{
@@ -178,7 +178,7 @@ bool operator<(Vector3D const&a, Vector3D const&b){
     }
 }
 bool operator>(Vector3D const&a, Vector3D const&b){
-    if(a.getX()>b.getX()&&a.getY()>b.getY()&&a.getZ()>b.getZ()){
+    if(abs(a.getX())>abs(b.getX())&&abs(a.getY())>abs(b.getY())&&abs(a.getZ())>abs(b.getZ())){
         return true;
     }
     else{

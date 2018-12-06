@@ -169,16 +169,16 @@ bool operator!=(Vector3D const&a, Vector3D const&b){
     return !(a==b);
 }
 
-bool operator<(Vector3D const&a, Vector3D const&b){
-    if(abs(a.getX())<abs(b.getX())&&abs(a.getY())<abs(b.getY())&&abs(a.getZ())<abs(b.getZ())){
+bool operator<=(Vector3D const&a, Vector3D const&b){
+    if(abs(a.getX())<=abs(b.getX())&&abs(a.getY())<=abs(b.getY())&&abs(a.getZ())<=abs(b.getZ())){
         return true;
     }
     else{
         return false;
     }
 }
-bool operator>(Vector3D const&a, Vector3D const&b){
-    if(abs(a.getX())>abs(b.getX())&&abs(a.getY())>abs(b.getY())&&abs(a.getZ())>abs(b.getZ())){
+bool operator>=(Vector3D const&a, Vector3D const&b){
+    if(abs(a.getX())>=abs(b.getX())&&abs(a.getY())>=abs(b.getY())&&abs(a.getZ())>=abs(b.getZ())){
         return true;
     }
     else{

@@ -16,14 +16,9 @@ Game::Game(string demo):_demo_type(demo){
     _octree                         = new Octree(1000, 1000, 1000);
     _octree -> build();
 
-
-    //CubeWorld:
-    for(int i=0;i<20;i++){
-        for(int j=0;j<20;j++){
-            createNewRigidBody(Vector3D(-1000,-500+100*i,-500+100*j),Vector3D(-1000,0,0),Vector3D(0,0,0),Vector3D(0,0,0),Vector3D(0,0,0),Vector3D(0,0,0),Matrix3x3(1.0f,0,0,0,1.0f,0,0,0,1.0f),Vector3D(1,50,50),50.0f,0.9999,"Wall");
-            createNewRigidBody(Vector3D(1000,-500+100*i,-500+100*j),Vector3D(1000,0,0),Vector3D(0,0,0),Vector3D(0,0,0),Vector3D(0,0,0),Vector3D(0,0,0),Matrix3x3(1.0f,0,0,0,1.0f,0,0,0,1.0f),Vector3D(1,50,50),50.0f,0.9999,"Wall");
-        }
-    }
+    
+    createNewRigidBody(Vector3D(-1000,0,0),Vector3D(-1000,0,0),Vector3D(0,0,0),Vector3D(0,0,0),Vector3D(0,0,0),Vector3D(0,0,0),Matrix3x3(1.0f,0,0,0,1.0f,0,0,0,1.0f),Vector3D(1,1000,1000),50.0f,0.9999,"Wall");
+    createNewRigidBody(Vector3D(1000,0,0),Vector3D(1000,0,0),Vector3D(0,0,0),Vector3D(0,0,0),Vector3D(0,0,0),Vector3D(0,0,0),Matrix3x3(1.0f,0,0,0,1.0f,0,0,0,1.0f),Vector3D(1,1000,1000),50.0f,0.9999,"Wall");
     
     
     createNewRigidBody(Vector3D(0,-1000,0),Vector3D(0,-1000,0),Vector3D(0,0,0),Vector3D(0,0,0),Vector3D(0,0,0),Vector3D(0,0,0),Matrix3x3(1.0f,0,0,0,1.0f,0,0,0,1.0f),Vector3D(1000,1,1000),50.0f,0.9999,"Wall");
@@ -33,7 +28,7 @@ Game::Game(string demo):_demo_type(demo){
     createNewRigidBody(Vector3D(0,0,1000),Vector3D(0,0,1000),Vector3D(0,0,0),Vector3D(0,0,0),Vector3D(0,0,0),Vector3D(0,0,0),Matrix3x3(1.0f,0,0,0,1.0f,0,0,0,1.0f),Vector3D(1000,1000,1),50.0f,0.9999,"Wall");
     
     //CubeTest:
-    createNewRigidBody(Vector3D(0,-50,0),Vector3D(0,0,0),Vector3D(0,100,0),Vector3D(0,10,0),Vector3D(0.01f,0.01f,0.01f),Vector3D(0,0,0),Matrix3x3(1.0f,0,0,0,1.0f,0,0,0,1.0f),Vector3D(50,50,50),50.0f,0.9999,"Cube");
+    createNewRigidBody(Vector3D(0,-50,0),Vector3D(0,0,0),Vector3D(0,100,0),Vector3D(0,10,0),Vector3D(0,0,0),Vector3D(0,0,0),Matrix3x3(1.0f,0,0,0,1.0f,0,0,0,1.0f),Vector3D(50,50,50),50.0f,0.9999,"Cube");
 }
 
 
@@ -55,10 +50,13 @@ void Game::updateGraphic(){
     //Draw octree:
     vector<Cell *> all_cell = _octree->getAllCells();
     for(unsigned i=0;i<all_cell.size();i++){
-        if(_octree_color[i][1]==0){
+        if(_octree_color[i][2]==0){
             //Un objet est dedans:
             _graphics.addCube(all_cell[i]->getCenter(),all_cell[i]->getSize(),Vector3D(255,0,0));
-
+        }
+        else if(_octree_color[i][1]==0){
+            //Un mur est dedans:
+            //_graphics.addCube(all_cell[i]->getCenter(),all_cell[i]->getSize(),Vector3D(0,0,255));
         }
         _graphics.addCell(all_cell[i]->getCenter(),all_cell[i]->getSize(),_octree_color[i]);
     }
@@ -69,9 +67,10 @@ void Game::updateGraphic(){
         _graphics.addSphere(_all_particules[i]->getPosition(),2*_all_particules[i]->getRadius(),_all_particules[i]->getColor());   
     }
     
+    
     //We draw all rigid body:
     for(int i=0;i<(int)_all_rigidBody.size();i++){
-        _graphics.addCube(_all_rigidBody[i]->getPosition(),_all_rigidBody[i]->getOrientation(),_all_rigidBody[i]->getSize());
+        //_graphics.addCube(_all_rigidBody[i]->getPosition(),_all_rigidBody[i]->getOrientation(),_all_rigidBody[i]->getSize());
     }
     
     
@@ -184,7 +183,15 @@ void Game::updateLogic(){
             }
 
             if(isPossibleCollision){
-                cout<<"PossibleCollision"<<endl;
+                //cout<<"PossibleCollision"<<endl;
+                for(unsigned x=0;x<all_obj_in_cell.size();x++){
+                    for(unsigned y=0;y<all_obj_in_cell.size();y++){
+                        if(x!=y){
+                            CollisionData tmp;
+                            generateContacts(all_obj_in_cell[x],all_obj_in_cell[y],&tmp);
+                        }
+                    }
+                }
             }
         }
 
@@ -194,14 +201,19 @@ void Game::updateLogic(){
             vector<RigidBody *> all_obj_in_cell=all_cell[i]->getObjects();
             for(unsigned j=0;j<all_obj_in_cell.size();j++){
                 if(all_obj_in_cell[j]->getTag()=="Cube"){
+                    //cout<<"CUBE"<<endl;
                     _octree_color[i]=Vector3D(255,0,0);
+                }
+                if(all_obj_in_cell[j]->getTag()=="Wall"){
+                    //cout<<"CUBE"<<endl;
+                    _octree_color[i]=Vector3D(0,0,255);
                 }
             }
         }
     }
     //5. On clear le buffer
     _octree->clearBuffer();
-
+    
     vector<ParticuleContact*> all_contacts=_particule_contact_generator.getContacts(); 
 
     _particule_contact_resolver.resolve(all_contacts,elapsed.count());

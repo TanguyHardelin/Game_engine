@@ -59,8 +59,8 @@ class Vector3D{
 bool operator==(Vector3D const& a, Vector3D const& b);
 bool operator!=(Vector3D const&a, Vector3D const&b);
 
-bool operator>(Vector3D const&a, Vector3D const&b);
-bool operator<(Vector3D const&a, Vector3D const&b);
+bool operator>=(Vector3D const&a, Vector3D const&b);
+bool operator<=(Vector3D const&a, Vector3D const&b);
 
 Vector3D operator+(Vector3D  const&a, Vector3D const&b);
 Vector3D operator-(Vector3D  const&a, Vector3D const&b);

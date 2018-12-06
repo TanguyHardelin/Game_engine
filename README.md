@@ -5,7 +5,7 @@ A powerfull game engine develop in C++
     - g++ (compilateur présent sous linux utilisé dans le Makefile)
     - free-glut
 
-#Lancement:
+# Lancement:
 ./GAME_ENGINE --command
 
 --command:

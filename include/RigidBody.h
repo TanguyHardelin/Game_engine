@@ -2,6 +2,7 @@
 #define RIGIDBODY_H
 
 #include <iostream>
+#include <vector>
 #include "Vector3D.h"
 #include "Matrix3x3.h"
 #include "Quaternion.h"
@@ -40,6 +41,7 @@ class RigidBody{
         void addForceAtPoint(const Vector3D & force, const Vector3D & point);
         void addForceAtBodyPoint(const Vector3D & force, const Vector3D & point);
         void clearAccums();
+        std::vector<Vector3D> getCorners();
 
         void CalculateDerivedData();
 

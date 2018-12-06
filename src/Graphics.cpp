@@ -196,70 +196,52 @@ void Graphics::addCubeWorld(Vector3D position, Vector3D size){
 
     glTranslatef(posX,posY,posZ);
     
-    glBegin(GL_LINES);
-    glColor3f(1.0f,0,0);
+    glBegin(GL_POLYGON);
+    glColor3f(1.0f,1.0f,1.0f);
     glVertex3f(   size[0],   size[1], - size[2] );
     glVertex3f( - size[0],   size[1], - size[2] );
-    glEnd();
-
-    glBegin(GL_LINES);
     glVertex3f( - size[0], - size[1], - size[2] );
     glVertex3f(   size[0], - size[1], - size[2] );
     glEnd();
 
 
-    glBegin(GL_LINES);
-    glColor3f(1.0f,1.0f,0);
+    glBegin(GL_POLYGON);
+    glColor3f(0,1.0f,0);
     glVertex3f( - size[0], - size[1],   size[2] );
     glVertex3f( - size[0],   size[1],   size[2] );
-    glEnd();
-    
-    glBegin(GL_LINES);
     glVertex3f( - size[0],   size[1], - size[2] );
     glVertex3f( - size[0], - size[1], - size[2] );
     glEnd();
 
-    glBegin(GL_LINES);
-    glColor3f(1.0f,0,1.0f);
+    glBegin(GL_POLYGON);
+    glColor3f(0,0,1.0f);
     glVertex3f(   size[0], - size[1], - size[2] );
     glVertex3f(   size[0], - size[1],   size[2] );
-    glEnd();
-    
-    glBegin(GL_LINES);
     glVertex3f( - size[0], - size[1],   size[2] );
     glVertex3f( - size[0], - size[1], - size[2] );
     glEnd();
 
-    glBegin(GL_LINES);
-    glColor3f(0,1.0f,1.0f);
+    glBegin(GL_POLYGON);
+    glColor3f(1.0f,1.0f,0);
     glVertex3f(   size[0], - size[1], - size[2] );
     glVertex3f(   size[0],   size[1], - size[2] );
-    glEnd();
-    
-    glBegin(GL_LINES);
     glVertex3f(   size[0],   size[1],   size[2] );
     glVertex3f(   size[0], - size[1],   size[2] );
     glEnd();
 
-    glBegin(GL_LINES);
-    glColor3f(0,1.0f,0);
+    glBegin(GL_POLYGON);
+    glColor3f(0.0f,1.0f,1.0f);
     glVertex3f(   size[0],   size[1],   size[2] );
     glVertex3f(   size[0],   size[1], - size[2] );
-    glEnd();
-    
-    glBegin(GL_LINES);
     glVertex3f( - size[0],   size[1], - size[2] );
     glVertex3f( - size[0],   size[1],   size[2] );
     glEnd();  
     
 
-    glBegin(GL_LINES);
-    glColor3f(0,0,1.0f);
+    glBegin(GL_POLYGON);
+    glColor3f(1.0f,0,0);
     glVertex3f(   size[0], - size[1],  size[2] );
     glVertex3f(   size[0],   size[1],  size[2] );
-    glEnd();
-    
-    glBegin(GL_LINES);
     glVertex3f( - size[0],   size[1],  size[2] );
     glVertex3f( - size[0], - size[1],  size[2] );
     glEnd();

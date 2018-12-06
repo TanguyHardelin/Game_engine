@@ -96,3 +96,17 @@ Vector3D RigidBody::localToWorld(Vector3D v,Matrix3x3 transform_matrix){
 Vector3D RigidBody::worldToLocal(Vector3D v,Matrix3x3 transform_matrix){
     return transform_matrix.inverse()*v*transform_matrix;
 }
+
+std::vector<Vector3D> RigidBody::getCorners(){
+    vector<Vector3D> retour;
+    retour.push_back(Vector3D(_size[0],   _size[1], _size[2]));
+    retour.push_back(Vector3D(_size[0],   _size[1], - _size[2]));
+    retour.push_back(Vector3D(_size[0],  - _size[1], _size[2]));
+    retour.push_back(Vector3D(_size[0],  - _size[1], - _size[2]));
+
+    retour.push_back(Vector3D(-_size[0],   _size[1], _size[2]));
+    retour.push_back(Vector3D(-_size[0],   _size[1], - _size[2]));
+    retour.push_back(Vector3D(-_size[0],  - _size[1], _size[2]));
+    retour.push_back(Vector3D(-_size[0],  - _size[1], - _size[2]));
+    return retour;
+}

@@ -30,7 +30,8 @@ void Cell::divide(){
 }
 void Cell::addObjectToBuffer(RigidBody * rb){
     if(!haveChildren()){
-        if((_center-rb->getPosition())<_size){
+        //Classic Rigib Body
+        if((_center-rb->getPosition())<=_size && rb->getTag()!="Wall"){
             /*
             cout<<endl;
             cout<<"_center ";_center.display();
@@ -39,7 +40,35 @@ void Cell::addObjectToBuffer(RigidBody * rb){
             cout<<"_center-rb->getPosition()  ";(_center-rb->getPosition()).display();
             cout<<endl;
             */
-            _objects.push_back(rb);
+           _objects.push_back(rb);
+        }
+        else if(rb->getTag()=="Wall"){
+            //Wall:
+            Vector3D norm=(_center+_size-rb->getPosition()).normalize();
+            
+            if((_center[0]+_size[0])==1000 && rb->getPosition()[0]==1000){
+                _objects.push_back(rb);
+            }
+
+            if((_center[1]+_size[1])==1000 && rb->getPosition()[1]==1000){
+                _objects.push_back(rb);
+            }
+
+            if((_center[2]+_size[2])==1000 && rb->getPosition()[2]==1000){
+                _objects.push_back(rb);
+            }
+
+            if((_center[0]-_size[0])==-1000 && rb->getPosition()[0]==-1000){
+                _objects.push_back(rb);
+            }
+
+            if((_center[1]-_size[1])==-1000 && rb->getPosition()[1]==-1000){
+                _objects.push_back(rb);
+            }
+
+            if((_center[2]-_size[2])==-1000 && rb->getPosition()[2]==-1000){
+                _objects.push_back(rb);
+            }
         }
     }
     else{

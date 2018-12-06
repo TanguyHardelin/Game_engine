@@ -34,6 +34,7 @@
 #include "Blob.h"
 #include "RigidBody.h"
 #include "Octree.h"
+#include "RigidBodyContactManager.h"
 
 
 #define SLEEPING_TIME 16666

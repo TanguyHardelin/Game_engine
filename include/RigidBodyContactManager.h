@@ -6,18 +6,18 @@
 #include "Vector3D.h"
 #include "RigidBody.h"
 
-typedef struct Contact{
-    Vector3D contactPoint;
-    Vector3D contactNormal;
+typedef struct ContactType{
+    Vector3D* contactPoint;
+    Vector3D* contactNormal;
     float    interpenetration;
-} Contact;
+} ContactType;
 
 typedef struct CollisionData{
-    std::vector<Contact> contacts;
+    std::vector<ContactType> contacts;
     int contacts_restant;
 } CollisionData;
 
-bool generateContacts(RigidBody * a, RigidBody * b, CollisionData * data);
+void generateContacts(RigidBody * a, RigidBody * b, CollisionData * data);
 
 
 

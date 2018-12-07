@@ -16,7 +16,14 @@ Game::Game(string demo):_demo_type(demo){
     _octree                         = new Octree(1000, 1000, 1000);
     _octree -> build();
 
-    
+    //Manage visibility:
+    _show_octree=false;
+    _show_wall=true;
+    _show_octree_evolution=false;
+    _show_octree_wall=false;
+    _continue_logic=true;
+
+    //Wall:
     createNewRigidBody(Vector3D(-1000,0,0),Vector3D(-1000,0,0),Vector3D(0,0,0),Vector3D(0,0,0),Vector3D(0,0,0),Vector3D(0,0,0),Matrix3x3(1.0f,0,0,0,1.0f,0,0,0,1.0f),Vector3D(1,1000,1000),50.0f,0.9999,"Wall");
     createNewRigidBody(Vector3D(1000,0,0),Vector3D(1000,0,0),Vector3D(0,0,0),Vector3D(0,0,0),Vector3D(0,0,0),Vector3D(0,0,0),Matrix3x3(1.0f,0,0,0,1.0f,0,0,0,1.0f),Vector3D(1,1000,1000),50.0f,0.9999,"Wall");
     
@@ -28,7 +35,7 @@ Game::Game(string demo):_demo_type(demo){
     createNewRigidBody(Vector3D(0,0,1000),Vector3D(0,0,1000),Vector3D(0,0,0),Vector3D(0,0,0),Vector3D(0,0,0),Vector3D(0,0,0),Matrix3x3(1.0f,0,0,0,1.0f,0,0,0,1.0f),Vector3D(1000,1000,1),50.0f,0.9999,"Wall");
     
     //CubeTest:
-    createNewRigidBody(Vector3D(0,-50,0),Vector3D(0,0,0),Vector3D(0,100,0),Vector3D(0,10,0),Vector3D(0,0,0),Vector3D(0,0,0),Matrix3x3(1.0f,0,0,0,1.0f,0,0,0,1.0f),Vector3D(50,50,50),50.0f,0.9999,"Cube");
+    createNewRigidBody(Vector3D(0,-50,0),Vector3D(0,0,0),Vector3D(rand()%100-100,rand()%100-100,rand()%100-100),Vector3D(0,0,0),Vector3D(rand()%10/1000.0f,rand()%10/1000.0f,rand()%10/1000.0f),Vector3D(0,0,0),Matrix3x3(1.0f,0,0,0,1.0f,0,0,0,1.0f),Vector3D(50,50,50),50.0f,0.9999,"Cube");
 }
 
 
@@ -43,23 +50,23 @@ void Game::start(){
 }
 void Game::updateGraphic(){
     _graphics.clearScreen();  
-    
-    //We draw cube world:
-    //_graphics.addCubeWorld(Vector3D(0,0,0),Vector3D(1000,1000,1000));
 
     //Draw octree:
-    vector<Cell *> all_cell = _octree->getAllCells();
-    for(unsigned i=0;i<all_cell.size();i++){
-        if(_octree_color[i][2]==0){
-            //Un objet est dedans:
-            _graphics.addCube(all_cell[i]->getCenter(),all_cell[i]->getSize(),Vector3D(255,0,0));
+    if(_show_octree){
+        vector<Cell *> all_cell = _octree->getAllCells();
+        for(unsigned i=0;i<all_cell.size();i++){
+            if(_octree_color[i][2]==0){
+                //Un objet est dedans:
+                _graphics.addCube(all_cell[i]->getCenter(),all_cell[i]->getSize(),Vector3D(255,0,0));
+            }
+            else if(_octree_color[i][1]==0){
+                //Un mur est dedans:
+                _graphics.addCube(all_cell[i]->getCenter(),all_cell[i]->getSize(),Vector3D(0,0,255));
+            }
+            _graphics.addCell(all_cell[i]->getCenter(),all_cell[i]->getSize(),_octree_color[i]);
         }
-        else if(_octree_color[i][1]==0){
-            //Un mur est dedans:
-            //_graphics.addCube(all_cell[i]->getCenter(),all_cell[i]->getSize(),Vector3D(0,0,255));
-        }
-        _graphics.addCell(all_cell[i]->getCenter(),all_cell[i]->getSize(),_octree_color[i]);
     }
+    
     
 
     //We draw all particules:
@@ -70,8 +77,15 @@ void Game::updateGraphic(){
     
     //We draw all rigid body:
     for(int i=0;i<(int)_all_rigidBody.size();i++){
-        //_graphics.addCube(_all_rigidBody[i]->getPosition(),_all_rigidBody[i]->getOrientation(),_all_rigidBody[i]->getSize());
+        if(_all_rigidBody[i]->getTag()=="Wall" && _show_wall){
+            _graphics.addCube(_all_rigidBody[i]->getPosition(),_all_rigidBody[i]->getOrientation(),_all_rigidBody[i]->getSize());
+        }
+        else if(_all_rigidBody[i]->getTag()!="Wall"){
+            _graphics.addCube(_all_rigidBody[i]->getPosition(),_all_rigidBody[i]->getOrientation(),_all_rigidBody[i]->getSize());
+        }
+        
     }
+    
     
     
     //We draw all blobs:
@@ -169,7 +183,7 @@ void Game::updateLogic(){
     }
     // 2. On recupere toute les cellules de l'octree
     vector<Cell *> all_cell = _octree->getAllCells();
-    //cout<<"size "<<all_cell.size()<<endl;
+    
     for(unsigned i=0;i<all_cell.size();i++){
         //3. on regarde si il y a plus de 1 object dans la cellule (si oui possible collision)
         if(all_cell[i]->IsPossibleCollision()){
@@ -183,12 +197,15 @@ void Game::updateLogic(){
             }
 
             if(isPossibleCollision){
-                //cout<<"PossibleCollision"<<endl;
                 for(unsigned x=0;x<all_obj_in_cell.size();x++){
                     for(unsigned y=0;y<all_obj_in_cell.size();y++){
                         if(x!=y){
                             CollisionData tmp;
+                            
                             generateContacts(all_obj_in_cell[x],all_obj_in_cell[y],&tmp);
+                            if(tmp.contacts.size()>0){
+                                _continue_logic=false;
+                            }
                         }
                     }
                 }
@@ -200,12 +217,10 @@ void Game::updateLogic(){
         if(all_cell[i]->getObjects().size()>0){
             vector<RigidBody *> all_obj_in_cell=all_cell[i]->getObjects();
             for(unsigned j=0;j<all_obj_in_cell.size();j++){
-                if(all_obj_in_cell[j]->getTag()=="Cube"){
-                    //cout<<"CUBE"<<endl;
+                if(all_obj_in_cell[j]->getTag()=="Cube" && _show_octree_evolution){
                     _octree_color[i]=Vector3D(255,0,0);
                 }
-                if(all_obj_in_cell[j]->getTag()=="Wall"){
-                    //cout<<"CUBE"<<endl;
+                if(all_obj_in_cell[j]->getTag()=="Wall" && _show_octree_wall){
                     _octree_color[i]=Vector3D(0,0,255);
                 }
             }
@@ -293,45 +308,21 @@ void Game::updateInput(){
         }
 
         //Mouvement of all blobs:
-        //Inutile la partie 3 du projet
-        /*
-        if(all_key_pressed[i].name=='8'){
-            for(unsigned i=0;i<_all_particules.size();i++){
-                Vector3D pos=_all_particules[i]->getPosition();
-                pos[2]-=20;
-                _all_particules[i]->setPosition(pos);
-            }
+        if(all_key_pressed[i].name=='w'){
+            _show_octree=!_show_octree;
         }
-        if(all_key_pressed[i].name=='2'){
-            for(unsigned i=0;i<_all_particules.size();i++){
-                Vector3D pos=_all_particules[i]->getPosition();
-                pos[2]+=20;
-                _all_particules[i]->setPosition(pos);
-            }
+        if(all_key_pressed[i].name=='x'){
+            _show_wall=!_show_wall;
         }
-        if(all_key_pressed[i].name=='5'){
-            for(unsigned i=0;i<_all_particules.size();i++){
-                Vector3D pos=_all_particules[i]->getPosition();
-                pos[1]+=200;
-                _all_particules[i]->setPosition(pos);
-            }
+        if(all_key_pressed[i].name=='c'){
+            _show_octree_evolution=!_show_octree_evolution;
         }
-        if(all_key_pressed[i].name=='6'){
-            for(unsigned i=0;i<_all_particules.size();i++){
-                Vector3D pos=_all_particules[i]->getPosition();
-                pos[0]+=20;
-                _all_particules[i]->setPosition(pos);
-            }
+        if(all_key_pressed[i].name=='v'){
+            _show_octree_wall=!_show_octree_wall;
         }
-        if(all_key_pressed[i].name=='4'){
-            for(unsigned i=0;i<_all_particules.size();i++){
-                Vector3D pos=_all_particules[i]->getPosition();
-                pos[0]-=20;
-                _all_particules[i]->setPosition(pos);
-            }
-        }
-        */
-        
+        if(all_key_pressed[i].name=='b'){
+            _continue_logic=!_continue_logic;
+        }        
     }
 }
 void Game::clearAllParticules(){
@@ -348,7 +339,7 @@ void Game::gameloop(){
     //Update Input:
     updateInput();
     //Update Logic:
-    updateLogic();
+    if(_continue_logic) updateLogic();
     //Update Graphics:
     updateGraphic();
 

@@ -82,6 +82,12 @@ class Game{
         std::vector<Vector3D>                       _octree_color;
         
         bool                                        _continue_game;
+
+        bool                                        _show_octree;
+        bool                                        _show_wall;
+        bool                                        _show_octree_evolution;
+        bool                                        _show_octree_wall;
+        bool                                        _continue_logic;
        
 };
 

@@ -70,6 +70,7 @@ class Game{
         std::vector<Input *>                        _all_inputs;
         std::vector<Particule *>                    _all_particules;
         std::vector<RigidBody *>                    _all_rigidBody;
+        std::vector<Line>                         _all_lines;
         std::vector<ParticuleLinkContact *>         _all_links;
         std::vector<ParticuleCableContact *>        _all_cables;
         std::vector<Blob *>                         _all_blobs;

@@ -105,6 +105,13 @@ void Graphics::cameraZoomOut(){
     _position_of_camera+=30.0f;
     setPositionOfCamera(_position_of_camera);
 }
+void Graphics::addLine(Vector3D p1,Vector3D p2){
+    glColor3f(1.0,0,0);
+    glBegin(GL_LINES);
+        glVertex3f(p1.getX(),p1.getY(),p1.getZ());
+        glVertex3f(p2.getX(),p2.getY(),p2.getZ());
+    glEnd();
+}
 void Graphics::addSphere(Vector3D position,double radius,Vector3D color){
     double R=color[0]/255.0f;
     double G=color[1]/255.0f;

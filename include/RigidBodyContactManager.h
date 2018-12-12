@@ -9,6 +9,7 @@
 typedef struct ContactType{
     Vector3D* contactPoint;
     Vector3D* contactNormal;
+    RigidBody* rb_contact;
     float    interpenetration;
 } ContactType;
 

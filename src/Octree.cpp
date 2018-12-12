@@ -32,14 +32,6 @@ void Cell::addObjectToBuffer(RigidBody * rb){
     if(!haveChildren()){
         //Classic Rigib Body
         if((_center-rb->getPosition())<=_size && rb->getTag()!="Wall"){
-            /*
-            cout<<endl;
-            cout<<"_center ";_center.display();
-            cout<<"rb->getPosition() ";rb->getPosition().display();
-            cout<<"_size ";_size.display();
-            cout<<"_center-rb->getPosition()  ";(_center-rb->getPosition()).display();
-            cout<<endl;
-            */
            _objects.push_back(rb);
         }
         else if(rb->getTag()=="Wall"){

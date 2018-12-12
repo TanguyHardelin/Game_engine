@@ -17,6 +17,11 @@
 #define WINDOW_HEIGHT 700
 #define NAME_OF_WINDOW  "GAME_ENGINE"
 
+typedef struct Line{
+    Vector3D x;
+    Vector3D y;
+} Line;
+
 class Vector3D;
 
 class Graphics{
@@ -39,6 +44,7 @@ class Graphics{
         void cameraZoomIn();                                        //Zoom
         void cameraZoomOut();                                       //Dezoom
 
+        void addLine(Vector3D p1,Vector3D p2); 
         void addSphere(Vector3D position,double radius,Vector3D color);                             //Draw sphere on scene
         void addCube(Vector3D position,Quaternion orientation, Vector3D size);                      //Draw cube on scene
         void addCube(Vector3D position, Vector3D size,Vector3D color);                              //Draw cube on scene

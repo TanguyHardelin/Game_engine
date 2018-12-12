@@ -67,7 +67,10 @@ void Game::updateGraphic(){
         }
     }
     
-    
+    //We draw all lines:
+    for(int i=0;i<(int)_all_lines.size();i++){
+        _graphics.addLine(_all_lines[i].x,_all_lines[i].y);   
+    }
 
     //We draw all particules:
     for(int i=0;i<(int)_all_particules.size();i++){
@@ -83,10 +86,7 @@ void Game::updateGraphic(){
         else if(_all_rigidBody[i]->getTag()!="Wall"){
             _graphics.addCube(_all_rigidBody[i]->getPosition(),_all_rigidBody[i]->getOrientation(),_all_rigidBody[i]->getSize());
         }
-        
     }
-    
-    
     
     //We draw all blobs:
     for(int i=0;i<(int)_all_blobs.size();i++){
@@ -205,6 +205,20 @@ void Game::updateLogic(){
                             generateContacts(all_obj_in_cell[x],all_obj_in_cell[y],&tmp);
                             if(tmp.contacts.size()>0){
                                 _continue_logic=false;
+                                for(unsigned h=0;h<tmp.contacts.size();h++){
+                                    //cout<<"Contact normal: ";tmp.contacts[h].contactNormal->display();
+                                    Line line={*tmp.contacts[h].contactPoint,tmp.contacts[h].rb_contact->getPosition()};
+
+                                    cout<<"Dessin de ";tmp.contacts[h].contactNormal->display();
+                                    cout<<"A ";tmp.contacts[h].rb_contact->getPosition();
+
+
+                                    line.x=*tmp.contacts[h].contactNormal;
+                                    line.y=tmp.contacts[h].rb_contact->getPosition();
+
+                                    _all_lines.push_back(line);
+                                    //addLine(*tmp.contacts[h].contactNormal,tmp.contacts[h].rb_contact->getPosition());
+                                }
                             }
                         }
                     }

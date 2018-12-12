@@ -37,10 +37,10 @@ void generateContacts(RigidBody * a, RigidBody *b, CollisionData * data){
                 //On créer le contact:
                 ContactType new_contact;
                 new_contact.contactPoint=new Vector3D(RigidBody::localToWorld(all_corners[i],other->getTransformMatrix())+other->getPosition());
-                new_contact.contactNormal=new Vector3D((*(new_contact.contactPoint)-other->getPosition()).normalize());
+                new_contact.contactNormal=new Vector3D((*(new_contact.contactPoint)-other->getPosition()).normalize()*-1.0f);
                 new_contact.rb_contact=other;
                 new_contact.interpenetration=normal.scalarProduct((RigidBody::localToWorld(all_corners[i],other->getTransformMatrix())+other->getPosition()))+distance;
-
+                
                 //On rajoute a la liste des contacts:
                 data->contacts.push_back(new_contact);
                 data->contacts_restant=(int)data->contacts.size();

@@ -9,9 +9,7 @@ A powerfull game engine develop in C++
 ./GAME_ENGINE --command
 
 --command:
---demo1:    Lance la démo n°1
---demo2:    Lance la démo n°2
---demo3:    Lance la démo n°3
+--demo:      Lance la démo
 --runTest:  Lance les tests unitaires
 --help:     Affiche l'aide
 
@@ -19,15 +17,14 @@ A powerfull game engine develop in C++
 make clean
 make
 
-#Explications:
-Au lancement du programme la caméra est configurée pour montrer une vue 2D de la scene. Pour basculer en rendu 3D utiliser la molette de la souris
-pour zoomer / dézoomer ou utiliser les touches de déplacement pour déplacer la caméra.
-
-#Controles:
-zoom / dezoom de la caméra:                 Utiliser la molette de la souris
-Faire apparaitre une particule:             ESPACE (particule normal) ou R (particule random)
-Monter la caméra:                           Z
-Descendre la caméra:                        S
-Deplacer la caméra vers la droite:          D
-Deplacer la caméra vers la gauche:          Q
-Clear la scene:                             C puis ESPACE
+# Controles:
+zoom / dezoom de la caméra:                                              Utiliser la molette de la souris
+Monter la caméra:                                                        Z
+Descendre la caméra:                                                     S
+Deplacer la caméra vers la droite:                                       D
+Deplacer la caméra vers la gauche:                                       Q
+Afficher / Ne plus Afficher les murs dans la scene                       X
+Afficher/ Ne plus Afficher l'octree                                      W
+Afficher/ Ne plus Afficher l'évolution de l'octree                       C
+Afficher/ Ne plus Afficher la prise en compte des murs dans l'octree     V
+Continuer / Stopper la simulation                                        B

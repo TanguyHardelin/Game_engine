@@ -206,18 +206,10 @@ void Game::updateLogic(){
                             if(tmp.contacts.size()>0){
                                 _continue_logic=false;
                                 for(unsigned h=0;h<tmp.contacts.size();h++){
-                                    //cout<<"Contact normal: ";tmp.contacts[h].contactNormal->display();
-                                    Line line={*tmp.contacts[h].contactPoint,tmp.contacts[h].rb_contact->getPosition()};
-
-                                    cout<<"Dessin de ";tmp.contacts[h].contactNormal->display();
-                                    cout<<"A ";tmp.contacts[h].rb_contact->getPosition();
-
-
-                                    line.x=*tmp.contacts[h].contactNormal;
-                                    line.y=tmp.contacts[h].rb_contact->getPosition();
+                                    //Si on a un contact un dessine la normale de celle-ci
+                                    Line line={*tmp.contacts[h].contactPoint,(*tmp.contacts[h].contactPoint+200*(*tmp.contacts[h].contactNormal))};
 
                                     _all_lines.push_back(line);
-                                    //addLine(*tmp.contacts[h].contactNormal,tmp.contacts[h].rb_contact->getPosition());
                                 }
                             }
                         }
@@ -265,28 +257,12 @@ void Game::updateInput(){
             _graphics.cameraZoomIn();
         if(all_key_pressed[i].name==SCROOL_WHEEL_DOWN)
             _graphics.cameraZoomOut();
-        if(all_key_pressed[i].name==32){
-            if(_demo_type=="demo1"){
-                //createNewRigidBody(Vector3D(-500,0,0),Vector3D(0,0,0),Vector3D(500,1000,0),Vector3D(0,0,0),Vector3D(0.1.0f,0.1.0f,0.1.0f),Vector3D(0,0,0),Matrix3x3(888.3f,0,0,0,888.3f,0,0,0,888.3f),50.0f,0.9999);
-                _force_register.addForce(_all_rigidBody[_all_rigidBody.size()-1],new GravityRigidBodyForce(10));
-            }
-            else if(_demo_type=="demo2"){
-                //createNewRigidBody(Vector3D(-500,0,0),Vector3D(0,0,0),Vector3D(500,0,0),Vector3D(0,0,0),Vector3D(0,0,0),Vector3D(0,0,0),Matrix3x3(888.3f,0,0,0,888.3f,0,0,0,888.3f),50.0f,0.9999);
-                //reateNewRigidBody(Vector3D(500,0,0),Vector3D(0,0,0),Vector3D(-500,0,0),Vector3D(0,0,0),Vector3D(0,0,0),Vector3D(0,0,0),Matrix3x3(888.3f,0,0,0,888.3f,0,0,0,888.3f),50.0f,0.9999);
-            }
-            else if(_demo_type=="demo3"){
-                for(unsigned i=0;i<_all_rigidBody.size();i++){
-                    _all_rigidBody[i]->addForceAtBodyPoint(Vector3D(0.0001,0,0),Vector3D(10,50,0));
-                }
-            }
+        if(all_key_pressed[i].name==32){            //Espace
+
             
         }
         if(all_key_pressed[i].name=='r'){
-            if(_demo_type=="demo3"){
-                for(unsigned i=0;i<_all_rigidBody.size();i++){
-                    _all_rigidBody[i]->addForceAtBodyPoint(Vector3D(-0.0001,0,0),Vector3D(10,50,0));
-                }
-            }
+            
         } 
         if(all_key_pressed[i].name=='c')
             clearAllParticules();
@@ -321,7 +297,7 @@ void Game::updateInput(){
             _graphics.setPositionOfCamera(camera_position);
         }
 
-        //Mouvement of all blobs:
+        //RigidBody:
         if(all_key_pressed[i].name=='w'){
             _show_octree=!_show_octree;
         }

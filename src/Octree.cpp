@@ -35,9 +35,7 @@ void Cell::addObjectToBuffer(RigidBody * rb){
            _objects.push_back(rb);
         }
         else if(rb->getTag()=="Wall"){
-            //Wall:
-            Vector3D norm=(_center+_size-rb->getPosition()).normalize();
-            
+            //Wall:           
             if((_center[0]+_size[0])==1000 && rb->getPosition()[0]==1000){
                 _objects.push_back(rb);
             }
